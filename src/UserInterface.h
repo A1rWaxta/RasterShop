@@ -7,15 +7,18 @@
 #include <QtWidgets>
 #include "Canvas.h"
 #include "ApplicationSettings.h"
+#include "MainWindow.h"
 
-class MainWindow : public QWidget
+class UserInterface : public QWidget
 {
 public:
-	MainWindow();
+	UserInterface();
 
-	~MainWindow() override;
+	~UserInterface();
 
-	void show();
+	void Show();
+
+	bool LoadUIFile();
 
 private slots:
 	void OpenFile();
@@ -23,7 +26,11 @@ private slots:
 private:
 	void CreateActions();
 
+	QWidget * userInterface;
+
 	std::shared_ptr<Canvas> myCanv;
+
+	MainWindow * mainWindow;
 
 	const std::shared_ptr<ApplicationSettings> appSettings;
 };

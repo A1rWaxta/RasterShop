@@ -1,23 +1,30 @@
-#include <SFML/Graphics.hpp>
 #include <QtWidgets/QApplication>
-#include <QtWidgets/QFrame>
-#include "MyCanvas.h"
-#include "MainWindow.h"
+#include "UserInterface.h"
+#include "MainWindowX.h"
 
 int main(int argc, char **argv)
 {
+	QCoreApplication::setOrganizationName("Marcin-Klima");
+	QCoreApplication::setApplicationName("RasterShop");
+
 	QApplication App(argc, argv);
+//	UserInterface userInterface;
+	MainWindowX mainWindow;
 
-	/*QFrame* MainFrame = new QFrame;
-	MainFrame->setWindowTitle("Qt SFML");
-	MainFrame->resize(1024, 768);
-	MainFrame->show();
+	if(ApplicationSettings::Instance() == nullptr)
+	{
+		return -1;
+	}
+	if(ApplicationSettings::Instance()->LoadData("res/settings.txt") == false)
+	{
+		return -1;
+	}
+//	if(userInterface.LoadUIFile() == false)
+//	{
+//		return -1;
+//	}
+//	userInterface.Show();
 
-	MyCanvas* SFMLView = new MyCanvas(MainFrame, QPoint(0, 0), QSize(1024, 768));
-	SFMLView->show();*/
-
-	MainWindow window;
-	window.show();
-
+	mainWindow.show();
 	return App.exec();
 }

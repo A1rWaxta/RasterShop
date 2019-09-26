@@ -2,29 +2,48 @@
 // Created by waxta on 13.07.19.
 //
 
-#include "MainWindow.h"
+#include <QtUiTools/QUiLoader>
+#include "UserInterface.h"
 
 class QMainWindow;
 
-MainWindow::MainWindow() : appSettings(ApplicationSettings::Instance())
+UserInterface::UserInterface() : appSettings(ApplicationSettings::Instance()), userInterface(nullptr),
+				mainWindow(nullptr)
 {
 }
 
-MainWindow::~MainWindow()
+UserInterface::~UserInterface()
 {
 }
 
-void MainWindow::CreateActions()
+void UserInterface::CreateActions()
 {
 
 }
 
-void MainWindow::OpenFile()
+void UserInterface::OpenFile()
 {
-	close();
 }
 
-void MainWindow::show()
+void UserInterface::Show()
 {
+	mainWindow = findChild<MainWindow*>("MainWindow");
 
+	mainWindow->Show();
+}
+
+bool UserInterface::LoadUIFile()
+{
+	QFile uiFile("res/interface.ui");
+	if (uiFile.open(QIODevice::ReadOnly) == false)
+	{
+		QMessageBox::critical(nullptr, "Error", "Interface's file not found!");
+		return false;
+	}
+
+	QUiLoader loader;
+	userInterface = loader.load(&uiFile, this);
+	uiFile.close();
+
+	return true;
 }

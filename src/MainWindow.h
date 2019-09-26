@@ -5,9 +5,23 @@
 #pragma once
 
 
-class MainWindow
-{
+#include <QtWidgets>
 
+class MainWindow : public QMainWindow
+{
+public:
+	MainWindow();
+
+	virtual ~MainWindow();
+
+	void Show();
+
+private:
+	void resizeEvent(QResizeEvent * resizeEvent) override;
+
+	QMenuBar * menuBar;
+
+	void closeEvent(QCloseEvent * closeEvent) override;
 };
 
 

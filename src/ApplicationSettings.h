@@ -5,15 +5,34 @@
 #pragma once
 
 #include <memory>
+#include <QtWidgets/QWidget>
 
-class ApplicationSetting
+//SINGLETON CLASS
+class ApplicationSettings
 {
 public:
-	static ApplicationSetting * Instance();
+	static std::shared_ptr<ApplicationSettings> Instance();
+
+	short GetWindowHeight() const;
+
+	short GetWindowWidth() const;
+
+	bool LoadData(const std::string &filename);
+
+	const std::string &GetWindowTitle() const;
 
 private:
-	ApplicationSetting();
-	static std::unique_ptr<ApplicationSetting> instance;
+	ApplicationSettings();
+
+	class ConstructorEnabler;
+
+	static std::shared_ptr<ApplicationSettings> instance;
+
+	short windowHeight;
+
+	short windowWidth;
+
+	std::string windowTitle;
 };
 
 
