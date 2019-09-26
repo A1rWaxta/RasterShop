@@ -1,20 +1,13 @@
 //
-// Created by waxta on 13.07.19.
+// Created by waxta on 15.09.19.
 //
 
 #pragma once
 
-#include <QtWidgets/QMainWindow>
-#include "MyCanvas.h"
 
-class MainWindow : public QMainWindow
+class MainWindow
 {
-public:
-	MainWindow();
-	~MainWindow();
 
-private:
-	MyCanvas * canvas;
 };
 
 
