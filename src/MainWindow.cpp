@@ -1,51 +1,60 @@
-//
-// Created by waxta on 15.09.19.
-//
+#include "MainWindowX.h"
+#include "ui_MainWindowX.h"
 
-#include <iostream>
-#include "MainWindow.h"
-#include "ApplicationSettings.h"
-
-void MainWindow::resizeEvent(QResizeEvent *resizeEvent)
+MainWindowX::MainWindowX(QWidget *parent) :
+    QMainWindow(parent),
+    ui(new Ui::MainWindowX)
 {
-	QWidget::resizeEvent(resizeEvent);
-}
-
-MainWindow::MainWindow()
-{
-}
-
-MainWindow::~MainWindow()
-{
-	std::cout << "Destruktor\n";
-}
-
-void MainWindow::Show()
-{
+	QMenu * fileMenu;
+	QAction * newAct;
 	QSettings settings;
-	if(settings.contains("window/width") == true && settings.contains("window/height") == true)
-	{
-		resize(settings.value("window/width").toInt(), settings.value("window/height").toInt());
-	}
-	if(settings.contains("window/title") == true)
-	{
-		setWindowTitle(settings.value("window/title").toString());
-	}
+	int width, height;
+	int xPos, yPos;
+
+    ui->setupUi(this);
+
+    width = qApp->screens()[0]->size().width() / 2;
+    height = qApp->screens()[0]->size().height() / 2;
+    width = settings.value("window/width", width).toInt();
+    height = settings.value("window/height", height).toInt();
+    xPos = settings.value("window/xpos", 0).toInt();
+    yPos = settings.value("window/ypos", 0).toInt();
+
+    resize(width, height);
+	move(xPos, yPos);
 
 	menuBar = new QMenuBar(this);
-	QMenu * fileMenu = menuBar->addMenu(tr("&Plik"));
-	QAction *newAct = new QAction(tr("&New"), this);
+	fileMenu = menuBar->addMenu(tr("&Plik"));
+	newAct = new QAction(tr("&Zamknij"), this);
 	fileMenu->addAction(newAct);
 	menuBar->setStyleSheet("background-color: black; color: white;");
-	menuBar->show();
-
-	QMainWindow::show();
 }
 
-void MainWindow::closeEvent(QCloseEvent *closeEvent)
+MainWindowX::~MainWindowX()
+{
+    delete ui;
+}
+
+void MainWindowX::closeEvent(QCloseEvent *closeEvent)
 {
 	QSettings settings;
 	settings.setValue("window/width", width());
 	settings.setValue("window/height", height());
+	settings.setValue("window/xpos", pos().x());
+	settings.setValue("window/ypos", pos().y());
 	settings.sync();
+}
+
+void MainWindowX::Show()
+{
+
+}
+
+void MainWindowX::resizeEvent(QResizeEvent *resizeEvent)
+{
+	menuBar->resize(resizeEvent->size().width(), menuBar->size().height());
+}
+
+void MainWindowX::moveEvent(QMoveEvent *moveEvent)
+{
 }

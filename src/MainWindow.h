@@ -1,27 +1,33 @@
-//
-// Created by waxta on 15.09.19.
-//
-
-#pragma once
-
+#ifndef MAINWINDOWX_H
+#define MAINWINDOWX_H
 
 #include <QtWidgets>
 
-class MainWindow : public QMainWindow
+namespace Ui {
+class MainWindowX;
+}
+
+class MainWindowX : public QMainWindow
 {
+    Q_OBJECT
+
 public:
-	MainWindow();
+    explicit MainWindowX(QWidget *parent = nullptr);
+    
+    ~MainWindowX();
 
-	virtual ~MainWindow();
-
-	void Show();
+    void Show();
 
 private:
-	void resizeEvent(QResizeEvent * resizeEvent) override;
+    Ui::MainWindowX *ui;
+    
+    void closeEvent(QCloseEvent * closeEvent) override;
 
-	QMenuBar * menuBar;
+    void resizeEvent(QResizeEvent * resizeEvent) override;
 
-	void closeEvent(QCloseEvent * closeEvent) override;
+    void moveEvent(QMoveEvent * moveEvent) override;
+
+    QMenuBar * menuBar;
 };
 
-
+#endif // MAINWINDOWX_H
