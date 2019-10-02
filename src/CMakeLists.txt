@@ -4,19 +4,15 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 set(project_sources
 		main.cpp
-		UserInterface.cpp
 		Canvas.cpp
 		ApplicationSettings.cpp
 		MainWindow.cpp
-		MainWindowX.cpp
 		)
 
 set(project_headers
-		UserInterface.h
 		Canvas.h
 		ApplicationSettings.h
 		MainWindow.h
-		MainWindowX.h
 		)
 
 set(project_ui

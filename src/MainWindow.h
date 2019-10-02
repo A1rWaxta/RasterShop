@@ -4,7 +4,7 @@
 #include <QtWidgets>
 
 namespace Ui {
-class MainWindowX;
+class MainWindow;
 }
 
 class MainWindowX : public QMainWindow
@@ -19,7 +19,7 @@ public:
     void Show();
 
 private:
-    Ui::MainWindowX *ui;
+    Ui::MainWindow *ui;
     
     void closeEvent(QCloseEvent * closeEvent) override;
 

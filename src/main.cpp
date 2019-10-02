@@ -1,6 +1,6 @@
 #include <QtWidgets/QApplication>
-#include "UserInterface.h"
-#include "MainWindowX.h"
+#include "MainWindow.h"
+#include "ApplicationSettings.h"
 
 int main(int argc, char **argv)
 {
@@ -8,7 +8,6 @@ int main(int argc, char **argv)
 	QCoreApplication::setApplicationName("RasterShop");
 
 	QApplication App(argc, argv);
-//	UserInterface userInterface;
 	MainWindowX mainWindow;
 
 	if(ApplicationSettings::Instance() == nullptr)
@@ -19,11 +18,6 @@ int main(int argc, char **argv)
 	{
 		return -1;
 	}
-//	if(userInterface.LoadUIFile() == false)
-//	{
-//		return -1;
-//	}
-//	userInterface.Show();
 
 	mainWindow.show();
 	return App.exec();

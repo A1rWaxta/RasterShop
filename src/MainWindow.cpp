@@ -1,9 +1,9 @@
-#include "MainWindowX.h"
+#include "MainWindow.h"
 #include "ui_MainWindowX.h"
 
 MainWindowX::MainWindowX(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindowX)
+    ui(new Ui::MainWindow)
 {
 	QMenu * fileMenu;
 	QAction * newAct;
