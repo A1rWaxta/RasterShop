@@ -2,28 +2,16 @@ find_package(Qt5 REQUIRED COMPONENTS Core Widgets UiTools)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-set(project_sources
-		main.cpp
-		Canvas.cpp
-		ApplicationSettings.cpp
-		MainWindow.cpp
-		)
-
-set(project_headers
-		Canvas.h
-		ApplicationSettings.h
-		MainWindow.h
-		)
-
-set(project_ui
-		MainWindowX.ui
-		)
+include(source-files.cmake)
+include(header-files.cmake)
+include(ui-files.cmake)
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 set(AUTOMOC_MACRO_NAMES ${project_headers})
 set(AUTOGEN_BUILD_DIR ${CMAKE_CURRENT_SOURCE_DIR}/nowyXD)
+set(CMAKE_AUTOUIC_SEARCH_PATHS ${CMAKE_CURRENT_SOURCE_DIR}/uis)
 
 add_executable(RasterShop ${project_sources} ${project_headers})
 

@@ -1,7 +1,8 @@
 #include "MainWindow.h"
 #include "ui_MainWindowX.h"
+#include "NewProjectDialog.h"
 
-MainWindowX::MainWindowX(QWidget *parent) :
+MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
@@ -28,14 +29,18 @@ MainWindowX::MainWindowX(QWidget *parent) :
 	newAct = new QAction(tr("&Zamknij"), this);
 	fileMenu->addAction(newAct);
 	menuBar->setStyleSheet("background-color: black; color: white;");
+
+	connect(newAct, &QAction::triggered, this, &MainWindow::CreateNewProject);
+
+	label = findChild<QLabel*>("label");
 }
 
-MainWindowX::~MainWindowX()
+MainWindow::~MainWindow()
 {
     delete ui;
 }
 
-void MainWindowX::closeEvent(QCloseEvent *closeEvent)
+void MainWindow::closeEvent(QCloseEvent *closeEvent)
 {
 	QSettings settings;
 	settings.setValue("window/width", width());
@@ -45,16 +50,28 @@ void MainWindowX::closeEvent(QCloseEvent *closeEvent)
 	settings.sync();
 }
 
-void MainWindowX::Show()
+void MainWindow::Show()
 {
 
 }
 
-void MainWindowX::resizeEvent(QResizeEvent *resizeEvent)
+void MainWindow::resizeEvent(QResizeEvent *resizeEvent)
 {
 	menuBar->resize(resizeEvent->size().width(), menuBar->size().height());
 }
 
-void MainWindowX::moveEvent(QMoveEvent *moveEvent)
+void MainWindow::moveEvent(QMoveEvent *moveEvent)
 {
+}
+
+void MainWindow::CreateNewProject()
+{
+	NewProjectDialog XD;
+	connect(&XD, &NewProjectDialog::DialogAccepted, this, &MainWindow::NewCanvas);
+	XD.exec();
+}
+
+void MainWindow::NewCanvas(const QString & string)
+{
+	label->setText(string);
 }

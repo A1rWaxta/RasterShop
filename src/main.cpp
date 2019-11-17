@@ -4,11 +4,12 @@
 
 int main(int argc, char **argv)
 {
+	QApplication App(argc, argv);
+
 	QCoreApplication::setOrganizationName("Marcin-Klima");
 	QCoreApplication::setApplicationName("RasterShop");
 
-	QApplication App(argc, argv);
-	MainWindowX mainWindow;
+	MainWindow mainWindow;
 
 	if(ApplicationSettings::Instance() == nullptr)
 	{

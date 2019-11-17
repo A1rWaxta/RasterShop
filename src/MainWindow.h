@@ -7,16 +7,21 @@ namespace Ui {
 class MainWindow;
 }
 
-class MainWindowX : public QMainWindow
+class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    explicit MainWindowX(QWidget *parent = nullptr);
+    explicit MainWindow(QWidget *parent = nullptr);
     
-    ~MainWindowX();
+    ~MainWindow();
 
     void Show();
+
+private slots:
+	void CreateNewProject();
+
+	void NewCanvas(const QString & string);
 
 private:
     Ui::MainWindow *ui;
@@ -28,6 +33,8 @@ private:
     void moveEvent(QMoveEvent * moveEvent) override;
 
     QMenuBar * menuBar;
+
+    QLabel * label;
 };
 
 #endif // MAINWINDOWX_H

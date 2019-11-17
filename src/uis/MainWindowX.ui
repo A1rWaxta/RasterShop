@@ -13,32 +13,24 @@
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
-  <widget class="QWidget" name="centralwidget">
-   <widget class="QLabel" name="label">
-    <property name="geometry">
-     <rect>
-      <x>110</x>
-      <y>80</y>
-      <width>141</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>XDXDXD</string>
-    </property>
-   </widget>
-  </widget>
-  <widget class="QMenuBar" name="menubar">
+  <widget class="QWidget" name="centralwidget"/>
+  <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>30</height>
+     <height>27</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuxd">
+    <property name="title">
+     <string>xd</string>
+    </property>
+   </widget>
+   <addaction name="menuxd"/>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <resources/>
  <connections/>
