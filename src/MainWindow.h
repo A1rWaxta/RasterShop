@@ -1,7 +1,7 @@
-#ifndef MAINWINDOWX_H
-#define MAINWINDOWX_H
+#pragma once
 
 #include <QtWidgets>
+#include "ToolBar.h"
 
 namespace Ui {
 class MainWindow;
@@ -23,18 +23,20 @@ private slots:
 
 	void NewCanvas(const QString & string);
 
+	void FirstButtonClicked();
+
 private:
     Ui::MainWindow *ui;
-    
+
+	ToolBar * toolBar;
+
+	QWidget * centralWidget;
+
     void closeEvent(QCloseEvent * closeEvent) override;
 
     void resizeEvent(QResizeEvent * resizeEvent) override;
 
     void moveEvent(QMoveEvent * moveEvent) override;
 
-    QMenuBar * menuBar;
-
-    QLabel * label;
+	void mouseReleaseEvent(QMouseEvent * event) override;
 };
-
-#endif // MAINWINDOWX_H

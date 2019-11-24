@@ -6,6 +6,11 @@ int main(int argc, char **argv)
 {
 	QApplication App(argc, argv);
 
+	QFile file("res/styles.qss");
+	file.open(QFile::ReadOnly);
+	QString styleSheet = QLatin1String(file.readAll());
+	App.setStyleSheet(styleSheet);
+
 	QCoreApplication::setOrganizationName("Marcin-Klima");
 	QCoreApplication::setApplicationName("RasterShop");
 

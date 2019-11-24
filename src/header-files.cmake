@@ -3,4 +3,6 @@ set(project_headers
 		ApplicationSettings.h
 		MainWindow.h
 		NewProjectDialog.h
+		ToolBar.h
+		ToolBarButton.h
 		)

@@ -4,15 +4,16 @@
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow)
+    ui(new Ui::MainWindow),
+    centralWidget(new QWidget(this))
 {
-	QMenu * fileMenu;
-	QAction * newAct;
 	QSettings settings;
 	int width, height;
 	int xPos, yPos;
 
-    ui->setupUi(this);
+	ui->setupUi(this);
+
+	toolBar = new ToolBar(this);
 
     width = qApp->screens()[0]->size().width() / 2;
     height = qApp->screens()[0]->size().height() / 2;
@@ -21,18 +22,7 @@ MainWindow::MainWindow(QWidget *parent) :
     xPos = settings.value("window/xpos", 0).toInt();
     yPos = settings.value("window/ypos", 0).toInt();
 
-    resize(width, height);
-	move(xPos, yPos);
-
-	menuBar = new QMenuBar(this);
-	fileMenu = menuBar->addMenu(tr("&Plik"));
-	newAct = new QAction(tr("&Zamknij"), this);
-	fileMenu->addAction(newAct);
-	menuBar->setStyleSheet("background-color: black; color: white;");
-
-	connect(newAct, &QAction::triggered, this, &MainWindow::CreateNewProject);
-
-	label = findChild<QLabel*>("label");
+    setGeometry(xPos, yPos, width, height);
 }
 
 MainWindow::~MainWindow()
@@ -52,12 +42,10 @@ void MainWindow::closeEvent(QCloseEvent *closeEvent)
 
 void MainWindow::Show()
 {
-
 }
 
 void MainWindow::resizeEvent(QResizeEvent *resizeEvent)
 {
-	menuBar->resize(resizeEvent->size().width(), menuBar->size().height());
 }
 
 void MainWindow::moveEvent(QMoveEvent *moveEvent)
@@ -73,5 +61,12 @@ void MainWindow::CreateNewProject()
 
 void MainWindow::NewCanvas(const QString & string)
 {
-	label->setText(string);
+}
+
+void MainWindow::FirstButtonClicked()
+{
+}
+
+void MainWindow::mouseReleaseEvent(QMouseEvent *event)
+{
 }

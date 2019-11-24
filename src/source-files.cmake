@@ -4,4 +4,6 @@ set(project_sources
 		ApplicationSettings.cpp
 		MainWindow.cpp
 		NewProjectDialog.cpp
+		ToolBar.cpp
+		ToolBarButton.cpp
 		)
