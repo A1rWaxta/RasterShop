@@ -16,7 +16,7 @@ public:
 
 	[[nodiscard]] QSize sizeHint() const override;
 
-	void CreateButton();
+	void CreateButton(QIcon &icon);
 
 private slots:
 	void ButtonPressed();

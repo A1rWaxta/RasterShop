@@ -25,18 +25,26 @@ private slots:
 
 	void FirstButtonClicked();
 
+	void OpenActionClicked();
+
+	void SaveAsActionClicked();
+
+	void SaveActionClicked();
+
+	void NewActionClicked();
+
 private:
-    Ui::MainWindow *ui;
+	void closeEvent(QCloseEvent * closeEvent) override;
+
+	void resizeEvent(QResizeEvent * resizeEvent) override;
+
+	void moveEvent(QMoveEvent * moveEvent) override;
+
+	void mouseReleaseEvent(QMouseEvent * event) override;
+
+	Ui::MainWindow * ui;
 
 	ToolBar * toolBar;
 
 	QWidget * centralWidget;
-
-    void closeEvent(QCloseEvent * closeEvent) override;
-
-    void resizeEvent(QResizeEvent * resizeEvent) override;
-
-    void moveEvent(QMoveEvent * moveEvent) override;
-
-	void mouseReleaseEvent(QMouseEvent * event) override;
 };

@@ -5,4 +5,6 @@ set(project_headers
 		NewProjectDialog.h
 		ToolBar.h
 		ToolBarButton.h
+		ImageLayer.h
+		WorkSpace.h
 		)

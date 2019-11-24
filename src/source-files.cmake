@@ -6,4 +6,6 @@ set(project_sources
 		NewProjectDialog.cpp
 		ToolBar.cpp
 		ToolBarButton.cpp
+		ImageLayer.cpp
+		WorkSpace.cpp
 		)

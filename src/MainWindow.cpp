@@ -11,6 +11,8 @@ MainWindow::MainWindow(QWidget *parent) :
 	int width, height;
 	int xPos, yPos;
 
+	setMinimumSize(740, 600);
+
 	ui->setupUi(this);
 
 	toolBar = new ToolBar(this);
@@ -21,8 +23,12 @@ MainWindow::MainWindow(QWidget *parent) :
     height = settings.value("window/height", height).toInt();
     xPos = settings.value("window/xpos", 0).toInt();
     yPos = settings.value("window/ypos", 0).toInt();
-
     setGeometry(xPos, yPos, width, height);
+
+    connect(ui->actionNew, &QAction::triggered, this, &MainWindow::NewActionClicked);
+	connect(ui->actionSave, &QAction::triggered, this, &MainWindow::SaveActionClicked);
+	connect(ui->actionSaveAs, &QAction::triggered, this, &MainWindow::SaveAsActionClicked);
+	connect(ui->actionOpen, &QAction::triggered, this, &MainWindow::OpenActionClicked);
 }
 
 MainWindow::~MainWindow()
@@ -50,6 +56,16 @@ void MainWindow::resizeEvent(QResizeEvent *resizeEvent)
 
 void MainWindow::moveEvent(QMoveEvent *moveEvent)
 {
+	QList<QMenu*> menuList;
+	menuList = ui->menuBar->findChildren<QMenu*>();
+	for(QMenu * menu : menuList)
+	{
+		if( menu->isVisible() == true )
+		{
+			menu->hide();
+			return;
+		}
+	}
 }
 
 void MainWindow::CreateNewProject()
@@ -69,4 +85,33 @@ void MainWindow::FirstButtonClicked()
 
 void MainWindow::mouseReleaseEvent(QMouseEvent *event)
 {
+}
+
+void MainWindow::OpenActionClicked()
+{
+	QFileDialog fileDialog;
+	fileDialog.resize(320, 100);
+	fileDialog.setNameFilter(tr("Images (*.png *.xpm *.jpg)"));
+	fileDialog.setFileMode(QFileDialog::ExistingFile);
+
+	QStringList fileNames;
+	if( fileDialog.exec() )
+	{
+		fileNames = fileDialog.selectedFiles();
+	}
+}
+
+void MainWindow::SaveAsActionClicked()
+{
+
+}
+
+void MainWindow::SaveActionClicked()
+{
+
+}
+
+void MainWindow::NewActionClicked()
+{
+
 }

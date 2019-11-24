@@ -18,16 +18,27 @@ ToolBar::ToolBar(QWidget * parent) : QWidget(parent), buttons(0)
 {
 	setGeometry(0, 50, TOOLBAR_WIDTH, TOOLBAR_HEIGHT);
 
-	CreateButton();
-	CreateButton();
-	CreateButton();
-}
-
-void ToolBar::CreateButton()
-{
-	const static int xPos = (width() / 2) - (BUTTON_WIDTH / 2);
 	QPixmap img("res/paint.png");
 	QIcon icon(img);
+
+	CreateButton(icon);
+	connect(buttons.back(), &QPushButton::clicked, this, &ToolBar::ButtonPressed);
+
+	CreateButton(icon);
+	connect(buttons.back(), &QPushButton::clicked, this, &ToolBar::ButtonPressed);
+
+	CreateButton(icon);
+	connect(buttons.back(), &QPushButton::clicked, this, &ToolBar::ButtonPressed);
+
+	for(ToolBarButton * button : buttons)
+	{
+		button->setIconSize(QSize(30, 30));
+	}
+}
+
+void ToolBar::CreateButton(QIcon &icon)
+{
+	const static int xPos = (TOOLBAR_WIDTH / 2) - (BUTTON_WIDTH / 2);
 
 	resize(TOOLBAR_WIDTH, height() + BUTTON_HEIGHT);
 
@@ -38,17 +49,13 @@ void ToolBar::CreateButton()
 			BUTTON_WIDTH,
 			BUTTON_HEIGHT
 			);
-	buttons.back()->setEnabled(true);
 	buttons.back()->setIcon(icon);
-	buttons.back()->setIconSize(QSize(30, 30));
 
-	connect(buttons.back(), &QPushButton::clicked, this, &ToolBar::ButtonPressed);
 	update();
 }
 
 void ToolBar::ButtonPressed()
 {
-	qDebug() << "XD";
 }
 
 QSize ToolBar::sizeHint() const
