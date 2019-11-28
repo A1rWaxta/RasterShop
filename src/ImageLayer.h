@@ -7,7 +7,7 @@
 
 #include <QtGui/QImage>
 
-class ImageLayer
+class ImageLayer : public QImage
 {
 public:
 	explicit ImageLayer(int width, int height, QColor &color);
@@ -15,7 +15,7 @@ public:
 	[[nodiscard]] const QImage &GetImage() const;
 
 private:
-	QImage image;
+
 
 };
 

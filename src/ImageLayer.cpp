@@ -4,12 +4,12 @@
 
 #include "ImageLayer.h"
 
-ImageLayer::ImageLayer(int width, int height, QColor & color) : image(width, height, QImage::Format_ARGB32)
+ImageLayer::ImageLayer(int width, int height, QColor & color) : QImage(width, height, QImage::Format_ARGB32)
 {
-	image.fill(color);
+
 }
 
 const QImage &ImageLayer::GetImage() const
 {
-	return image;
+
 }

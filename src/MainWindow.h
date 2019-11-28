@@ -2,6 +2,7 @@
 
 #include <QtWidgets>
 #include "ToolBar.h"
+#include "Canvas.h"
 
 namespace Ui {
 class MainWindow;

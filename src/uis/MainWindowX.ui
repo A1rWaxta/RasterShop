@@ -67,8 +67,27 @@
     <addaction name="separator"/>
     <addaction name="actionClose"/>
    </widget>
+   <widget class="QMenu" name="menuFiltry">
+    <property name="title">
+     <string>Filtry</string>
+    </property>
+    <addaction name="actionRozmycie_Gaussa"/>
+    <addaction name="actionProgowanie"/>
+    <addaction name="actionDopasowanie_kontrastu"/>
+   </widget>
+   <widget class="QMenu" name="menuObraz">
+    <property name="title">
+     <string>Obraz</string>
+    </property>
+    <addaction name="actionObr_o_90_w_prawo"/>
+    <addaction name="actionObr_o_90_w_lewo"/>
+    <addaction name="actionObr_o_180"/>
+    <addaction name="actionLustrzane_odbicie"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
+   <addaction name="menuFiltry"/>
+   <addaction name="menuObraz"/>
   </widget>
   <action name="actionZako_cz">
    <property name="text">
@@ -101,6 +120,41 @@
   <action name="actionSaveAs">
    <property name="text">
     <string>Zapisz jako...</string>
+   </property>
+  </action>
+  <action name="actionObr_o_90_w_prawo">
+   <property name="text">
+    <string>Obróć o 90 w prawo</string>
+   </property>
+  </action>
+  <action name="actionObr_o_90_w_lewo">
+   <property name="text">
+    <string>Obróć o 90 w lewo</string>
+   </property>
+  </action>
+  <action name="actionObr_o_180">
+   <property name="text">
+    <string>Obróć o 180</string>
+   </property>
+  </action>
+  <action name="actionLustrzane_odbicie">
+   <property name="text">
+    <string>Lustrzane odbicie</string>
+   </property>
+  </action>
+  <action name="actionRozmycie_Gaussa">
+   <property name="text">
+    <string>Rozmycie Gaussa</string>
+   </property>
+  </action>
+  <action name="actionProgowanie">
+   <property name="text">
+    <string>Progowanie</string>
+   </property>
+  </action>
+  <action name="actionDopasowanie_kontrastu">
+   <property name="text">
+    <string>Dopasowanie kontrastu</string>
    </property>
   </action>
  </widget>

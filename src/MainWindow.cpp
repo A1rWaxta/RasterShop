@@ -5,7 +5,7 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    centralWidget(new QWidget(this))
+    centralWidget(new QWidget(this)),
 {
 	QSettings settings;
 	int width, height;
@@ -103,7 +103,7 @@ void MainWindow::OpenActionClicked()
 
 void MainWindow::SaveAsActionClicked()
 {
-
+//	canvas = new Canvas(this, QPoint(100, 100), QSize(100, 100));
 }
 
 void MainWindow::SaveActionClicked()

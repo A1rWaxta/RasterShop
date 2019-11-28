@@ -30,6 +30,9 @@ ToolBar::ToolBar(QWidget * parent) : QWidget(parent), buttons(0)
 	CreateButton(icon);
 	connect(buttons.back(), &QPushButton::clicked, this, &ToolBar::ButtonPressed);
 
+	CreateButton(icon);
+
+
 	for(ToolBarButton * button : buttons)
 	{
 		button->setIconSize(QSize(30, 30));

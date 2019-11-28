@@ -12,7 +12,7 @@
 class Canvas : public QWidget
 {
 public:
-	Canvas(QWidget *parent, const QPoint &position, const QSize &size, std::vector<ImageLayer> &layers,
+	Canvas(QWidget *parent, const QPoint &position, const QSize &size,
 	       unsigned int frameTime = 0);
 
 	void LoadImage(QString & fileName);
@@ -20,11 +20,8 @@ public:
 private:
 	void paintEvent(QPaintEvent * paintEvent) override;
 
+	QImage image;
 	QTimer timer;
-
-	QPixmap & pixmap;
-
-	std::vector<ImageLayer> & layers;
 };
 
 
