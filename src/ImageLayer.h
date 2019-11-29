@@ -11,8 +11,7 @@ class ImageLayer : public QImage
 {
 public:
 	explicit ImageLayer(int width, int height, QColor &color);
-
-	[[nodiscard]] const QImage &GetImage() const;
+	explicit ImageLayer(const QImage & image);
 
 private:
 

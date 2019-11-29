@@ -8,4 +8,5 @@ set(project_sources
 		ToolBarButton.cpp
 		ImageLayer.cpp
 		WorkSpace.cpp
+		ToolBar1.cpp
 		)

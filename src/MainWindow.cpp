@@ -5,7 +5,8 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    centralWidget(new QWidget(this)),
+    centralWidget(new QWidget(this))
+    //canvas(new Canvas(this, QPoint(100, 100), QSize(500, 500)))
 {
 	QSettings settings;
 	int width, height;
@@ -15,7 +16,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 	ui->setupUi(this);
 
-	toolBar = new ToolBar(this);
+	//toolBar = new ToolBar(this);
 
     width = qApp->screens()[0]->size().width() / 2;
     height = qApp->screens()[0]->size().height() / 2;

@@ -2,8 +2,12 @@
 // Created by waxta on 15.07.19.
 //
 
-#include "test_Example.cpp"
 #include "gtest/gtest.h"
+
+int return1()
+{
+	return 1;
+}
 
 TEST(FirstTest, EqualsOne)
 {

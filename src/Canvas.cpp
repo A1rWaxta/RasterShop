@@ -5,39 +5,43 @@
 #include "Canvas.h"
 #include <QPainter>
 #include <QDebug>
+#include <QPaintEvent>
 
 Canvas::Canvas(QWidget *parent, const QPoint &position, const QSize &size,
-               unsigned int frameTime) : QWidget(parent)
+               unsigned int frameTime) : QWidget(parent), image(nullptr)
 {
 	move(position);
 	resize(size);
-	timer.setInterval(frameTime);
-	setAutoFillBackground(true);
 
-	setAttribute(Qt::WA_PaintOnScreen);
-	setAttribute(Qt::WA_OpaquePaintEvent);
-	setAttribute(Qt::WA_NoSystemBackground);
+	QImage tmpImage(size, QImage::Format_ARGB32);
+	tmpImage.fill(Qt::red);
+	layers.push_back(new ImageLayer(tmpImage));
+//	image = new QImage(tmpImage);
+
+//	setAttribute(Qt::WA_PaintOnScreen);
+//	setAttribute(Qt::WA_OpaquePaintEvent);
 
 	qDebug() << "tworze canvas";
-	connect(&timer, SIGNAL(timeout()), this, SLOT(repaint()));
-	timer.start();
+	update();
 }
 
 void Canvas::paintEvent(QPaintEvent *paintEvent)
 {
+	qDebug() << "painting canvas";
 	QPainter painter(this);
-	QRectF rect(pos(), size());
-	QBrush brush(Qt::yellow, Qt::SolidPattern);
-	QPen pen(Qt::PenStyle::NoPen);
-
-	qDebug() << width() << height();
-
-	painter.setPen(pen);
-	painter.fillRect(rect, brush);
-	painter.drawRect(rect);
+	painter.drawImage(paintEvent->rect(), *layers.back(), layers.back()->rect());
 }
 
 void Canvas::LoadImage(QString &fileName)
 {
 	//pixmap.load(fileName);
+}
+
+Canvas::~Canvas()
+{
+	for( auto layer : layers )
+	{
+		delete layer;
+		layer = nullptr;
+	}
 }

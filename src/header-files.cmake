@@ -7,4 +7,5 @@ set(project_headers
 		ToolBarButton.h
 		ImageLayer.h
 		WorkSpace.h
+		ToolBar1.h
 		)

@@ -48,4 +48,6 @@ private:
 	ToolBar * toolBar;
 
 	QWidget * centralWidget;
+
+	Canvas * canvas;
 };

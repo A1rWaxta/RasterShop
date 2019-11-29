@@ -9,7 +9,7 @@ ImageLayer::ImageLayer(int width, int height, QColor & color) : QImage(width, he
 
 }
 
-const QImage &ImageLayer::GetImage() const
+ImageLayer::ImageLayer(const QImage &image) : QImage(image)
 {
 
 }

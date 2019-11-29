@@ -17,10 +17,15 @@ public:
 
 	void LoadImage(QString & fileName);
 
+	~Canvas();
+
 private:
 	void paintEvent(QPaintEvent * paintEvent) override;
 
-	QImage image;
+	std::vector<ImageLayer*> layers;
+
+	QImage * image;
+
 	QTimer timer;
 };
 
