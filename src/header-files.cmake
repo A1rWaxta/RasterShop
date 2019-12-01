@@ -2,10 +2,9 @@ set(project_headers
 		Canvas.h
 		ApplicationSettings.h
 		MainWindow.h
-		NewProjectDialog.h
-		ToolBar.h
 		ToolBarButton.h
 		ImageLayer.h
 		WorkSpace.h
-		ToolBar1.h
+		ToolBar.h
+		NewCanvasDialog.h
 		)

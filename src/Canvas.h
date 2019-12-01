@@ -4,29 +4,35 @@
 
 #pragma once
 
-
 #include <QtWidgets/QWidget>
 #include <QtCore/QTimer>
 #include "ImageLayer.h"
 
 class Canvas : public QWidget
 {
+	Q_OBJECT
+
+	friend class MainWindow;
+
 public:
-	Canvas(QWidget *parent, const QPoint &position, const QSize &size,
-	       unsigned int frameTime = 0);
+	Canvas(QWidget *parent);
 
 	void LoadImage(QString & fileName);
 
 	~Canvas();
 
 private:
+	void CreateCanvas(QSize size, QColor backgroundColor);
+
 	void paintEvent(QPaintEvent * paintEvent) override;
 
 	std::vector<ImageLayer*> layers;
 
-	QImage * image;
-
 	QTimer timer;
+
+	QRect canvasSpace;
+
+	QSize canvasSize;
 };
 
 

@@ -7,34 +7,21 @@
 #include <QDebug>
 #include <QPaintEvent>
 
-Canvas::Canvas(QWidget *parent, const QPoint &position, const QSize &size,
-               unsigned int frameTime) : QWidget(parent), image(nullptr)
+Canvas::Canvas(QWidget *parent) : QWidget(parent), canvasSize(0, 0)
 {
-	move(position);
-	resize(size);
-
-	QImage tmpImage(size, QImage::Format_ARGB32);
-	tmpImage.fill(Qt::red);
-	layers.push_back(new ImageLayer(tmpImage));
-//	image = new QImage(tmpImage);
-
-//	setAttribute(Qt::WA_PaintOnScreen);
-//	setAttribute(Qt::WA_OpaquePaintEvent);
-
-	qDebug() << "tworze canvas";
-	update();
 }
 
 void Canvas::paintEvent(QPaintEvent *paintEvent)
 {
-	qDebug() << "painting canvas";
-	QPainter painter(this);
-	painter.drawImage(paintEvent->rect(), *layers.back(), layers.back()->rect());
+ 	QPainter painter(this);
+ 	for( auto layer : layers )
+    {
+	    painter.drawImage(canvasSpace, *layer, layer->rect());
+    }
 }
 
 void Canvas::LoadImage(QString &fileName)
 {
-	//pixmap.load(fileName);
 }
 
 Canvas::~Canvas()
@@ -44,4 +31,16 @@ Canvas::~Canvas()
 		delete layer;
 		layer = nullptr;
 	}
+}
+
+void Canvas::CreateCanvas(QSize size, QColor backgroundColor)
+{
+	const int centerY = width() / 2 - size.width() / 2;
+	const int centerX = height() / 2 - size.height() / 2;
+	canvasSize = size;
+	canvasSpace = QRect(QPoint(centerY, centerX), size);
+	QImage tmpImage(canvasSpace.size(), QImage::Format_ARGB32);
+	tmpImage.fill(backgroundColor);
+	layers.push_back(new ImageLayer(tmpImage));
+	update();
 }

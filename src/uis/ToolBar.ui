@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>ToolBar1</class>
- <widget class="QWidget" name="ToolBar1">
+ <class>ToolBar</class>
+ <widget class="QWidget" name="ToolBar">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -26,6 +26,18 @@
    <string notr="true"/>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
    <item alignment="Qt::AlignHCenter">
     <widget class="ToolBarButton" name="pushButton">
      <property name="minimumSize">

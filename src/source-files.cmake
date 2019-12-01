@@ -3,10 +3,9 @@ set(project_sources
 		Canvas.cpp
 		ApplicationSettings.cpp
 		MainWindow.cpp
-		NewProjectDialog.cpp
-		ToolBar.cpp
 		ToolBarButton.cpp
 		ImageLayer.cpp
 		WorkSpace.cpp
-		ToolBar1.cpp
+		ToolBar.cpp
+		NewCanvasDialog.cpp
 		)

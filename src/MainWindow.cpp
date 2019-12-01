@@ -1,24 +1,23 @@
 #include "MainWindow.h"
 #include "ui_MainWindowX.h"
-#include "NewProjectDialog.h"
+#include "NewCanvasDialog.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     centralWidget(new QWidget(this))
-    //canvas(new Canvas(this, QPoint(100, 100), QSize(500, 500)))
 {
 	QSettings settings;
 	int width, height;
 	int xPos, yPos;
 
+	ui->setupUi(this);
+	ui->verticalScrollBar->hide();
+	ui->horizontalScrollBar->hide();
+
 	setMinimumSize(740, 600);
 
-	ui->setupUi(this);
-
-	//toolBar = new ToolBar(this);
-
-    width = qApp->screens()[0]->size().width() / 2;
+	width = qApp->screens()[0]->size().width() / 2;
     height = qApp->screens()[0]->size().height() / 2;
     width = settings.value("window/width", width).toInt();
     height = settings.value("window/height", height).toInt();
@@ -71,9 +70,6 @@ void MainWindow::moveEvent(QMoveEvent *moveEvent)
 
 void MainWindow::CreateNewProject()
 {
-	NewProjectDialog XD;
-	connect(&XD, &NewProjectDialog::DialogAccepted, this, &MainWindow::NewCanvas);
-	XD.exec();
 }
 
 void MainWindow::NewCanvas(const QString & string)
@@ -114,5 +110,13 @@ void MainWindow::SaveActionClicked()
 
 void MainWindow::NewActionClicked()
 {
+	NewCanvasDialog newCanvasDialog;
+	connect(&newCanvasDialog, &NewCanvasDialog::DialogAccepted, this, &MainWindow::CreateCanvas);
+	newCanvasDialog.exec();
+	disconnect(&newCanvasDialog, &NewCanvasDialog::DialogAccepted, this, &MainWindow::CreateCanvas);
+}
 
+void MainWindow::CreateCanvas(int width, int height, QColor color)
+{
+	ui->canvas->CreateCanvas(QSize(width, height), std::move(color));
 }

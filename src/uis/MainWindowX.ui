@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>826</width>
-    <height>600</height>
+    <height>502</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -38,8 +38,31 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
-    <item row="0" column="2">
-     <widget class="QWidget" name="widget_3" native="true">
+    <item row="0" column="1">
+     <widget class="Canvas" name="canvas" native="true">
+      <property name="baseSize">
+       <size>
+        <width>0</width>
+        <height>100</height>
+       </size>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="QScrollBar" name="horizontalScrollBar">
+      <property name="value">
+       <number>50</number>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="3">
+     <widget class="QWidget" name="rightBar" native="true">
       <property name="maximumSize">
        <size>
         <width>250</width>
@@ -51,27 +74,21 @@
       </property>
      </widget>
     </item>
-    <item row="0" column="1">
-     <widget class="QWidget" name="widget_2" native="true">
-      <property name="baseSize">
-       <size>
-        <width>0</width>
-        <height>100</height>
-       </size>
+    <item row="0" column="2">
+     <widget class="QScrollBar" name="verticalScrollBar">
+      <property name="value">
+       <number>50</number>
       </property>
-      <property name="autoFillBackground">
-       <bool>false</bool>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: green;</string>
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
       </property>
      </widget>
     </item>
     <item row="0" column="0">
-     <widget class="ToolBar1" name="widget" native="true">
+     <widget class="ToolBar" name="toolBar" native="true">
       <property name="maximumSize">
        <size>
-        <width>150</width>
+        <width>70</width>
         <height>16777215</height>
        </size>
       </property>
@@ -120,7 +137,7 @@
      <string>Filtry</string>
     </property>
     <addaction name="actionRozmycie_Gaussa"/>
-    <addaction name="actionProgowanie"/>
+    <addaction name="actionThresholding"/>
     <addaction name="actionDopasowanie_kontrastu"/>
    </widget>
    <widget class="QMenu" name="menuObraz">
@@ -136,17 +153,6 @@
    <addaction name="menuEdit"/>
    <addaction name="menuFiltry"/>
    <addaction name="menuObraz"/>
-  </widget>
-  <widget class="QToolBar" name="toolBar">
-   <property name="windowTitle">
-    <string>toolBar</string>
-   </property>
-   <attribute name="toolBarArea">
-    <enum>TopToolBarArea</enum>
-   </attribute>
-   <attribute name="toolBarBreak">
-    <bool>false</bool>
-   </attribute>
   </widget>
   <action name="actionZako_cz">
    <property name="text">
@@ -206,7 +212,7 @@
     <string>Rozmycie Gaussa</string>
    </property>
   </action>
-  <action name="actionProgowanie">
+  <action name="actionThresholding">
    <property name="text">
     <string>Progowanie</string>
    </property>
@@ -219,9 +225,15 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>ToolBar1</class>
+   <class>ToolBar</class>
    <extends>QWidget</extends>
-   <header location="global">ToolBar1.h</header>
+   <header location="global">ToolBar.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>Canvas</class>
+   <extends>QWidget</extends>
+   <header location="global">Canvas.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

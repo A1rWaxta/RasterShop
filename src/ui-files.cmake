@@ -1,4 +1,5 @@
 set(project_ui
 		uis/MainWindowX.ui
-		uis/NewProjectDialog.ui
+		uis/ToolBar.ui
+		uis/NewCanvasDialog.ui
 		)

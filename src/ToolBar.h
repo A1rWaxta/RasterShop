@@ -1,32 +1,22 @@
-//
-// Created by waxta on 21.11.19.
-//
+#ifndef TOOLBAR1_H
+#define TOOLBAR1_H
 
-#pragma once
+#include <QWidget>
 
-#include <QtWidgets>
-#include "ToolBarButton.h"
+namespace Ui {
+class ToolBar;
+}
 
 class ToolBar : public QWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit ToolBar(QWidget * parent = nullptr);
-
-	[[nodiscard]] QSize sizeHint() const override;
-
-	void CreateButton(QIcon &icon);
-
-private slots:
-	void ButtonPressed();
+    explicit ToolBar(QWidget *parent = nullptr);
+    ~ToolBar();
 
 private:
-	std::vector<ToolBarButton*> buttons;
-
-	void paintEvent(QPaintEvent * event) override;
-
-
+    Ui::ToolBar *ui;
 };
 
-
+#endif // TOOLBAR1_H

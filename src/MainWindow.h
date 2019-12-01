@@ -1,7 +1,6 @@
 #pragma once
 
 #include <QtWidgets>
-#include "ToolBar.h"
 #include "Canvas.h"
 
 namespace Ui {
@@ -15,7 +14,7 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     
-    ~MainWindow();
+    ~MainWindow() override;
 
     void Show();
 
@@ -34,6 +33,8 @@ private slots:
 
 	void NewActionClicked();
 
+	void CreateCanvas(int width, int height, QColor color);
+
 private:
 	void closeEvent(QCloseEvent * closeEvent) override;
 
@@ -45,9 +46,5 @@ private:
 
 	Ui::MainWindow * ui;
 
-	ToolBar * toolBar;
-
 	QWidget * centralWidget;
-
-	Canvas * canvas;
 };
