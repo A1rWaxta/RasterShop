@@ -11,6 +11,4 @@ WorkSpace::WorkSpace()
 
 void WorkSpace::CreateLayer(QColor & color)
 {
-	layers.emplace_back(ImageLayer(canvas->width(), canvas->height(), color));
-
 }

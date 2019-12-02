@@ -21,6 +21,11 @@ public:
 
 	~Canvas();
 
+public slots:
+	void HorizontalSliderMoved(int value);
+
+	void VerticalSliderMoved(int value);
+
 private:
 	void CreateCanvas(QSize size, QColor backgroundColor);
 
@@ -28,9 +33,7 @@ private:
 
 	std::vector<ImageLayer*> layers;
 
-	QTimer timer;
-
-	QRect canvasSpace;
+	QRect renderArea;
 
 	QSize canvasSize;
 };

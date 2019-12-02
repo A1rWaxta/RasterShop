@@ -17,7 +17,7 @@ public:
 	void CreateLayer(QColor &color);
 
 private:
-	std::vector<ImageLayer> layers;
+	std::vector<ImageLayer*> layers;
 
 	Canvas * canvas;
 };

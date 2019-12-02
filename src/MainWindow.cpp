@@ -12,8 +12,6 @@ MainWindow::MainWindow(QWidget *parent) :
 	int xPos, yPos;
 
 	ui->setupUi(this);
-	ui->verticalScrollBar->hide();
-	ui->horizontalScrollBar->hide();
 
 	setMinimumSize(740, 600);
 
@@ -112,7 +110,9 @@ void MainWindow::NewActionClicked()
 {
 	NewCanvasDialog newCanvasDialog;
 	connect(&newCanvasDialog, &NewCanvasDialog::DialogAccepted, this, &MainWindow::CreateCanvas);
-	newCanvasDialog.exec();
+	if( newCanvasDialog.exec() == QDialog::Accepted )
+	{
+	}
 	disconnect(&newCanvasDialog, &NewCanvasDialog::DialogAccepted, this, &MainWindow::CreateCanvas);
 }
 
