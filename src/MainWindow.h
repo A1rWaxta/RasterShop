@@ -33,7 +33,7 @@ private slots:
 
 	void NewActionClicked();
 
-	void CreateCanvas(int width, int height, QColor color);
+	void CreateNewProject(int width, int height, QColor color);
 
 private:
 	void closeEvent(QCloseEvent * closeEvent) override;

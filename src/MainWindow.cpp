@@ -108,15 +108,21 @@ void MainWindow::SaveActionClicked()
 
 void MainWindow::NewActionClicked()
 {
+	int canvasWidth, canvasHeight;
 	NewCanvasDialog newCanvasDialog;
-	connect(&newCanvasDialog, &NewCanvasDialog::DialogAccepted, this, &MainWindow::CreateCanvas);
+	QColor backgroundColor;
+
 	if( newCanvasDialog.exec() == QDialog::Accepted )
 	{
+		canvasWidth = newCanvasDialog.GetCanvasWidth();
+		canvasHeight = newCanvasDialog.GetCanvasHeight();
+		backgroundColor = newCanvasDialog.GetCanvasColor();
+		CreateNewProject(canvasWidth, canvasHeight, backgroundColor);
 	}
-	disconnect(&newCanvasDialog, &NewCanvasDialog::DialogAccepted, this, &MainWindow::CreateCanvas);
 }
 
-void MainWindow::CreateCanvas(int width, int height, QColor color)
+void MainWindow::CreateNewProject(int width, int height, QColor color)
 {
-	ui->canvas->CreateCanvas(QSize(width, height), std::move(color));
+	ui->canvas->SetRenderAreaSize(QSize(width, height));
+	ui->canvas->CreateLayer(std::move(color));
 }

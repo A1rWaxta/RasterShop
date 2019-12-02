@@ -7,7 +7,7 @@
 #include <QDebug>
 #include <QPaintEvent>
 
-Canvas::Canvas(QWidget *parent) : QWidget(parent), canvasSize(0, 0)
+Canvas::Canvas()
 {
 }
 
@@ -33,16 +33,14 @@ Canvas::~Canvas()
 	}
 }
 
-void Canvas::CreateCanvas(QSize size, QColor backgroundColor)
+void Canvas::SetRenderAreaSize(QSize size)
 {
+	setMinimumWidth(size.width() + 200);
+	setMinimumHeight(size.height() + 200);
+
 	const int centerY = width() / 2 - size.width() / 2;
 	const int centerX = height() / 2 - size.height() / 2;
-	canvasSize = size;
 	renderArea = QRect(QPoint(centerY, centerX), size);
-	QImage tmpImage(renderArea.size(), QImage::Format_ARGB32);
-	tmpImage.fill(backgroundColor);
-	layers.push_back(new ImageLayer(tmpImage));
-	update();
 }
 
 void Canvas::HorizontalSliderMoved(int value)
@@ -51,4 +49,13 @@ void Canvas::HorizontalSliderMoved(int value)
 
 void Canvas::VerticalSliderMoved(int value)
 {
+}
+
+void Canvas::CreateLayer(QColor backgroundColor)
+{
+	QImage tmpImage(renderArea.size(), QImage::Format_ARGB32);
+	tmpImage.fill(backgroundColor);
+	layers.push_back(new ImageLayer(tmpImage));
+
+	update();
 }

@@ -6,8 +6,8 @@
 
 NewCanvasDialog::NewCanvasDialog(QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::NewCanvasDialog),
-    backgroundColor(Qt::white)
+    backgroundColor(Qt::transparent),
+	ui(new Ui::NewCanvasDialog)
 {
 	QPalette palette;
 
@@ -35,10 +35,22 @@ void NewCanvasDialog::OpenColorPicker()
 
 void NewCanvasDialog::AcceptDialog()
 {
-	emit DialogAccepted(
-			ui->widthSpinBox->text().toInt(),
-			ui->heightSpinBox->text().toInt(),
-			backgroundColor
-	);
+	canvasWidth = ui->widthSpinBox->text().toInt();
+	canvasHeight = ui->heightSpinBox->text().toInt();
 	emit accept();
+}
+
+int NewCanvasDialog::GetCanvasWidth() const
+{
+	return canvasWidth;
+}
+
+int NewCanvasDialog::GetCanvasHeight() const
+{
+	return canvasHeight;
+}
+
+QColor &NewCanvasDialog::GetCanvasColor()
+{
+	return backgroundColor;
 }

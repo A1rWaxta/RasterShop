@@ -15,7 +15,7 @@ class Canvas : public QWidget
 	friend class MainWindow;
 
 public:
-	Canvas(QWidget *parent);
+	Canvas();
 
 	void LoadImage(QString & fileName);
 
@@ -27,7 +27,7 @@ public slots:
 	void VerticalSliderMoved(int value);
 
 private:
-	void CreateCanvas(QSize size, QColor backgroundColor);
+	void SetRenderAreaSize(QSize size);
 
 	void paintEvent(QPaintEvent * paintEvent) override;
 
@@ -35,7 +35,7 @@ private:
 
 	QRect renderArea;
 
-	QSize canvasSize;
+	void CreateLayer(QColor backgroundColor = Qt::transparent);
 };
 
 

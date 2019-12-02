@@ -12,17 +12,26 @@ class NewCanvasDialog : public QDialog
 
 public:
     explicit NewCanvasDialog(QWidget *parent = nullptr);
+
     ~NewCanvasDialog() override;
+
+	[[nodiscard]] int GetCanvasWidth() const;
+
+	[[nodiscard]] int GetCanvasHeight() const;
+
+	[[nodiscard]] QColor & GetCanvasColor();
 
 private slots:
 	void OpenColorPicker();
-	void AcceptDialog();
 
-signals:
-	void DialogAccepted(int width, int height, QColor color);
+	void AcceptDialog();
 
 private:
     QColor backgroundColor;
+
+	int canvasWidth;
+
+	int canvasHeight;
 
 	Ui::NewCanvasDialog *ui;
 };
