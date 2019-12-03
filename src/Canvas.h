@@ -31,11 +31,11 @@ private:
 
 	void paintEvent(QPaintEvent * paintEvent) override;
 
+	void CreateLayer(QColor backgroundColor = Qt::transparent);
+
 	std::vector<ImageLayer*> layers;
 
 	QRect renderArea;
-
-	void CreateLayer(QColor backgroundColor = Qt::transparent);
 };
 
 

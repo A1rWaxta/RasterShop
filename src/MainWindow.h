@@ -7,6 +7,7 @@ namespace Ui {
 class MainWindow;
 }
 
+// this is definitely going to be The Blob antipattern...
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -33,8 +34,6 @@ private slots:
 
 	void NewActionClicked();
 
-	void CreateNewProject(int width, int height, QColor color);
-
 private:
 	void closeEvent(QCloseEvent * closeEvent) override;
 
@@ -44,7 +43,7 @@ private:
 
 	void mouseReleaseEvent(QMouseEvent * event) override;
 
-	Ui::MainWindow * ui;
-
 	QWidget * centralWidget;
+
+	Ui::MainWindow * ui;
 };

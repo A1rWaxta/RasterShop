@@ -117,12 +117,8 @@ void MainWindow::NewActionClicked()
 		canvasWidth = newCanvasDialog.GetCanvasWidth();
 		canvasHeight = newCanvasDialog.GetCanvasHeight();
 		backgroundColor = newCanvasDialog.GetCanvasColor();
-		CreateNewProject(canvasWidth, canvasHeight, backgroundColor);
-	}
-}
 
-void MainWindow::CreateNewProject(int width, int height, QColor color)
-{
-	ui->canvas->SetRenderAreaSize(QSize(width, height));
-	ui->canvas->CreateLayer(std::move(color));
+		ui->canvas->SetRenderAreaSize(QSize(canvasWidth, canvasHeight));
+		ui->canvas->CreateLayer(std::move(backgroundColor));
+	}
 }

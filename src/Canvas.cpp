@@ -4,20 +4,25 @@
 
 #include "Canvas.h"
 #include <QPainter>
-#include <QDebug>
 #include <QPaintEvent>
+
+#ifdef DEBUG
+
+#include <QDebug>
+
+#endif
 
 Canvas::Canvas()
 {
 }
 
-void Canvas::paintEvent(QPaintEvent *paintEvent)
+void Canvas::paintEvent(QPaintEvent* paintEvent)
 {
- 	QPainter painter(this);
- 	for( auto layer : layers )
-    {
-	    painter.drawImage(renderArea, *layer, layer->rect());
-    }
+	QPainter painter(this);
+	for( auto layer : layers )
+	{
+		painter.drawImage(renderArea, *layer, layer->rect());
+	}
 }
 
 void Canvas::LoadImage(QString &fileName)

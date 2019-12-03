@@ -165,15 +165,9 @@
      </widget>
     </item>
     <item row="0" column="1">
-     <widget class="QScrollArea" name="scrollBar">
+     <widget class="CanvasArea" name="scrollArea">
       <property name="styleSheet">
        <string notr="true">background-color: transparent;</string>
-      </property>
-      <property name="lineWidth">
-       <number>5</number>
-      </property>
-      <property name="midLineWidth">
-       <number>5</number>
       </property>
       <property name="verticalScrollBarPolicy">
        <enum>Qt::ScrollBarAsNeeded</enum>
@@ -335,6 +329,12 @@
    <class>Canvas</class>
    <extends>QWidget</extends>
    <header location="global">Canvas.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>CanvasArea</class>
+   <extends>QScrollArea</extends>
+   <header location="global">CanvasArea.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
