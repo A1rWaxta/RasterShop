@@ -2,27 +2,30 @@
 
 #include <QtWidgets>
 #include "Canvas.h"
+#include "GraphicsScene.h"
 
-namespace Ui {
-class MainWindow;
+namespace Ui
+{
+	class MainWindow;
 }
 
 // this is definitely going to be The Blob antipattern...
 class MainWindow : public QMainWindow
 {
-    Q_OBJECT
+Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget *parent = nullptr);
-    
-    ~MainWindow() override;
+	explicit MainWindow(QWidget* parent = nullptr);
 
-    void Show();
+	~MainWindow() override;
+
+	void Show();
 
 private slots:
+
 	void CreateNewProject();
 
-	void NewCanvas(const QString & string);
+	void NewCanvas(const QString& string);
 
 	void FirstButtonClicked();
 
@@ -35,15 +38,15 @@ private slots:
 	void NewActionClicked();
 
 private:
-	void closeEvent(QCloseEvent * closeEvent) override;
+	void closeEvent(QCloseEvent* closeEvent) override;
 
-	void resizeEvent(QResizeEvent * resizeEvent) override;
+	void resizeEvent(QResizeEvent* resizeEvent) override;
 
-	void moveEvent(QMoveEvent * moveEvent) override;
+	void moveEvent(QMoveEvent* moveEvent) override;
 
-	void mouseReleaseEvent(QMouseEvent * event) override;
+	void mouseReleaseEvent(QMouseEvent* event) override;
 
-	QWidget * centralWidget;
+	GraphicsScene* graphicsScene;
 
-	Ui::MainWindow * ui;
+	Ui::MainWindow* ui;
 };

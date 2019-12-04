@@ -6,16 +6,23 @@
 
 
 #include <QtGui/QImage>
+#include <QtWidgets/QGraphicsItem>
 
-class ImageLayer : public QImage
+class ImageLayer : public QGraphicsItem
 {
 public:
-	explicit ImageLayer(int width, int height, QColor &color);
-	explicit ImageLayer(const QImage & image);
+	explicit ImageLayer(QString& layerIdentifier, QGraphicsItem* parent = nullptr);
+
+	void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) override;
+
+	void AddDrawable(QGraphicsItem* item);
+
+	[[nodiscard]] QRectF boundingRect() const override;
 
 private:
+	QVector<QGraphicsItem*> drawableList;
 
-
+	QString layerIdentifier;
 };
 
 

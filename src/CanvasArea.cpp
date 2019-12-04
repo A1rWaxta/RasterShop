@@ -19,7 +19,6 @@ CanvasArea::CanvasArea(QWidget* parent) : QScrollArea(parent)
 
 void CanvasArea::wheelEvent(QWheelEvent* event)
 {
-	qDebug() << event->angleDelta().rx();
 	if( QGuiApplication::queryKeyboardModifiers() == Qt::AltModifier)
 	{
 

@@ -38,6 +38,25 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="2">
+     <widget class="QWidget" name="rightBar" native="true">
+      <property name="minimumSize">
+       <size>
+        <width>250</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>250</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: red;</string>
+      </property>
+     </widget>
+    </item>
     <item row="1" column="0" colspan="3">
      <widget class="QWidget" name="statusBar" native="true">
       <property name="maximumSize">
@@ -123,22 +142,10 @@
       </layout>
      </widget>
     </item>
-    <item row="0" column="2">
-     <widget class="QWidget" name="rightBar" native="true">
-      <property name="minimumSize">
-       <size>
-        <width>250</width>
-        <height>0</height>
-       </size>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>250</width>
-        <height>16777215</height>
-       </size>
-      </property>
+    <item row="0" column="1">
+     <widget class="Canvas" name="canvas">
       <property name="styleSheet">
-       <string notr="true">background-color: red;</string>
+       <string notr="true">background-color: transparent;</string>
       </property>
      </widget>
     </item>
@@ -162,38 +169,6 @@
       <property name="styleSheet">
        <string notr="true"/>
       </property>
-     </widget>
-    </item>
-    <item row="0" column="1">
-     <widget class="CanvasArea" name="scrollArea">
-      <property name="styleSheet">
-       <string notr="true">background-color: transparent;</string>
-      </property>
-      <property name="verticalScrollBarPolicy">
-       <enum>Qt::ScrollBarAsNeeded</enum>
-      </property>
-      <property name="horizontalScrollBarPolicy">
-       <enum>Qt::ScrollBarAsNeeded</enum>
-      </property>
-      <property name="widgetResizable">
-       <bool>true</bool>
-      </property>
-      <widget class="Canvas" name="canvas">
-       <property name="geometry">
-        <rect>
-         <x>0</x>
-         <y>0</y>
-         <width>474</width>
-         <height>414</height>
-        </rect>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>0</height>
-        </size>
-       </property>
-      </widget>
      </widget>
     </item>
    </layout>
@@ -327,15 +302,8 @@
   </customwidget>
   <customwidget>
    <class>Canvas</class>
-   <extends>QWidget</extends>
+   <extends>QGraphicsView</extends>
    <header location="global">Canvas.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>CanvasArea</class>
-   <extends>QScrollArea</extends>
-   <header location="global">CanvasArea.h</header>
-   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources/>

@@ -2,10 +2,10 @@
 #include "ui_MainWindowX.h"
 #include "NewCanvasDialog.h"
 
-MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::MainWindow),
-    centralWidget(new QWidget(this))
+MainWindow::MainWindow(QWidget* parent) :
+		QMainWindow(parent),
+		graphicsScene(nullptr),
+		ui(new Ui::MainWindow)
 {
 	QSettings settings;
 	int width, height;
@@ -16,14 +16,14 @@ MainWindow::MainWindow(QWidget *parent) :
 	setMinimumSize(740, 600);
 
 	width = qApp->screens()[0]->size().width() / 2;
-    height = qApp->screens()[0]->size().height() / 2;
-    width = settings.value("window/width", width).toInt();
-    height = settings.value("window/height", height).toInt();
-    xPos = settings.value("window/xpos", 0).toInt();
-    yPos = settings.value("window/ypos", 0).toInt();
-    setGeometry(xPos, yPos, width, height);
+	height = qApp->screens()[0]->size().height() / 2;
+	width = settings.value("window/width", width).toInt();
+	height = settings.value("window/height", height).toInt();
+	xPos = settings.value("window/xpos", 0).toInt();
+	yPos = settings.value("window/ypos", 0).toInt();
+	setGeometry(xPos, yPos, width, height);
 
-    connect(ui->actionNew, &QAction::triggered, this, &MainWindow::NewActionClicked);
+	connect(ui->actionNew, &QAction::triggered, this, &MainWindow::NewActionClicked);
 	connect(ui->actionSave, &QAction::triggered, this, &MainWindow::SaveActionClicked);
 	connect(ui->actionSaveAs, &QAction::triggered, this, &MainWindow::SaveAsActionClicked);
 	connect(ui->actionOpen, &QAction::triggered, this, &MainWindow::OpenActionClicked);
@@ -31,10 +31,10 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
-    delete ui;
+	delete ui;
 }
 
-void MainWindow::closeEvent(QCloseEvent *closeEvent)
+void MainWindow::closeEvent(QCloseEvent* closeEvent)
 {
 	QSettings settings;
 	settings.setValue("window/width", width());
@@ -48,15 +48,15 @@ void MainWindow::Show()
 {
 }
 
-void MainWindow::resizeEvent(QResizeEvent *resizeEvent)
+void MainWindow::resizeEvent(QResizeEvent* resizeEvent)
 {
 }
 
-void MainWindow::moveEvent(QMoveEvent *moveEvent)
+void MainWindow::moveEvent(QMoveEvent* moveEvent)
 {
 	QList<QMenu*> menuList;
 	menuList = ui->menuBar->findChildren<QMenu*>();
-	for(QMenu * menu : menuList)
+	for( QMenu* menu : menuList )
 	{
 		if( menu->isVisible() == true )
 		{
@@ -70,7 +70,7 @@ void MainWindow::CreateNewProject()
 {
 }
 
-void MainWindow::NewCanvas(const QString & string)
+void MainWindow::NewCanvas(const QString& string)
 {
 }
 
@@ -78,7 +78,7 @@ void MainWindow::FirstButtonClicked()
 {
 }
 
-void MainWindow::mouseReleaseEvent(QMouseEvent *event)
+void MainWindow::mouseReleaseEvent(QMouseEvent* event)
 {
 }
 
@@ -90,9 +90,10 @@ void MainWindow::OpenActionClicked()
 	fileDialog.setFileMode(QFileDialog::ExistingFile);
 
 	QStringList fileNames;
-	if( fileDialog.exec() )
+	if( fileDialog.exec() == QFileDialog::Accepted )
 	{
 		fileNames = fileDialog.selectedFiles();
+
 	}
 }
 
@@ -114,11 +115,18 @@ void MainWindow::NewActionClicked()
 
 	if( newCanvasDialog.exec() == QDialog::Accepted )
 	{
+		ui->canvas->setScene(graphicsScene);
+
 		canvasWidth = newCanvasDialog.GetCanvasWidth();
 		canvasHeight = newCanvasDialog.GetCanvasHeight();
 		backgroundColor = newCanvasDialog.GetCanvasColor();
 
-		ui->canvas->SetRenderAreaSize(QSize(canvasWidth, canvasHeight));
-		ui->canvas->CreateLayer(std::move(backgroundColor));
+		if( graphicsScene != nullptr )
+		{
+			delete graphicsScene;
+			graphicsScene = nullptr;
+		}
+		graphicsScene = new GraphicsScene(0, 0, canvasWidth, canvasHeight, this);
+		graphicsScene->CreateBackground(backgroundColor);
 	}
 }

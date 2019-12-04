@@ -12,20 +12,11 @@
 
 #endif
 
-Canvas::Canvas()
+Canvas::Canvas(QWidget* parent)
 {
 }
 
-void Canvas::paintEvent(QPaintEvent* paintEvent)
-{
-	QPainter painter(this);
-	for( auto layer : layers )
-	{
-		painter.drawImage(renderArea, *layer, layer->rect());
-	}
-}
-
-void Canvas::LoadImage(QString &fileName)
+void Canvas::LoadImage(QString& fileName)
 {
 }
 
@@ -56,11 +47,11 @@ void Canvas::VerticalSliderMoved(int value)
 {
 }
 
-void Canvas::CreateLayer(QColor backgroundColor)
+void Canvas::CreateLayer()
 {
-	QImage tmpImage(renderArea.size(), QImage::Format_ARGB32);
-	tmpImage.fill(backgroundColor);
-	layers.push_back(new ImageLayer(tmpImage));
+	QString layerName = "layer_" + QString(layers.size());
+	ImageLayer tmpLayer(layerName, nullptr);
+	layers.push_back(tmpLayer);
 
 	update();
 }

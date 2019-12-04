@@ -4,24 +4,24 @@
 
 #pragma once
 
-#include <QtWidgets/QWidget>
-#include <QtCore/QTimer>
+#include <QGraphicsView>
 #include "ImageLayer.h"
 
-class Canvas : public QWidget
+class Canvas : public QGraphicsView
 {
-	Q_OBJECT
+Q_OBJECT
 
 	friend class MainWindow;
 
 public:
-	Canvas();
+	Canvas(QWidget* parent);
 
-	void LoadImage(QString & fileName);
+	void LoadImage(QString& fileName);
 
 	~Canvas();
 
 public slots:
+
 	void HorizontalSliderMoved(int value);
 
 	void VerticalSliderMoved(int value);
@@ -29,11 +29,9 @@ public slots:
 private:
 	void SetRenderAreaSize(QSize size);
 
-	void paintEvent(QPaintEvent * paintEvent) override;
+	void CreateLayer();
 
-	void CreateLayer(QColor backgroundColor = Qt::transparent);
-
-	std::vector<ImageLayer*> layers;
+	QVector<ImageLayer> layers;
 
 	QRect renderArea;
 };

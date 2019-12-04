@@ -18,8 +18,6 @@ public:
 
 private:
 	std::vector<ImageLayer*> layers;
-
-	Canvas * canvas;
 };
 
 

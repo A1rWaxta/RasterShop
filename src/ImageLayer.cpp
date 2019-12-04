@@ -4,12 +4,25 @@
 
 #include "ImageLayer.h"
 
-ImageLayer::ImageLayer(int width, int height, QColor & color) : QImage(width, height, QImage::Format_ARGB32)
+ImageLayer::ImageLayer(QString& layerIdentifier, QGraphicsItem* parent) : QGraphicsItem(parent), drawableList(0)
 {
-
+	this->layerIdentifier = layerIdentifier;
 }
 
-ImageLayer::ImageLayer(const QImage &image) : QImage(image)
+void ImageLayer::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
 {
+	for(auto item : drawableList)
+	{
+		item->paint(painter, option, widget);
+	}
+}
 
+void ImageLayer::AddDrawable(QGraphicsItem* item)
+{
+	drawableList.push_back(item);
+}
+
+QRectF ImageLayer::boundingRect() const
+{
+	return QRectF();
 }
