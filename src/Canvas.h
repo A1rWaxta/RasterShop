@@ -11,27 +11,23 @@ class Canvas : public QGraphicsView
 {
 Q_OBJECT
 
-	friend class MainWindow;
-
 public:
-	Canvas(QWidget* parent);
+	explicit Canvas(QWidget* parent);
+
+	~Canvas() override;
 
 	void LoadImage(QString& fileName);
 
-	~Canvas();
+	QString& CreateLayer();
 
-public slots:
-
-	void HorizontalSliderMoved(int value);
-
-	void VerticalSliderMoved(int value);
+	void AddItem(QGraphicsItem* item);
 
 private:
 	void SetRenderAreaSize(QSize size);
 
-	void CreateLayer();
-
 	QVector<ImageLayer> layers;
+
+	ImageLayer * activeLayer;
 
 	QRect renderArea;
 };

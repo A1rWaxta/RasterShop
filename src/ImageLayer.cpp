@@ -17,7 +17,7 @@ void ImageLayer::paint(QPainter* painter, const QStyleOptionGraphicsItem* option
 	}
 }
 
-void ImageLayer::AddDrawable(QGraphicsItem* item)
+void ImageLayer::AddDrawableItem(QGraphicsItem* item)
 {
 	drawableList.push_back(item);
 }
@@ -25,4 +25,17 @@ void ImageLayer::AddDrawable(QGraphicsItem* item)
 QRectF ImageLayer::boundingRect() const
 {
 	return QRectF();
+}
+
+QString& ImageLayer::GetLayerIdentifier()
+{
+	return layerIdentifier;
+}
+
+ImageLayer::~ImageLayer()
+{
+	for(auto item : drawableList)
+	{
+		delete item;
+	}
 }

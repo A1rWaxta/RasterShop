@@ -48,5 +48,7 @@ private:
 
 	GraphicsScene* graphicsScene;
 
+	QVector<ImageLayer> layers;
+
 	Ui::MainWindow* ui;
 };

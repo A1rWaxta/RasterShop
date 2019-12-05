@@ -11,9 +11,19 @@ GraphicsScene::GraphicsScene(qreal x, qreal y, qreal width, qreal height, QObjec
 
 }
 
-void GraphicsScene::CreateBackground(QColor& backgroundColor)
+QString& GraphicsScene::CreateLayer()
 {
-	background.setRect(QRectF(0, 0, width(), height()));
-	background.setBrush(backgroundColor);
-	addItem(&background);
+	QString layerName = "layer_" + QString(layers.size());
+	ImageLayer tmpLayer(layerName, nullptr);
+	layers.push_back(tmpLayer);
+	addItem(&layers.back());
+
+	return layers.back().GetLayerIdentifier();
 }
+
+void GraphicsScene::SetActveLayer(ImageLayer* active)
+{
+	activeLayer = active;
+}
+
+

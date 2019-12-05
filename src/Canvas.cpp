@@ -22,11 +22,6 @@ void Canvas::LoadImage(QString& fileName)
 
 Canvas::~Canvas()
 {
-	for( auto layer : layers )
-	{
-		delete layer;
-		layer = nullptr;
-	}
 }
 
 void Canvas::SetRenderAreaSize(QSize size)
@@ -39,19 +34,18 @@ void Canvas::SetRenderAreaSize(QSize size)
 	renderArea = QRect(QPoint(centerY, centerX), size);
 }
 
-void Canvas::HorizontalSliderMoved(int value)
-{
-}
-
-void Canvas::VerticalSliderMoved(int value)
-{
-}
-
-void Canvas::CreateLayer()
+QString& Canvas::CreateLayer()
 {
 	QString layerName = "layer_" + QString(layers.size());
 	ImageLayer tmpLayer(layerName, nullptr);
 	layers.push_back(tmpLayer);
 
-	update();
+	return layers.back().GetLayerIdentifier();
+}
+
+void Canvas::AddItem(QGraphicsItem* item)
+{
+	//todo: ustawić activeLayer !!!!!!
+	item->setParentItem(activeLayer);
+	scene()->addItem(item);
 }
