@@ -10,20 +10,3 @@ GraphicsScene::GraphicsScene(qreal x, qreal y, qreal width, qreal height, QObjec
 {
 
 }
-
-QString& GraphicsScene::CreateLayer()
-{
-	QString layerName = "layer_" + QString(layers.size());
-	ImageLayer tmpLayer(layerName, nullptr);
-	layers.push_back(tmpLayer);
-	addItem(&layers.back());
-
-	return layers.back().GetLayerIdentifier();
-}
-
-void GraphicsScene::SetActveLayer(ImageLayer* active)
-{
-	activeLayer = active;
-}
-
-

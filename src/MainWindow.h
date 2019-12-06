@@ -46,7 +46,7 @@ private:
 
 	void mouseReleaseEvent(QMouseEvent* event) override;
 
-	GraphicsScene* graphicsScene;
+	QSharedPointer<GraphicsScene> graphicsScene;
 
 	QVector<ImageLayer> layers;
 

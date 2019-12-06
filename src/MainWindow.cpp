@@ -32,7 +32,6 @@ MainWindow::MainWindow(QWidget* parent) :
 MainWindow::~MainWindow()
 {
 	delete ui;
-	delete graphicsScene;
 }
 
 void MainWindow::closeEvent(QCloseEvent* closeEvent)
@@ -118,30 +117,26 @@ void MainWindow::NewActionClicked()
 
 	if( newCanvasDialog.exec() == QDialog::Accepted )
 	{
-		ui->canvas->setScene(graphicsScene);
-
 		canvasWidth = newCanvasDialog.GetCanvasWidth();
 		canvasHeight = newCanvasDialog.GetCanvasHeight();
 		backgroundColor = newCanvasDialog.GetCanvasColor();
 
-		if( graphicsScene != nullptr )
-		{
-			delete graphicsScene;
-			graphicsScene = nullptr;
-		}
-		graphicsScene = new GraphicsScene(0, 0, canvasWidth, canvasHeight, this);
-		ui->canvas->setScene(graphicsScene);
-		graphicsScene->CreateLayer();
-
 		pen.setStyle(Qt::NoPen);
 		brush.setColor(backgroundColor);
 
-		QGraphicsRectItem * backgroundRectangle = new QGraphicsRectItem(0, 0, canvasWidth, canvasHeight);
+		if( graphicsScene != nullptr )
+		{
+			graphicsScene.reset();
+			graphicsScene = nullptr;
+		}
+		graphicsScene = QSharedPointer<GraphicsScene>(new GraphicsScene(0, 0, canvasWidth, canvasHeight, this));
+		ui->canvas->setScene(graphicsScene.data());
+		ui->canvas->CreateLayer();
+
+		QGraphicsRectItem* backgroundRectangle = new QGraphicsRectItem(0, 0, canvasWidth, canvasHeight);
 		backgroundRectangle->setPen(pen);
 		backgroundRectangle->setBrush(brush);
 
 		ui->canvas->AddItem(backgroundRectangle);
-
-
 	}
 }

@@ -5,12 +5,8 @@
 #include "Canvas.h"
 #include <QPainter>
 #include <QPaintEvent>
-
-#ifdef DEBUG
-
 #include <QDebug>
 
-#endif
 
 Canvas::Canvas(QWidget* parent)
 {
@@ -36,16 +32,17 @@ void Canvas::SetRenderAreaSize(QSize size)
 
 QString& Canvas::CreateLayer()
 {
-	QString layerName = "layer_" + QString(layers.size());
-	ImageLayer tmpLayer(layerName, nullptr);
-	layers.push_back(tmpLayer);
+	QString layerName = "layer_" + QString::number(layers.size());
 
-	return layers.back().GetLayerIdentifier();
+	auto newLayer = new ImageLayer(layerName);
+	layers.push_back(newLayer);
+	scene()->addItem(newLayer);
+	activeLayer = newLayer;
+
+	return newLayer->GetLayerIdentifier();
 }
 
 void Canvas::AddItem(QGraphicsItem* item)
 {
-	//todo: ustawić activeLayer !!!!!!
 	item->setParentItem(activeLayer);
-	scene()->addItem(item);
 }

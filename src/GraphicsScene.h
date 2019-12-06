@@ -22,8 +22,6 @@ public:
 private:
 	QPainter painter;
 
-	QVector<ImageLayer> layers;
-
 	ImageLayer * activeLayer;
 
 	GraphicsRectangle background;

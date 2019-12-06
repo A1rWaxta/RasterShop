@@ -25,9 +25,9 @@ public:
 private:
 	void SetRenderAreaSize(QSize size);
 
-	QVector<ImageLayer> layers;
+	QVector<ImageLayer*> layers;
 
-	ImageLayer * activeLayer;
+	ImageLayer* activeLayer;
 
 	QRect renderArea;
 };

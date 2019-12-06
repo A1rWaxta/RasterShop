@@ -11,7 +11,7 @@
 class ImageLayer : public QGraphicsItem
 {
 public:
-	explicit ImageLayer(QString& layerIdentifier, QGraphicsItem* parent = nullptr);
+	explicit ImageLayer(QString& layerIdentifier);
 
 	~ImageLayer() override;
 
