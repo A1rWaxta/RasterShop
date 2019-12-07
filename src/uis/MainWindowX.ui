@@ -38,22 +38,25 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
-    <item row="0" column="2">
-     <widget class="QWidget" name="rightBar" native="true">
+    <item row="0" column="0">
+     <widget class="ToolBar" name="toolBar" native="true">
       <property name="minimumSize">
        <size>
-        <width>250</width>
+        <width>70</width>
         <height>0</height>
        </size>
       </property>
       <property name="maximumSize">
        <size>
-        <width>250</width>
+        <width>70</width>
         <height>16777215</height>
        </size>
       </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
       <property name="styleSheet">
-       <string notr="true">background-color: red;</string>
+       <string notr="true"/>
       </property>
      </widget>
     </item>
@@ -149,26 +152,80 @@
       </property>
      </widget>
     </item>
-    <item row="0" column="0">
-     <widget class="ToolBar" name="toolBar" native="true">
+    <item row="0" column="2">
+     <widget class="QTabWidget" name="tabWidget">
       <property name="minimumSize">
        <size>
-        <width>70</width>
+        <width>250</width>
         <height>0</height>
        </size>
       </property>
       <property name="maximumSize">
        <size>
-        <width>70</width>
+        <width>250</width>
         <height>16777215</height>
        </size>
       </property>
-      <property name="autoFillBackground">
-       <bool>false</bool>
+      <property name="currentIndex">
+       <number>1</number>
       </property>
-      <property name="styleSheet">
-       <string notr="true"/>
-      </property>
+      <widget class="QWidget" name="tab_3">
+       <attribute name="title">
+        <string>Tab 1</string>
+       </attribute>
+      </widget>
+      <widget class="QWidget" name="layersTab">
+       <attribute name="title">
+        <string>Tab 2</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_4">
+        <item row="1" column="0">
+         <layout class="QHBoxLayout" name="horizontalLayout_2">
+          <item>
+           <widget class="QPushButton" name="addLayerButton">
+            <property name="text">
+             <string>Dodaj warstwę</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item row="0" column="0">
+         <widget class="QScrollArea" name="scrollArea">
+          <property name="widgetResizable">
+           <bool>true</bool>
+          </property>
+          <widget class="QWidget" name="scrollAreaWidgetContents">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>0</y>
+             <width>226</width>
+             <height>322</height>
+            </rect>
+           </property>
+           <layout class="QGridLayout" name="gridLayout_5">
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <item row="0" column="0">
+             <layout class="QGridLayout" name="layerPreviewLayout"/>
+            </item>
+           </layout>
+          </widget>
+         </widget>
+        </item>
+       </layout>
+      </widget>
      </widget>
     </item>
    </layout>

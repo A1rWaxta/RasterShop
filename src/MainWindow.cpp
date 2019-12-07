@@ -1,6 +1,7 @@
 #include "MainWindow.h"
 #include "ui_MainWindowX.h"
 #include "NewCanvasDialog.h"
+#include "LayerPreview.h"
 
 MainWindow::MainWindow(QWidget* parent) :
 		QMainWindow(parent),
@@ -23,10 +24,13 @@ MainWindow::MainWindow(QWidget* parent) :
 	yPos = settings.value("window/ypos", 0).toInt();
 	setGeometry(xPos, yPos, width, height);
 
+	ui->addLayerButton->setDisabled(true);
+
 	connect(ui->actionNew, &QAction::triggered, this, &MainWindow::NewActionClicked);
 	connect(ui->actionSave, &QAction::triggered, this, &MainWindow::SaveActionClicked);
 	connect(ui->actionSaveAs, &QAction::triggered, this, &MainWindow::SaveAsActionClicked);
 	connect(ui->actionOpen, &QAction::triggered, this, &MainWindow::OpenActionClicked);
+	connect(ui->addLayerButton, &QPushButton::released, this, &MainWindow::CreateLayer);
 }
 
 MainWindow::~MainWindow()
@@ -121,22 +125,41 @@ void MainWindow::NewActionClicked()
 		canvasHeight = newCanvasDialog.GetCanvasHeight();
 		backgroundColor = newCanvasDialog.GetCanvasColor();
 
-		pen.setStyle(Qt::NoPen);
-		brush.setColor(backgroundColor);
-
 		if( graphicsScene != nullptr )
 		{
 			graphicsScene.reset();
 			graphicsScene = nullptr;
 		}
-		graphicsScene = QSharedPointer<GraphicsScene>(new GraphicsScene(0, 0, canvasWidth, canvasHeight, this));
+		graphicsScene = QSharedPointer<GraphicsScene>(new GraphicsScene(this));
+		graphicsScene->setSceneRect(0, 0, canvasWidth, canvasHeight);
 		ui->canvas->setScene(graphicsScene.data());
-		ui->canvas->CreateLayer();
+		CreateLayer();
 
-		QGraphicsRectItem* backgroundRectangle = new QGraphicsRectItem(0, 0, canvasWidth, canvasHeight);
-		backgroundRectangle->setPen(pen);
-		backgroundRectangle->setBrush(brush);
+		auto backgroundRectangle = new QGraphicsRectItem(0, 0, canvasWidth, canvasHeight);
+		backgroundRectangle->setPen(QPen(Qt::NoPen));
+		backgroundRectangle->setBrush(QBrush(backgroundColor));
+		graphicsScene->AddItemOnActiveLayer(backgroundRectangle);
 
-		ui->canvas->AddItem(backgroundRectangle);
+		graphicsScene->update();
+		ui->canvas->update();
+
+		ui->addLayerButton->setDisabled(false);
 	}
+}
+
+void MainWindow::CreateLayer()
+{
+	QString layerName = "layer_" + QString::number(layers.size());
+
+	auto newLayer = new ImageLayer(layerName);
+	newLayer->setZValue(layers.size());
+	layers[layerName] = newLayer;
+	graphicsScene->addItem(newLayer);
+	graphicsScene->SetActveLayer(newLayer);
+
+	auto layerPreview = new LayerPreview(ui->scrollAreaWidgetContents);
+	auto layout = dynamic_cast<QGridLayout*>(ui->scrollAreaWidgetContents->layout());
+	layerPreview->SetLayerName(layerName);
+	int size = ui->layerPreviewLayout->rowCount();
+	ui->layerPreviewLayout->addWidget(layerPreview, size, 0, Qt::AlignTop);
 }

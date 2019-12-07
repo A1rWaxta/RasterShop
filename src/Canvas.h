@@ -16,20 +16,10 @@ public:
 
 	~Canvas() override;
 
-	void LoadImage(QString& fileName);
-
-	QString& CreateLayer();
-
-	void AddItem(QGraphicsItem* item);
-
 private:
-	void SetRenderAreaSize(QSize size);
-
 	QVector<ImageLayer*> layers;
 
 	ImageLayer* activeLayer;
-
-	QRect renderArea;
 };
 
 

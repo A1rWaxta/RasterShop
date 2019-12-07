@@ -37,6 +37,8 @@ private slots:
 
 	void NewActionClicked();
 
+	void CreateLayer();
+
 private:
 	void closeEvent(QCloseEvent* closeEvent) override;
 
@@ -48,7 +50,7 @@ private:
 
 	QSharedPointer<GraphicsScene> graphicsScene;
 
-	QVector<ImageLayer> layers;
+	QMap<QString, ImageLayer*> layers;
 
 	Ui::MainWindow* ui;
 };

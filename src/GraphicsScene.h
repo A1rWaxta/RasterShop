@@ -10,21 +10,31 @@
 #include "GraphicsRectangle.h"
 #include "ImageLayer.h"
 
+class MainWindow;
+
 class GraphicsScene : public QGraphicsScene
 {
+Q_OBJECT
+
+	friend MainWindow;
+
 public:
 	GraphicsScene(qreal x, qreal y, qreal width, qreal height, QObject* parent = nullptr);
 
+	explicit GraphicsScene(QObject* parent);
+
+private slots:
 	QString& CreateLayer();
 
-	void SetActveLayer(ImageLayer * active);
+signals:
+	//void QS
 
 private:
-	QPainter painter;
+	void SetActveLayer(ImageLayer* layer);
 
-	ImageLayer * activeLayer;
+	void AddItemOnActiveLayer(QGraphicsItem* item);
 
-	GraphicsRectangle background;
+	QMap<QString, ImageLayer*> layers;
+
+	ImageLayer* activeLayer;
 };
-
-
