@@ -1,32 +1,47 @@
 #include "LayerPreview.h"
 #include "ui_LayerPreview.h"
+#include "ImageLayer.h"
 
-LayerPreview::LayerPreview(QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::LayerPreview),
-    selected(false)
+LayerPreview::LayerPreview(ImageLayer* layer, QWidget* parent) :
+		QWidget(parent),
+		selected(false),
+		layer(layer),
+		ui(new Ui::LayerPreview)
 {
-    ui->setupUi(this);
-    setAutoFillBackground(true);
+	ui->setupUi(this);
+	setAutoFillBackground(true);
+
+	ui->layerName->setText(layer->GetIdentifier());
 }
 
 LayerPreview::~LayerPreview()
 {
-    delete ui;
-}
-
-void LayerPreview::SetLayerName(QString& layerName)
-{
-	ui->layerName->setText(layerName);
+	delete layer;
+	delete ui;
 }
 
 void LayerPreview::mouseReleaseEvent(QMouseEvent* mouseEvent)
 {
-	if( selected == false )
-	{
-		selected = true;
-		QPalette palette;
-		palette.setColor(QPalette::Window, Qt::blue);
-		setPalette(palette);
-	}
+	emit LayerSelected(this);
+}
+
+ImageLayer* LayerPreview::GetLayer()
+{
+	return layer;
+}
+
+void LayerPreview::Unselect()
+{
+	QPalette palette;
+	selected = false;
+	palette.setColor(QPalette::Window, Qt::white);
+	setPalette(palette);
+}
+
+void LayerPreview::Select()
+{
+	QPalette palette;
+	selected = true;
+	palette.setColor(QPalette::Window, QColor(140, 204, 245));
+	setPalette(palette);
 }

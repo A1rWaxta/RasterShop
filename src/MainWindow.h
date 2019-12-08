@@ -3,6 +3,7 @@
 #include <QtWidgets>
 #include "Canvas.h"
 #include "GraphicsScene.h"
+#include "LayerPreview.h"
 
 namespace Ui
 {
@@ -22,7 +23,6 @@ public:
 	void Show();
 
 private slots:
-
 	void CreateNewProject();
 
 	void NewCanvas(const QString& string);
@@ -39,6 +39,8 @@ private slots:
 
 	void CreateLayer();
 
+	void LayerSelected(LayerPreview* layer);
+
 private:
 	void closeEvent(QCloseEvent* closeEvent) override;
 
@@ -46,11 +48,19 @@ private:
 
 	void moveEvent(QMoveEvent* moveEvent) override;
 
+	void keyPressEvent(QKeyEvent* event) override;
+
 	void mouseReleaseEvent(QMouseEvent* event) override;
+
+	void CreateLayerPreview(ImageLayer* layer);
+
+	void DeleteActiveLayer();
 
 	QSharedPointer<GraphicsScene> graphicsScene;
 
 	QMap<QString, ImageLayer*> layers;
+
+	LayerPreview* activeLayer;
 
 	Ui::MainWindow* ui;
 };

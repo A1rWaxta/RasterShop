@@ -24,17 +24,15 @@ public:
 	explicit GraphicsScene(QObject* parent);
 
 private slots:
-	QString& CreateLayer();
+
 
 signals:
 	//void QS
 
 private:
-	void SetActveLayer(ImageLayer* layer);
+	void SetActiveLayer(ImageLayer* layer);
 
 	void AddItemOnActiveLayer(QGraphicsItem* item);
-
-	QMap<QString, ImageLayer*> layers;
 
 	ImageLayer* activeLayer;
 };

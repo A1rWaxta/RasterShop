@@ -4,9 +4,9 @@
 
 #include "ImageLayer.h"
 
-ImageLayer::ImageLayer(QString& layerIdentifier) : drawableList(0)
+ImageLayer::ImageLayer(QString& identifier) : drawableList(0)
 {
-	this->layerIdentifier = layerIdentifier;
+	layerIdentifier = identifier;
 }
 
 void ImageLayer::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
@@ -27,7 +27,7 @@ QRectF ImageLayer::boundingRect() const
 	return QRectF(0, 0, 150, 150);
 }
 
-QString& ImageLayer::GetLayerIdentifier()
+QString& ImageLayer::GetIdentifier()
 {
 	return layerIdentifier;
 }
@@ -38,4 +38,9 @@ ImageLayer::~ImageLayer()
 	{
 		delete item;
 	}
+}
+
+void ImageLayer::SetLayerIdentifier(const QString& identifier)
+{
+	layerIdentifier = identifier;
 }

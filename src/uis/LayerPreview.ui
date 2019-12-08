@@ -30,8 +30,8 @@
     <widget class="QGraphicsView" name="graphicsView">
      <property name="maximumSize">
       <size>
-       <width>150</width>
-       <height>100</height>
+       <width>80</width>
+       <height>80</height>
       </size>
      </property>
     </widget>
@@ -41,7 +41,7 @@
      <property name="maximumSize">
       <size>
        <width>16777215</width>
-       <height>100</height>
+       <height>30</height>
       </size>
      </property>
      <property name="cursor">

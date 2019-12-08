@@ -7,9 +7,13 @@
 
 GraphicsScene::GraphicsScene(qreal x, qreal y, qreal width, qreal height, QObject* parent) : QGraphicsScene(x, y, width,
                                                                                                             height,
-                                                                                                            parent)
+                                                                                                            parent),
+                                                                                             activeLayer(nullptr)
 {
-
+	auto backgroundRectangle = new QGraphicsRectItem(0, 0, width, height);
+	backgroundRectangle->setPen(QPen(Qt::SolidLine));
+	backgroundRectangle->setBrush(QBrush(QColor(0, 0, 0)));
+	addItem(backgroundRectangle);
 }
 
 GraphicsScene::GraphicsScene(QObject* parent) : QGraphicsScene(parent), activeLayer(nullptr)
@@ -17,25 +21,12 @@ GraphicsScene::GraphicsScene(QObject* parent) : QGraphicsScene(parent), activeLa
 
 }
 
+void GraphicsScene::SetActiveLayer(ImageLayer* layer)
+{
+	activeLayer = layer;
+}
+
 void GraphicsScene::AddItemOnActiveLayer(QGraphicsItem* item)
 {
 	item->setParentItem(activeLayer);
-}
-
-QString& GraphicsScene::CreateLayer()
-{
-	QString layerName = "layer_" + QString::number(layers.size());
-
-	auto newLayer = new ImageLayer(layerName);
-	newLayer->setZValue(layers.size());
-	layers[layerName] = newLayer;
-	addItem(newLayer);
-	activeLayer = newLayer;
-
-	return newLayer->GetLayerIdentifier();
-}
-
-void GraphicsScene::SetActveLayer(ImageLayer* layer)
-{
-	activeLayer = layer;
 }
