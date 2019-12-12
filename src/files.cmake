@@ -1,0 +1,31 @@
+set(sources
+		main.cpp
+		MainWindow.cpp
+		ToolBar.cpp
+		ApplicationSettings.cpp
+		Canvas.cpp
+		CanvasArea.cpp
+		GraphicsRectangle.cpp
+		GraphicsScene.cpp
+		ImageLayer.cpp
+		LayerPreview.cpp
+		NewCanvasDialog.cpp
+		ToolBarButton.cpp
+		WorkSpace.cpp
+		)
+
+set(headers
+		MainWindow.h
+		ToolBar.h
+		ApplicationSettings.h
+		Canvas.h
+		CanvasArea.h
+		GraphicsRectangle.h
+		GraphicsScene.h
+		ImageLayer.h
+		LayerPreview.h
+		NewCanvasDialog.h
+		ToolBarButton.h
+		WorkSpace.h
+		Globals.h
+		)

@@ -1,7 +1,9 @@
-#ifndef TOOLBAR1_H
-#define TOOLBAR1_H
+#pragma once
 
 #include <QWidget>
+#include "Globals.h"
+#include "ToolBarButton.h"
+#include "GraphicsScene.h"
 
 namespace Ui {
 class ToolBar;
@@ -13,10 +15,17 @@ class ToolBar : public QWidget
 
 public:
     explicit ToolBar(QWidget *parent = nullptr);
+
     ~ToolBar();
+
+private slots:
+	void SelectionToolSelected();
+
+	void MoveToolSelected();
+
+signals:
+	void ToolSelected(ActiveTool tool);
 
 private:
     Ui::ToolBar *ui;
 };
-
-#endif // TOOLBAR1_H

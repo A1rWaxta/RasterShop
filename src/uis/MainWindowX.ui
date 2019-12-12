@@ -156,13 +156,13 @@
      <widget class="QTabWidget" name="tabWidget">
       <property name="minimumSize">
        <size>
-        <width>250</width>
+        <width>300</width>
         <height>0</height>
        </size>
       </property>
       <property name="maximumSize">
        <size>
-        <width>250</width>
+        <width>300</width>
         <height>16777215</height>
        </size>
       </property>
@@ -176,7 +176,7 @@
       </widget>
       <widget class="QWidget" name="layersTab">
        <attribute name="title">
-        <string>Tab 2</string>
+        <string>Warstwy</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_4">
         <item row="3" column="0">
@@ -195,6 +195,20 @@
             </property>
            </widget>
           </item>
+          <item>
+           <widget class="QPushButton" name="moveLayerUpButton">
+            <property name="text">
+             <string>PushButton</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="moveLayerDownButton">
+            <property name="text">
+             <string>PushButton</string>
+            </property>
+           </widget>
+          </item>
          </layout>
         </item>
         <item row="0" column="0">
@@ -207,7 +221,7 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>226</width>
+             <width>276</width>
              <height>322</height>
             </rect>
            </property>
@@ -275,7 +289,7 @@
     <property name="title">
      <string>Obraz</string>
     </property>
-    <addaction name="actionObr_o_90_w_prawo"/>
+    <addaction name="actionRotate90DegreesRight"/>
     <addaction name="actionObr_o_90_w_lewo"/>
     <addaction name="actionObr_o_180"/>
     <addaction name="actionLustrzane_odbicie"/>
@@ -318,7 +332,7 @@
     <string>Zapisz jako...</string>
    </property>
   </action>
-  <action name="actionObr_o_90_w_prawo">
+  <action name="actionRotate90DegreesRight">
    <property name="text">
     <string>Obróć o 90 w prawo</string>
    </property>

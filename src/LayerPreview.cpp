@@ -2,7 +2,7 @@
 #include "ui_LayerPreview.h"
 #include "ImageLayer.h"
 
-LayerPreview::LayerPreview(ImageLayer* layer, QWidget* parent) :
+LayerPreview::LayerPreview(ImageLayer* layer, QString& layerIdentifier, QWidget* parent) :
 		QWidget(parent),
 		selected(false),
 		layer(layer),
@@ -10,8 +10,7 @@ LayerPreview::LayerPreview(ImageLayer* layer, QWidget* parent) :
 {
 	ui->setupUi(this);
 	setAutoFillBackground(true);
-
-	ui->layerName->setText(layer->GetIdentifier());
+	ui->layerName->setText(layerIdentifier);
 }
 
 LayerPreview::~LayerPreview()
@@ -22,7 +21,10 @@ LayerPreview::~LayerPreview()
 
 void LayerPreview::mouseReleaseEvent(QMouseEvent* mouseEvent)
 {
-	emit LayerSelected(this);
+	if( selected == false )
+	{
+		emit LayerSelected(this);
+	}
 }
 
 ImageLayer* LayerPreview::GetLayer()
@@ -44,4 +46,9 @@ void LayerPreview::Select()
 	selected = true;
 	palette.setColor(QPalette::Window, QColor(140, 204, 245));
 	setPalette(palette);
+}
+
+QString LayerPreview::GetLayerName()
+{
+	return ui->layerName->text();
 }

@@ -11,7 +11,7 @@
 class ImageLayer : public QGraphicsItem
 {
 public:
-	explicit ImageLayer(QString& identifier);
+	explicit ImageLayer();
 
 	~ImageLayer() override;
 
@@ -21,14 +21,8 @@ public:
 
 	[[nodiscard]] QRectF boundingRect() const override;
 
-	QString& GetIdentifier();
-
-	void SetLayerIdentifier(const QString& identifier);
-
 private:
 	QVector<QGraphicsItem*> drawableList;
-
-	QString layerIdentifier;
 };
 
 

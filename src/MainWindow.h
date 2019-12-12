@@ -2,15 +2,15 @@
 
 #include <QtWidgets>
 #include "Canvas.h"
-#include "GraphicsScene.h"
 #include "LayerPreview.h"
+#include "Globals.h"
+#include "GraphicsScene.h"
 
 namespace Ui
 {
 	class MainWindow;
 }
 
-// this is definitely going to be The Blob antipattern...
 class MainWindow : public QMainWindow
 {
 Q_OBJECT
@@ -20,12 +20,10 @@ public:
 
 	~MainWindow() override;
 
-	void Show();
-
 private slots:
-	void CreateNewProject();
+	void NewActionClicked();
 
-	void NewCanvas(const QString& string);
+	void NewCanvas();
 
 	void FirstButtonClicked();
 
@@ -35,13 +33,25 @@ private slots:
 
 	void SaveActionClicked();
 
-	void NewActionClicked();
+	void InitializeNewProject(int width, int height);
 
 	void CreateLayer();
 
-	void LayerSelected(LayerPreview* layer);
+	void SelectActiveLayer(LayerPreview* layer);
+
+	void MoveLayerUp();
+
+	void MoveLayerDown();
 
 private:
+	enum class LayerMoveDirection
+	{
+		Up,
+		Down
+	};
+
+	void MoveLayer(LayerMoveDirection direction);
+
 	void closeEvent(QCloseEvent* closeEvent) override;
 
 	void resizeEvent(QResizeEvent* resizeEvent) override;
@@ -52,15 +62,15 @@ private:
 
 	void mouseReleaseEvent(QMouseEvent* event) override;
 
-	void CreateLayerPreview(ImageLayer* layer);
-
 	void DeleteActiveLayer();
 
-	QSharedPointer<GraphicsScene> graphicsScene;
+	std::shared_ptr<GraphicsScene> graphicsScene;
 
-	QMap<QString, ImageLayer*> layers;
+	std::vector<LayerPreview*> layers;
 
 	LayerPreview* activeLayer;
+
+	int layersAddedCount;
 
 	Ui::MainWindow* ui;
 };

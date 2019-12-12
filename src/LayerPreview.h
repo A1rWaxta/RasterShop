@@ -13,7 +13,7 @@ class LayerPreview : public QWidget
 Q_OBJECT
 
 public:
-	explicit LayerPreview(ImageLayer* layer, QWidget* parent = nullptr);
+	explicit LayerPreview(ImageLayer* layer, QString& layerIdentifier, QWidget* parent = nullptr);
 
 	~LayerPreview() override;
 
@@ -22,6 +22,8 @@ public:
 	void Select();
 
 	void Unselect();
+
+	QString GetLayerName();
 
 signals:
 	void LayerSelected(LayerPreview* layer);

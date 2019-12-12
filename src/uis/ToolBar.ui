@@ -38,8 +38,8 @@
    <property name="bottomMargin">
     <number>0</number>
    </property>
-   <item alignment="Qt::AlignHCenter">
-    <widget class="ToolBarButton" name="pushButton">
+   <item>
+    <widget class="ToolBarButton" name="selectToolButton">
      <property name="minimumSize">
       <size>
        <width>60</width>
@@ -60,8 +60,8 @@
      </property>
     </widget>
    </item>
-   <item alignment="Qt::AlignHCenter">
-    <widget class="ToolBarButton" name="pushButton_5">
+   <item>
+    <widget class="ToolBarButton" name="moveToolButton">
      <property name="minimumSize">
       <size>
        <width>60</width>
@@ -79,7 +79,7 @@
      </property>
     </widget>
    </item>
-   <item alignment="Qt::AlignHCenter">
+   <item>
     <widget class="ToolBarButton" name="pushButton_6">
      <property name="minimumSize">
       <size>
@@ -98,7 +98,7 @@
      </property>
     </widget>
    </item>
-   <item alignment="Qt::AlignHCenter">
+   <item>
     <widget class="ToolBarButton" name="pushButton_4">
      <property name="minimumSize">
       <size>
@@ -117,7 +117,7 @@
      </property>
     </widget>
    </item>
-   <item alignment="Qt::AlignHCenter">
+   <item>
     <widget class="ToolBarButton" name="pushButton_3">
      <property name="minimumSize">
       <size>
@@ -136,7 +136,7 @@
      </property>
     </widget>
    </item>
-   <item alignment="Qt::AlignHCenter">
+   <item>
     <widget class="ToolBarButton" name="pushButton_2">
      <property name="minimumSize">
       <size>

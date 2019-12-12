@@ -27,16 +27,26 @@ MainWindow::MainWindow(QWidget* parent) :
 
 	ui->addLayerButton->setDisabled(true);
 
+
+
 	connect(ui->actionNew, &QAction::triggered, this, &MainWindow::NewActionClicked);
 	connect(ui->actionSave, &QAction::triggered, this, &MainWindow::SaveActionClicked);
 	connect(ui->actionSaveAs, &QAction::triggered, this, &MainWindow::SaveAsActionClicked);
 	connect(ui->actionOpen, &QAction::triggered, this, &MainWindow::OpenActionClicked);
+
 	connect(ui->addLayerButton, &QPushButton::released, this, &MainWindow::CreateLayer);
 	connect(ui->deleteLayerButton, &QPushButton::released, this, &MainWindow::DeleteActiveLayer);
+	connect(ui->moveLayerUpButton, &QPushButton::clicked, this, &MainWindow::MoveLayerUp);
+	connect(ui->moveLayerDownButton, &QPushButton::clicked, this, &MainWindow::MoveLayerDown);
 }
 
 MainWindow::~MainWindow()
 {
+	for( auto layer : layers )
+	{
+		delete layer;
+	}
+	layers.clear();
 	delete ui;
 }
 
@@ -50,10 +60,6 @@ void MainWindow::closeEvent(QCloseEvent* closeEvent)
 	settings.sync();
 }
 
-void MainWindow::Show()
-{
-}
-
 void MainWindow::resizeEvent(QResizeEvent* resizeEvent)
 {
 }
@@ -64,7 +70,7 @@ void MainWindow::moveEvent(QMoveEvent* moveEvent)
 	menuList = ui->menuBar->findChildren<QMenu*>();
 	for( QMenu* menu : menuList )
 	{
-		if( menu->isVisible() == true )
+		if( menu->isVisible())
 		{
 			menu->hide();
 			return;
@@ -72,11 +78,7 @@ void MainWindow::moveEvent(QMoveEvent* moveEvent)
 	}
 }
 
-void MainWindow::CreateNewProject()
-{
-}
-
-void MainWindow::NewCanvas(const QString& string)
+void MainWindow::NewCanvas()
 {
 }
 
@@ -91,15 +93,23 @@ void MainWindow::mouseReleaseEvent(QMouseEvent* event)
 void MainWindow::OpenActionClicked()
 {
 	QFileDialog fileDialog;
+	int imageWidth, imageHeight;
+
 	fileDialog.resize(320, 100);
-	fileDialog.setNameFilter(tr("Images (*.png *.xpm *.jpg)"));
+	fileDialog.setNameFilter(tr("Images (*.png *.bmp *.jpg)"));
 	fileDialog.setFileMode(QFileDialog::ExistingFile);
 
 	QStringList fileNames;
 	if( fileDialog.exec() == QFileDialog::Accepted )
 	{
 		fileNames = fileDialog.selectedFiles();
+		QImage image(fileNames[0]);
+		imageWidth = image.width();
+		imageHeight = image.height();
 
+		InitializeNewProject(imageWidth, imageHeight);
+		auto graphicsImage = new QGraphicsPixmapItem(QPixmap::fromImage(image));
+		graphicsScene->AddItemOnActiveLayer(graphicsImage);
 	}
 }
 
@@ -111,6 +121,160 @@ void MainWindow::SaveAsActionClicked()
 void MainWindow::SaveActionClicked()
 {
 
+}
+
+void MainWindow::InitializeNewProject(int width, int height)
+{
+	if( graphicsScene != nullptr )
+	{
+		QLayoutItem* item;
+		while((item = ui->scrollAreaWidgetContents->layout()->takeAt(0)) != nullptr )
+		{
+			delete item->widget();
+			delete item;
+		}
+
+		layers.clear();
+		graphicsScene->clear();
+		graphicsScene = nullptr;
+		activeLayer = nullptr;
+	}
+
+	layersAddedCount = 0;
+
+	graphicsScene = std::make_shared<GraphicsScene>(new GraphicsScene(this));
+	graphicsScene->setBackgroundBrush(QColor(123,123,123));
+	connect(ui->toolBar, &ToolBar::ToolSelected, graphicsScene.get(), &GraphicsScene::ToolSelected);
+	ui->canvas->setScene(graphicsScene.get());
+
+	CreateLayer();
+	ui->addLayerButton->setDisabled(false);
+
+//	ui->canvas->scale(0.5, 0.5);
+}
+
+void MainWindow::CreateLayer()
+{
+	auto newLayer = new ImageLayer();
+	newLayer->setZValue(layers.size()); //places new layer on top of image
+	graphicsScene->addItem(newLayer);
+
+	QString layerName = "layer_" + QString::number(layersAddedCount);
+	auto layerPreview = new LayerPreview(newLayer, layerName, ui->scrollAreaWidgetContents);
+	auto layout = dynamic_cast<QVBoxLayout*>(ui->scrollAreaWidgetContents->layout());
+	layout->setAlignment(Qt::AlignTop);
+	layout->addWidget(layerPreview, layout->count());
+	layers.push_back(layerPreview);
+	++layersAddedCount;
+
+	connect(layerPreview, &LayerPreview::LayerSelected, this, &MainWindow::SelectActiveLayer);
+
+	SelectActiveLayer(layerPreview);
+}
+
+void MainWindow::keyPressEvent(QKeyEvent* event)
+{
+	if( event->key() == Qt::Key_Delete )
+	{
+		DeleteActiveLayer();
+	}
+}
+
+void MainWindow::SelectActiveLayer(LayerPreview* layer)
+{
+	if( activeLayer == layer )
+	{
+		return;
+	}
+	if( activeLayer != nullptr )
+	{
+		activeLayer->Unselect();
+	}
+	activeLayer = layer;
+	activeLayer->Select();
+	graphicsScene->SetActiveLayer(activeLayer->GetLayer());
+}
+
+void MainWindow::DeleteActiveLayer()
+{
+	if( activeLayer != nullptr )
+	{
+		QMessageBox confirmationDialog;
+		confirmationDialog.setText(tr("Usunąć warstwę ") + activeLayer->GetLayerName() + "?");
+		confirmationDialog.addButton(tr("Nie"), QMessageBox::ButtonRole::RejectRole);
+		confirmationDialog.addButton(tr("Tak"), QMessageBox::ButtonRole::AcceptRole);
+
+		if( confirmationDialog.exec() == QMessageBox::Accepted )
+		{
+			auto decrementLayerZValue = [](LayerPreview* preview)
+			{
+				int zValue = preview->GetLayer()->zValue();
+				preview->GetLayer()->setZValue(zValue - 1);
+			};
+
+			auto iterator = std::find(layers.begin(), layers.end(), activeLayer);
+			int index = std::distance(layers.begin(), iterator);
+			ui->scrollAreaWidgetContents->layout()->removeWidget(layers[index]);
+			layers.erase(iterator);
+			std::for_each(iterator, layers.end(), decrementLayerZValue);
+			delete activeLayer;
+			activeLayer = nullptr;
+		}
+	}
+}
+
+void MainWindow::MoveLayerUp()
+{
+	MoveLayer(LayerMoveDirection::Up);
+}
+
+void MainWindow::MoveLayerDown()
+{
+	MoveLayer(LayerMoveDirection::Down);
+}
+
+void MainWindow::MoveLayer(LayerMoveDirection direction)
+{
+	auto layersVectorIterator = std::find(layers.begin(), layers.end(), activeLayer);
+	int index = std::distance(layers.begin(), layersVectorIterator);
+	auto layout = dynamic_cast<QBoxLayout*>(ui->scrollAreaWidgetContents->layout());
+	LayerPreview* tmpWidget;
+	int zValue;
+
+	switch( direction )
+	{
+		case LayerMoveDirection::Up:
+			if( index == 0 )
+			{
+				return;
+			}
+			tmpWidget = dynamic_cast<LayerPreview*>(layout->itemAt(index - 1)->widget());
+			zValue = tmpWidget->GetLayer()->zValue();
+			tmpWidget->GetLayer()->setZValue(activeLayer->GetLayer()->zValue());
+			activeLayer->GetLayer()->setZValue(zValue);
+			layout->removeWidget(tmpWidget);
+			layout->removeWidget(activeLayer);
+			layout->insertWidget(index - 1, activeLayer);
+			layout->insertWidget(index, tmpWidget);
+			std::iter_swap(layersVectorIterator, layersVectorIterator - 1);
+			break;
+
+		case LayerMoveDirection::Down:
+			if( index == layers.size() - 1 )
+			{
+				return;
+			}
+			tmpWidget = dynamic_cast<LayerPreview*>(layout->itemAt(index + 1)->widget());
+			zValue = tmpWidget->GetLayer()->zValue();
+			tmpWidget->GetLayer()->setZValue(activeLayer->GetLayer()->zValue());
+			activeLayer->GetLayer()->setZValue(zValue);
+			layout->removeWidget(tmpWidget);
+			layout->removeWidget(activeLayer);
+			layout->insertWidget(index, tmpWidget);
+			layout->insertWidget(index + 1, activeLayer);
+			std::iter_swap(layersVectorIterator, layersVectorIterator + 1);
+			break;
+	}
 }
 
 void MainWindow::NewActionClicked()
@@ -127,18 +291,7 @@ void MainWindow::NewActionClicked()
 		canvasHeight = newCanvasDialog.GetCanvasHeight();
 		backgroundColor = newCanvasDialog.GetCanvasColor();
 
-		if( graphicsScene != nullptr )
-		{
-			graphicsScene.reset();
-			graphicsScene = nullptr;
-		}
-		layers.clear();
-		graphicsScene = QSharedPointer<GraphicsScene>(new GraphicsScene(this));
-		graphicsScene->setSceneRect(0, 0, canvasWidth, canvasHeight);
-		ui->canvas->setScene(graphicsScene.data());
-
-		//spaghetti starts... yummy :)
-		CreateLayer();
+		InitializeNewProject(canvasWidth, canvasHeight);
 
 		auto backgroundRectangle = new QGraphicsRectItem(0, 0, canvasWidth, canvasHeight);
 		backgroundRectangle->setPen(QPen(Qt::NoPen));
@@ -147,72 +300,5 @@ void MainWindow::NewActionClicked()
 
 		graphicsScene->update();
 		ui->canvas->update();
-
-		ui->addLayerButton->setDisabled(false);
-	}
-}
-
-void MainWindow::CreateLayer()
-{
-	QString layerName = "layer_" + QString::number(layers.size());
-
-	auto newLayer = new ImageLayer(layerName);
-	newLayer->setZValue(layers.size());
-	layers[layerName] = newLayer;
-	graphicsScene->addItem(newLayer);
-
-	CreateLayerPreview(newLayer);
-}
-
-void MainWindow::CreateLayerPreview(ImageLayer* layer)
-{
-	//todo: mapować String-LayerPreview* zamiast String-ImageLayer*
-	auto layerPreview = new LayerPreview(layer, ui->scrollAreaWidgetContents);
-	auto layout = dynamic_cast<QVBoxLayout*>(ui->scrollAreaWidgetContents->layout());
-	layout->setAlignment(Qt::AlignTop);
-	layout->addWidget(layerPreview, layout->count());
-
-	connect(layerPreview, &LayerPreview::LayerSelected, this, &MainWindow::LayerSelected);
-
-	LayerSelected(layerPreview);
-}
-
-void MainWindow::LayerSelected(LayerPreview* layer)
-{
-	if( activeLayer == layer )
-	{
-		return;
-	}
-	if( activeLayer != nullptr )
-	{
-		activeLayer->Unselect();
-	}
-	activeLayer = layer;
-	activeLayer->Select();
-	graphicsScene->SetActiveLayer(activeLayer->GetLayer());
-}
-
-void MainWindow::keyPressEvent(QKeyEvent* event)
-{
-	if( event->key() == Qt::Key_Delete )
-	{
-
-		DeleteActiveLayer();
-	}
-}
-
-void MainWindow::DeleteActiveLayer()
-{
-	if( activeLayer != nullptr )
-	{
-		QMessageBox confirmationDialog;
-		confirmationDialog.setText(tr("Usunąć warstwe ") + activeLayer->GetLayer()->GetIdentifier() + "?");
-		confirmationDialog.addButton(tr("Nie"), QMessageBox::ButtonRole::RejectRole);
-		confirmationDialog.addButton(tr("Tak"), QMessageBox::ButtonRole::AcceptRole);
-		if( confirmationDialog.exec() == QMessageBox::Accepted )
-		{
-			delete activeLayer;
-			activeLayer = nullptr;
-		}
 	}
 }
