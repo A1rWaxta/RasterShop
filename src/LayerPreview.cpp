@@ -39,6 +39,7 @@ void LayerPreview::Unselect()
 	palette.setColor(QPalette::Window, Qt::white);
 	setPalette(palette);
 }
+//	graphicsScene->setBackgroundBrush(QColor(123, 123, 123));
 
 void LayerPreview::Select()
 {

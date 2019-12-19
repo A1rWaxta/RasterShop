@@ -4,6 +4,7 @@
 
 #include "Canvas.h"
 #include <QPaintEvent>
+#include <QDebug>
 
 Canvas::Canvas(QWidget* parent)
 {

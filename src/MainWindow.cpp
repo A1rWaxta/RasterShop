@@ -27,8 +27,6 @@ MainWindow::MainWindow(QWidget* parent) :
 
 	ui->addLayerButton->setDisabled(true);
 
-
-
 	connect(ui->actionNew, &QAction::triggered, this, &MainWindow::NewActionClicked);
 	connect(ui->actionSave, &QAction::triggered, this, &MainWindow::SaveActionClicked);
 	connect(ui->actionSaveAs, &QAction::triggered, this, &MainWindow::SaveAsActionClicked);
@@ -90,6 +88,16 @@ void MainWindow::mouseReleaseEvent(QMouseEvent* event)
 {
 }
 
+void MainWindow::SaveAsActionClicked()
+{
+//	canvas = new Canvas(this, QPoint(100, 100), QSize(100, 100));
+}
+
+void MainWindow::SaveActionClicked()
+{
+
+}
+
 void MainWindow::OpenActionClicked()
 {
 	QFileDialog fileDialog;
@@ -113,51 +121,24 @@ void MainWindow::OpenActionClicked()
 	}
 }
 
-void MainWindow::SaveAsActionClicked()
-{
-//	canvas = new Canvas(this, QPoint(100, 100), QSize(100, 100));
-}
-
-void MainWindow::SaveActionClicked()
-{
-
-}
-
 void MainWindow::InitializeNewProject(int width, int height)
 {
-	if( graphicsScene != nullptr )
-	{
-		QLayoutItem* item;
-		while((item = ui->scrollAreaWidgetContents->layout()->takeAt(0)) != nullptr )
-		{
-			delete item->widget();
-			delete item;
-		}
-
-		layers.clear();
-		graphicsScene->clear();
-		graphicsScene = nullptr;
-		activeLayer = nullptr;
-	}
-
-	layersAddedCount = 0;
+	ClearWorkSpace();
 
 	graphicsScene = std::make_shared<GraphicsScene>(new GraphicsScene(this));
-	graphicsScene->setBackgroundBrush(QColor(123,123,123));
 	connect(ui->toolBar, &ToolBar::ToolSelected, graphicsScene.get(), &GraphicsScene::ToolSelected);
 	ui->canvas->setScene(graphicsScene.get());
 
+	graphicsScene->CreateBackground(width, height);
 	CreateLayer();
 	ui->addLayerButton->setDisabled(false);
-
-//	ui->canvas->scale(0.5, 0.5);
 }
 
 void MainWindow::CreateLayer()
 {
 	auto newLayer = new ImageLayer();
 	newLayer->setZValue(layers.size()); //places new layer on top of image
-	graphicsScene->addItem(newLayer);
+	graphicsScene->AddLayer(newLayer);
 
 	QString layerName = "layer_" + QString::number(layersAddedCount);
 	auto layerPreview = new LayerPreview(newLayer, layerName, ui->scrollAreaWidgetContents);
@@ -218,7 +199,18 @@ void MainWindow::DeleteActiveLayer()
 			layers.erase(iterator);
 			std::for_each(iterator, layers.end(), decrementLayerZValue);
 			delete activeLayer;
-			activeLayer = nullptr;
+
+			if( layers.size() >= 1 )
+			{
+				activeLayer = layers[index];
+				graphicsScene->SetActiveLayer(activeLayer->GetLayer());
+				activeLayer->Select();
+			}
+			else
+			{
+				activeLayer = nullptr;
+				graphicsScene->SetActiveLayer(nullptr);
+			}
 		}
 	}
 }
@@ -301,4 +293,23 @@ void MainWindow::NewActionClicked()
 		graphicsScene->update();
 		ui->canvas->update();
 	}
+}
+
+void MainWindow::ClearWorkSpace()
+{
+	QLayoutItem* item;
+	if( graphicsScene != nullptr )
+	{
+		while((item = ui->scrollAreaWidgetContents->layout()->takeAt(0)) != nullptr )
+		{
+			delete item->widget();
+			delete item;
+		}
+
+		layers.clear();
+		graphicsScene->clear();
+		graphicsScene = nullptr;
+		activeLayer = nullptr;
+	}
+	layersAddedCount = 0;
 }

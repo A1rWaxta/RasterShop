@@ -25,9 +25,13 @@ public slots:
 private:
 	void AddItemOnActiveLayer(QGraphicsItem* item);
 
+	void AddLayer(ImageLayer* layer);
+
+	void CreateBackground(int width, int height);
+
 	void SetActiveLayer(ImageLayer* layer);
 
-	void mouseMoveEvent(QGraphicsSceneMouseEvent* event) override;
+	void mouseMoveEvent(QGraphicsSceneMouseEvent* mouseEvent) override;
 
 	void mousePressEvent(QGraphicsSceneMouseEvent* mouseEvent) override;
 
@@ -38,6 +42,8 @@ private:
 	bool leftMousePressed;
 
 	ImageLayer* activeLayer;
+
+	QGraphicsRectItem* workSpace;
 
 	ActiveTool activeTool;
 };

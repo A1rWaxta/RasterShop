@@ -8,7 +8,7 @@
 #include <QtGui/QImage>
 #include <QtWidgets/QGraphicsItem>
 
-class ImageLayer : public QGraphicsItem
+class ImageLayer : public QGraphicsRectItem
 {
 public:
 	explicit ImageLayer();
@@ -22,6 +22,12 @@ public:
 	[[nodiscard]] QRectF boundingRect() const override;
 
 private:
+	void mousePressEvent(QGraphicsSceneMouseEvent* mouseEvent) override;
+
+	void mouseReleaseEvent(QGraphicsSceneMouseEvent* mouseEvent) override;
+
+	bool mouseLeftButtonPressed;
+
 	QVector<QGraphicsItem*> drawableList;
 };
 

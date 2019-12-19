@@ -50,6 +50,8 @@ private:
 		Down
 	};
 
+	void ClearWorkSpace();
+
 	void MoveLayer(LayerMoveDirection direction);
 
 	void closeEvent(QCloseEvent* closeEvent) override;
