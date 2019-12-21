@@ -1,14 +1,15 @@
 //
-// Created by waxta on 24.11.19.
+// Created by waxta on 27.08.19.
 //
 
 #include "WorkSpace.h"
+#include <QPaintEvent>
+#include <QDebug>
 
-WorkSpace::WorkSpace()
+WorkSpace::WorkSpace(QWidget* parent)
 {
-
 }
 
-void WorkSpace::CreateLayer(QColor & color)
+WorkSpace::~WorkSpace()
 {
 }

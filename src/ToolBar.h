@@ -5,27 +5,26 @@
 #include "ToolBarButton.h"
 #include "GraphicsScene.h"
 
-namespace Ui {
-class ToolBar;
+namespace Ui
+{
+	class ToolBar;
 }
 
 class ToolBar : public QWidget
 {
-    Q_OBJECT
+Q_OBJECT
 
 public:
-    explicit ToolBar(QWidget *parent = nullptr);
-
-    ~ToolBar();
+	explicit ToolBar(QWidget* parent = nullptr);
+	~ToolBar();
 
 private slots:
 	void SelectionToolSelected();
-
 	void MoveToolSelected();
 
 signals:
 	void ToolSelected(ActiveTool tool);
 
 private:
-    Ui::ToolBar *ui;
+	Ui::ToolBar* ui;
 };

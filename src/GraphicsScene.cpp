@@ -6,14 +6,7 @@
 #include <QGraphicsSceneMouseEvent>
 #include "GraphicsScene.h"
 
-GraphicsScene::GraphicsScene(qreal x, qreal y, qreal width, qreal height, QObject* parent) :
-		QGraphicsScene(x, y, width, height, parent),
-		activeLayer(nullptr),
-		activeTool(ActiveTool::None)
-{
-}
-
-GraphicsScene::GraphicsScene(QObject* parent) : QGraphicsScene(parent), activeLayer(nullptr)
+GraphicsScene::GraphicsScene(QObject* parent) : QGraphicsScene(parent), activeLayer(nullptr), canvas(nullptr)
 {
 
 }
@@ -88,22 +81,15 @@ void GraphicsScene::ToolSelected(ActiveTool tool)
 
 void GraphicsScene::keyPressEvent(QKeyEvent* event)
 {
-	if(event->key() == Qt::Key_F4)
-	{
-		activeLayer->moveBy(-10, 0);
-	}
 }
 
 void GraphicsScene::AddLayer(ImageLayer* layer)
 {
-	layer->setParentItem(workSpace);
+	layer->setParentItem(canvas);
 }
 
-void GraphicsScene::CreateBackground(int width, int height)
+void GraphicsScene::SetCanvas(Canvas* canvas)
 {
-	workSpace = new QGraphicsRectItem(0, 0, width - 1, height - 1);
-	workSpace->setPen(Qt::NoPen);
-	workSpace->setBrush(QBrush(Qt::gray));
-	workSpace->setFlag(QGraphicsItem::ItemClipsChildrenToShape);
-	addItem(workSpace);
+	this->canvas = canvas;
+	addItem(canvas);
 }

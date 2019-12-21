@@ -1,25 +1,19 @@
 //
-// Created by waxta on 27.08.19.
+// Created by waxta on 24.11.19.
 //
 
 #pragma once
 
-#include <QGraphicsView>
+
+#include <QtCore/QVector>
 #include "ImageLayer.h"
+#include "WorkSpace.h"
 
-class Canvas : public QGraphicsView
+class Canvas : public QGraphicsRectItem
 {
-Q_OBJECT
-
 public:
-	explicit Canvas(QWidget* parent);
-
-	~Canvas() override;
-
-private:
-	QVector<ImageLayer*> layers;
-
-	ImageLayer* activeLayer;
+	Canvas(qreal x, qreal y, qreal w, qreal h, QGraphicsItem* parent = nullptr);
+	void CreateLayer(QColor &color);
 };
 
 

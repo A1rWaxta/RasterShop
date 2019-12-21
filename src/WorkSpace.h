@@ -1,23 +1,25 @@
 //
-// Created by waxta on 24.11.19.
+// Created by waxta on 27.08.19.
 //
 
 #pragma once
 
-
-#include <QtCore/QVector>
+#include <QGraphicsView>
 #include "ImageLayer.h"
-#include "Canvas.h"
 
-class WorkSpace
+class WorkSpace : public QGraphicsView
 {
-public:
-	WorkSpace();
+Q_OBJECT
 
-	void CreateLayer(QColor &color);
+public:
+	explicit WorkSpace(QWidget* parent);
+
+	~WorkSpace() override;
 
 private:
-	std::vector<ImageLayer*> layers;
+	QVector<ImageLayer*> layers;
+
+	ImageLayer* activeLayer;
 };
 
 

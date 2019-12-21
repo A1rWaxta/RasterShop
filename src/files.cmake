@@ -3,7 +3,7 @@ set(sources
 		MainWindow.cpp
 		ToolBar.cpp
 		ApplicationSettings.cpp
-		Canvas.cpp
+		WorkSpace.cpp
 		CanvasArea.cpp
 		GraphicsRectangle.cpp
 		GraphicsScene.cpp
@@ -11,14 +11,14 @@ set(sources
 		LayerPreview.cpp
 		NewCanvasDialog.cpp
 		ToolBarButton.cpp
-		WorkSpace.cpp
+		Canvas.cpp
 		)
 
 set(headers
 		MainWindow.h
 		ToolBar.h
 		ApplicationSettings.h
-		Canvas.h
+		WorkSpace.h
 		CanvasArea.h
 		GraphicsRectangle.h
 		GraphicsScene.h
@@ -26,6 +26,6 @@ set(headers
 		LayerPreview.h
 		NewCanvasDialog.h
 		ToolBarButton.h
-		WorkSpace.h
+		Canvas.h
 		Globals.h
 		)

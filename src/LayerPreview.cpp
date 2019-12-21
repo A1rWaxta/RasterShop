@@ -23,7 +23,7 @@ void LayerPreview::mouseReleaseEvent(QMouseEvent* mouseEvent)
 {
 	if( selected == false )
 	{
-		emit LayerSelected(this);
+		emit Selected(this);
 	}
 }
 

@@ -1,15 +1,17 @@
 //
-// Created by waxta on 27.08.19.
+// Created by waxta on 24.11.19.
 //
 
 #include "Canvas.h"
-#include <QPaintEvent>
-#include <QDebug>
 
-Canvas::Canvas(QWidget* parent)
+Canvas::Canvas(qreal x, qreal y, qreal w, qreal h, QGraphicsItem* parent)
+		: QGraphicsRectItem(x, y, w, h, parent)
 {
+	setPen(Qt::NoPen);
+	setBrush(QBrush(Qt::gray));
+	setFlag(QGraphicsItem::ItemClipsChildrenToShape);
 }
 
-Canvas::~Canvas()
+void Canvas::CreateLayer(QColor & color)
 {
 }

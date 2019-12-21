@@ -14,26 +14,18 @@ Q_OBJECT
 
 public:
 	explicit LayerPreview(ImageLayer* layer, QString& layerIdentifier, QWidget* parent = nullptr);
-
 	~LayerPreview() override;
-
 	ImageLayer* GetLayer();
-
 	void Select();
-
 	void Unselect();
-
 	QString GetLayerName();
 
 signals:
-	void LayerSelected(LayerPreview* layer);
+	void Selected(LayerPreview* layer);
 
 private:
 	void mouseReleaseEvent(QMouseEvent* mouseEvent) override;
-
 	bool selected;
-
 	ImageLayer* layer;
-
 	Ui::LayerPreview* ui;
 };
