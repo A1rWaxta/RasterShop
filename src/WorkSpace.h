@@ -13,12 +13,12 @@ Q_OBJECT
 
 public:
 	explicit WorkSpace(QWidget* parent);
-
 	~WorkSpace() override;
 
 private:
+	void wheelEvent(QWheelEvent* event) override;
+	void keyPressEvent(QKeyEvent* event) override;
 	QVector<ImageLayer*> layers;
-
 	ImageLayer* activeLayer;
 };
 

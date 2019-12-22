@@ -4,7 +4,6 @@ set(sources
 		ToolBar.cpp
 		ApplicationSettings.cpp
 		WorkSpace.cpp
-		CanvasArea.cpp
 		GraphicsRectangle.cpp
 		GraphicsScene.cpp
 		ImageLayer.cpp
@@ -19,7 +18,6 @@ set(headers
 		ToolBar.h
 		ApplicationSettings.h
 		WorkSpace.h
-		CanvasArea.h
 		GraphicsRectangle.h
 		GraphicsScene.h
 		ImageLayer.h
