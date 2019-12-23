@@ -80,7 +80,7 @@
     </widget>
    </item>
    <item>
-    <widget class="ToolBarButton" name="pushButton_6">
+    <widget class="ToolBarButton" name="penToolButton">
      <property name="minimumSize">
       <size>
        <width>60</width>

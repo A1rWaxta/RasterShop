@@ -111,7 +111,6 @@ void MainWindow::SaveActionClicked()
 void MainWindow::OpenActionClicked()
 {
 	QFileDialog fileDialog;
-	int imageWidth, imageHeight;
 
 	fileDialog.resize(320, 100);
 	fileDialog.setNameFilter(tr("Images (*.png *.bmp *.jpg)"));
@@ -122,10 +121,8 @@ void MainWindow::OpenActionClicked()
 	{
 		fileNames = fileDialog.selectedFiles();
 		QImage image(fileNames[0]);
-		imageWidth = image.width();
-		imageHeight = image.height();
 
-		InitializeNewProject(imageWidth, imageHeight);
+		InitializeNewProject(image.width(), image.height());
 
 		auto graphicsImage = new QGraphicsPixmapItem(QPixmap::fromImage(image));
 		graphicsScene->AddItemOnActiveLayer(graphicsImage);

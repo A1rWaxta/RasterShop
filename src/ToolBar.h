@@ -21,6 +21,7 @@ public:
 private slots:
 	void SelectionToolSelected();
 	void MoveToolSelected();
+	void PenToolSelected();
 
 signals:
 	void ToolSelected(ActiveTool tool);

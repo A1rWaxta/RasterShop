@@ -9,10 +9,9 @@ ToolBar::ToolBar(QWidget *parent) :
     ui->setupUi(this);
     layout()->setAlignment(Qt::AlignTop);
 
-	qRegisterMetaType<ActiveTool>("ActiveTool");
-
     connect(ui->selectToolButton, &QPushButton::released, this, &ToolBar::SelectionToolSelected);
 	connect(ui->moveToolButton, &QPushButton::released, this, &ToolBar::MoveToolSelected);
+	connect(ui->penToolButton, &QPushButton::released, this, &ToolBar::PenToolSelected);
 }
 
 ToolBar::~ToolBar()
@@ -28,4 +27,10 @@ void ToolBar::SelectionToolSelected()
 void ToolBar::MoveToolSelected()
 {
 	emit ToolSelected(ActiveTool::Move);
+}
+
+void ToolBar::PenToolSelected()
+{
+	//todo: parameter tab must appears when this option is selected
+	emit ToolSelected(ActiveTool::Pen);
 }
