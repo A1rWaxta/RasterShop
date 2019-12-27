@@ -102,6 +102,13 @@ void MainWindow::mouseReleaseEvent(QMouseEvent* event)
 
 void MainWindow::SaveAsActionClicked()
 {
+	QPixmap image(graphicsScene->sceneRect().width(), graphicsScene->sceneRect().height());
+	QPainter painter;
+	painter.begin(&image);
+	graphicsScene->render(&painter);
+	painter.end();
+	qDebug() << image.width() << image.height();
+	image.save("test-image.png");
 }
 
 void MainWindow::SaveActionClicked()
