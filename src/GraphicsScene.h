@@ -21,6 +21,7 @@ public:
 
 public slots:
 	void ToolSelected(ActiveTool tool);
+	void Paste();
 
 private:
 	void AddItemOnActiveLayer(QGraphicsItem* item);

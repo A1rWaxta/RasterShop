@@ -10,6 +10,7 @@
 WorkSpace::WorkSpace(QWidget* parent)
 {
 	setTransformationAnchor(AnchorUnderMouse);
+
 }
 
 WorkSpace::~WorkSpace()

@@ -28,7 +28,7 @@
    <enum>Qt::NoFocus</enum>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>RasterShop</string>
   </property>
   <property name="toolTip">
    <string/>
@@ -184,7 +184,11 @@
           <item>
            <widget class="QPushButton" name="addLayerButton">
             <property name="text">
-             <string>Dodaj warstwę</string>
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset>
+              <normaloff>../../../Pictures/tux.jpg</normaloff>../../../Pictures/tux.jpg</iconset>
             </property>
            </widget>
           </item>
@@ -312,7 +316,7 @@
     <string>Zakończ</string>
    </property>
    <property name="toolTip">
-    <string>Wypierdalaj XD</string>
+    <string>Zakończ</string>
    </property>
   </action>
   <action name="actionNew">

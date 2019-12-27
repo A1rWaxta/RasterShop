@@ -30,6 +30,8 @@ MainWindow::MainWindow(QWidget* parent) :
 
 	ConnectMenuBarActionsToSlots();
 	ConnectLayerOperationButtonsToSlots();
+
+	CreateShortcuts();
 }
 
 void MainWindow::ConnectMenuBarActionsToSlots()
@@ -105,7 +107,6 @@ void MainWindow::SaveAsActionClicked()
 
 void MainWindow::SaveActionClicked()
 {
-
 }
 
 void MainWindow::OpenActionClicked()
@@ -113,7 +114,7 @@ void MainWindow::OpenActionClicked()
 	QFileDialog fileDialog;
 
 	fileDialog.resize(320, 100);
-	fileDialog.setNameFilter(tr("Images (*.png *.bmp *.jpg)"));
+	fileDialog.setNameFilter(tr("Images (*.png *.bmp *.jpg *.jpeg)"));
 	fileDialog.setFileMode(QFileDialog::ExistingFile);
 
 	QStringList fileNames;
@@ -211,12 +212,18 @@ void MainWindow::DeleteActiveLayer()
 
 void MainWindow::MoveLayerUp()
 {
-	MoveLayer(LayerMoveDirection::Up);
+	if( not layers.empty())
+	{
+		MoveLayer(LayerMoveDirection::Up);
+	}
 }
 
 void MainWindow::MoveLayerDown()
 {
-	MoveLayer(LayerMoveDirection::Down);
+	if( not layers.empty())
+	{
+		MoveLayer(LayerMoveDirection::Down);
+	}
 }
 
 void MainWindow::MoveLayer(LayerMoveDirection direction)
@@ -282,9 +289,6 @@ void MainWindow::NewActionClicked()
 		backgroundRectangle->setPen(QPen(Qt::NoPen));
 		backgroundRectangle->setBrush(QBrush(backgroundColor));
 		graphicsScene->AddItemOnActiveLayer(backgroundRectangle);
-
-		graphicsScene->update();
-		ui->workSpace->update();
 	}
 }
 
@@ -311,6 +315,7 @@ void MainWindow::CreateScene()
 {
 	graphicsScene = std::make_shared<GraphicsScene>(new GraphicsScene(this));
 	connect(ui->toolBar, &ToolBar::ToolSelected, graphicsScene.get(), &GraphicsScene::ToolSelected);
+	connect(ctrlV, &QShortcut::activated, graphicsScene.get(), &GraphicsScene::Paste);
 
 	ui->workSpace->setScene(graphicsScene.get());
 }
@@ -329,4 +334,12 @@ void MainWindow::ShowLayerDeleteConfirmationDialog()
 			DeleteActiveLayer();
 		}
 	}
+}
+
+void MainWindow::CreateShortcuts()
+{
+	ctrlV = new QShortcut(this);
+	ctrlV->setKey(Qt::CTRL + Qt::Key_V);
+	ctrlC = new QShortcut(this);
+	ctrlC->setKey(Qt::CTRL + Qt::Key_C);
 }

@@ -33,7 +33,10 @@ private slots:
 	void MoveLayerDown();
 
 private:
-	enum class LayerMoveDirection{ Up, Down };
+	enum class LayerMoveDirection
+	{
+		Up, Down
+	};
 
 	void ClearScene();
 	void MoveLayer(LayerMoveDirection direction);
@@ -47,11 +50,12 @@ private:
 	void ConnectMenuBarActionsToSlots();
 	void ConnectLayerOperationButtonsToSlots();
 	void ShowLayerDeleteConfirmationDialog();
-
+	void CreateShortcuts();
 	std::shared_ptr<GraphicsScene> graphicsScene;
 	std::vector<LayerPreview*> layers;
 	LayerPreview* activeLayer;
-
 	int layersAddedCount;
+	QShortcut* ctrlC;
+	QShortcut* ctrlV;
 	Ui::MainWindow* ui;
 };

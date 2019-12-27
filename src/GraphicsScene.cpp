@@ -33,9 +33,14 @@ void GraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent* mouseEvent)
 				xPos = mouseEvent->scenePos().x() - mouseEvent->lastScenePos().x();
 				yPos = mouseEvent->scenePos().y() - mouseEvent->lastScenePos().y();
 				activeLayer->moveBy(xPos, yPos);
+				qDebug() << sceneRect();
 				break;
 
-			default:
+			case ActiveTool::Pen:
+				auto ellipse = new QGraphicsEllipseItem(mouseEvent->scenePos().x(), mouseEvent->scenePos().y(), 10, 10);
+				ellipse->setBrush(QColor(123, 123, 123));
+				ellipse->setPen(Qt::NoPen);
+				ellipse->setParentItem(activeLayer);
 				break;
 		}
 	}
@@ -43,13 +48,18 @@ void GraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent* mouseEvent)
 
 void GraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent* mouseEvent)
 {
-	if( mouseEvent->button() == Qt::LeftButton
-	    and
-	    sceneRect().contains(mouseEvent->scenePos())
-	    )
+	if( mouseEvent->button() == Qt::LeftButton )
+	{
+	}
+	if( activeLayer->sceneBoundingRect().contains(mouseEvent->scenePos()))
 	{
 		leftMousePressed = true;
 	}
+	else
+	{
+
+	}
+//	selection->hide();
 }
 
 void GraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent* mouseEvent)
@@ -92,4 +102,12 @@ void GraphicsScene::SetCanvas(Canvas* canvas)
 {
 	this->canvas = canvas;
 	addItem(canvas);
+}
+
+void GraphicsScene::Paste()
+{
+	auto clipboard = QGuiApplication::clipboard();
+	QImage image = clipboard->image();
+	auto graphicsPixmap = new QGraphicsPixmapItem(QPixmap::fromImage(image));
+	AddItemOnActiveLayer(graphicsPixmap);
 }
