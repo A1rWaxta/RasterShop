@@ -10,7 +10,6 @@
 WorkSpace::WorkSpace(QWidget* parent)
 {
 	setTransformationAnchor(AnchorUnderMouse);
-
 }
 
 WorkSpace::~WorkSpace()
@@ -39,10 +38,8 @@ void WorkSpace::keyPressEvent(QKeyEvent* event)
 	QPointF centerPoint = rect().center();
 	if( event->key() == Qt::Key_Up )
 	{
-		centerOn(centerPoint.x(), centerPoint.y() + 10);
 	}
 	if( event->key() == Qt::Key_Down )
 	{
-		centerOn(centerPoint.x(), centerPoint.y() - 10);
 	}
 }

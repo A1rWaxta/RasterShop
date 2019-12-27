@@ -46,7 +46,7 @@ private:
 	void keyPressEvent(QKeyEvent* event) override;
 	void mouseReleaseEvent(QMouseEvent* event) override;
 	void DeleteActiveLayer();
-	void CreateScene();
+	void CreateScene(int width, int height);
 	void ConnectMenuBarActionsToSlots();
 	void ConnectLayerOperationButtonsToSlots();
 	void ShowLayerDeleteConfirmationDialog();

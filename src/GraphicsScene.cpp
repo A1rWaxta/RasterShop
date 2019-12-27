@@ -6,9 +6,14 @@
 #include <QGraphicsSceneMouseEvent>
 #include "GraphicsScene.h"
 
-GraphicsScene::GraphicsScene(QObject* parent) : QGraphicsScene(parent), activeLayer(nullptr), canvas(nullptr)
+GraphicsScene::GraphicsScene(qreal width, qreal height, QObject* parent) : QGraphicsScene(parent), activeLayer(nullptr),
+                                                                           canvas(nullptr),
+                                                                           leftMousePressed(false)
 {
-
+	auto canvas = new Canvas(0, 0, width, height);
+	this->canvas = canvas;
+	addItem(canvas);
+	connect(this, &QGraphicsScene::sceneRectChanged, this, &GraphicsScene::AdjustCanvasToSceneRect);
 }
 
 void GraphicsScene::SetActiveLayer(ImageLayer* layer)
@@ -33,7 +38,7 @@ void GraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent* mouseEvent)
 				xPos = mouseEvent->scenePos().x() - mouseEvent->lastScenePos().x();
 				yPos = mouseEvent->scenePos().y() - mouseEvent->lastScenePos().y();
 				activeLayer->moveBy(xPos, yPos);
-				qDebug() << sceneRect();
+				qDebug() << activeLayer->sceneBoundingRect();
 				break;
 
 			case ActiveTool::Pen:
@@ -98,16 +103,15 @@ void GraphicsScene::AddLayer(ImageLayer* layer)
 	layer->setParentItem(canvas);
 }
 
-void GraphicsScene::SetCanvas(Canvas* canvas)
-{
-	this->canvas = canvas;
-	addItem(canvas);
-}
-
 void GraphicsScene::Paste()
 {
 	auto clipboard = QGuiApplication::clipboard();
 	QImage image = clipboard->image();
 	auto graphicsPixmap = new QGraphicsPixmapItem(QPixmap::fromImage(image));
 	AddItemOnActiveLayer(graphicsPixmap);
+}
+
+void GraphicsScene::AdjustCanvasToSceneRect()
+{
+	setSceneRect(canvas->sceneBoundingRect());
 }

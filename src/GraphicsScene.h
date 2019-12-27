@@ -16,12 +16,14 @@ Q_OBJECT
 	friend class MainWindow;
 
 public:
-	explicit GraphicsScene(QObject* parent);
-	void SetCanvas(Canvas* canvas);
+	GraphicsScene(qreal width, qreal height, QObject* parent);
 
 public slots:
 	void ToolSelected(ActiveTool tool);
 	void Paste();
+
+private slots:
+	void AdjustCanvasToSceneRect();
 
 private:
 	void AddItemOnActiveLayer(QGraphicsItem* item);

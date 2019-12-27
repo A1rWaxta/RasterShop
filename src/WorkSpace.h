@@ -6,8 +6,10 @@
 
 #include <QGraphicsView>
 #include "ImageLayer.h"
+#include "Canvas.h"
 #include <QShortcut>
 
+class Canvas;
 class WorkSpace : public QGraphicsView
 {
 Q_OBJECT
@@ -24,5 +26,3 @@ private:
 	QShortcut* ctrlC;
 	QShortcut* ctrlV;
 };
-
-

@@ -102,11 +102,11 @@ void MainWindow::mouseReleaseEvent(QMouseEvent* event)
 
 void MainWindow::SaveAsActionClicked()
 {
-//	canvas = new Canvas(this, QPoint(100, 100), QSize(100, 100));
 }
 
 void MainWindow::SaveActionClicked()
 {
+
 }
 
 void MainWindow::OpenActionClicked()
@@ -134,9 +134,7 @@ void MainWindow::InitializeNewProject(int width, int height)
 {
 	ClearScene();
 
-	CreateScene();
-	auto canvas = new Canvas(0, 0, width, height);
-	graphicsScene->SetCanvas(canvas);
+	CreateScene(width, height);
 
 	CreateLayer();
 	ui->addLayerButton->setDisabled(false);
@@ -311,9 +309,9 @@ void MainWindow::ClearScene()
 	layersAddedCount = 0;
 }
 
-void MainWindow::CreateScene()
+void MainWindow::CreateScene(int width, int height)
 {
-	graphicsScene = std::make_shared<GraphicsScene>(new GraphicsScene(this));
+	graphicsScene = std::make_shared<GraphicsScene>(width, height, this);
 	connect(ui->toolBar, &ToolBar::ToolSelected, graphicsScene.get(), &GraphicsScene::ToolSelected);
 	connect(ctrlV, &QShortcut::activated, graphicsScene.get(), &GraphicsScene::Paste);
 
@@ -339,7 +337,7 @@ void MainWindow::ShowLayerDeleteConfirmationDialog()
 void MainWindow::CreateShortcuts()
 {
 	ctrlV = new QShortcut(this);
-	ctrlV->setKey(Qt::CTRL + Qt::Key_V);
+	ctrlV->setKey(QKeySequence::Paste); //ctrl + v
 	ctrlC = new QShortcut(this);
-	ctrlC->setKey(Qt::CTRL + Qt::Key_C);
+	ctrlC->setKey(QKeySequence::Copy);  //ctrl + c
 }
