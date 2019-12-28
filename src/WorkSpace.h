@@ -23,6 +23,4 @@ private:
 	void keyPressEvent(QKeyEvent* event) override;
 	QVector<ImageLayer*> layers;
 	ImageLayer* activeLayer;
-	QShortcut* ctrlC;
-	QShortcut* ctrlV;
 };

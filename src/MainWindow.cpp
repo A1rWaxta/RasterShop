@@ -26,10 +26,13 @@ MainWindow::MainWindow(QWidget* parent) :
 	yPos = settings.value("window/ypos", 0).toInt();
 	setGeometry(xPos, yPos, width, height);
 
-	ui->addLayerButton->setDisabled(true);
-
+	//todo: connect button's slots after creating project
 	ConnectMenuBarActionsToSlots();
-	ConnectLayerOperationButtonsToSlots();
+
+	ui->addLayerButton->setDisabled(true);
+	ui->deleteLayerButton->setDisabled(true);
+	ui->moveLayerUpButton->setDisabled(true);
+	ui->moveLayerDownButton->setDisabled(true);
 
 	CreateShortcuts();
 }
@@ -102,13 +105,23 @@ void MainWindow::mouseReleaseEvent(QMouseEvent* event)
 
 void MainWindow::SaveAsActionClicked()
 {
-	QPixmap image(graphicsScene->sceneRect().width(), graphicsScene->sceneRect().height());
 	QPainter painter;
-	painter.begin(&image);
-	graphicsScene->render(&painter);
-	painter.end();
-	qDebug() << image.width() << image.height();
-	image.save("test-image.png");
+	if( graphicsScene != nullptr )
+	{
+		QFileDialog saveFileDialog(this);
+		saveFileDialog.setAcceptMode(QFileDialog::AcceptSave);
+		saveFileDialog.setNameFilter("*.png *.bmp *.jpg *.jpeg");
+
+		if( saveFileDialog.exec() == QFileDialog::Accepted )
+		{
+			QStringList file = saveFileDialog.selectedFiles();
+			QPixmap image(graphicsScene->sceneRect().width(), graphicsScene->sceneRect().height());
+			painter.begin(&image);
+			graphicsScene->render(&painter);
+			painter.end();
+			image.save(file[0]);
+		}
+	}
 }
 
 void MainWindow::SaveActionClicked()
@@ -118,7 +131,7 @@ void MainWindow::SaveActionClicked()
 
 void MainWindow::OpenActionClicked()
 {
-	QFileDialog fileDialog;
+	QFileDialog fileDialog(this);
 
 	fileDialog.resize(320, 100);
 	fileDialog.setNameFilter(tr("Images (*.png *.bmp *.jpg *.jpeg)"));
@@ -144,7 +157,13 @@ void MainWindow::InitializeNewProject(int width, int height)
 	CreateScene(width, height);
 
 	CreateLayer();
+
+	ConnectLayerOperationButtonsToSlots();
+
 	ui->addLayerButton->setDisabled(false);
+	ui->deleteLayerButton->setDisabled(false);
+	ui->moveLayerUpButton->setDisabled(false);
+	ui->moveLayerDownButton->setDisabled(false);
 }
 
 void MainWindow::CreateLayer()
@@ -318,11 +337,11 @@ void MainWindow::ClearScene()
 
 void MainWindow::CreateScene(int width, int height)
 {
-	graphicsScene = std::make_shared<GraphicsScene>(width, height, this);
-	connect(ui->toolBar, &ToolBar::ToolSelected, graphicsScene.get(), &GraphicsScene::ToolSelected);
-	connect(ctrlV, &QShortcut::activated, graphicsScene.get(), &GraphicsScene::Paste);
+	graphicsScene = new GraphicsScene(width, height, this);
+	connect(ui->toolBar, &ToolBar::ToolSelected, graphicsScene, &GraphicsScene::ToolSelected);
+	connect(ctrlV, &QShortcut::activated, graphicsScene, &GraphicsScene::Paste);
 
-	ui->workSpace->setScene(graphicsScene.get());
+	ui->workSpace->setScene(graphicsScene);
 }
 
 void MainWindow::ShowLayerDeleteConfirmationDialog()
@@ -345,6 +364,10 @@ void MainWindow::CreateShortcuts()
 {
 	ctrlV = new QShortcut(this);
 	ctrlV->setKey(QKeySequence::Paste); //ctrl + v
+
 	ctrlC = new QShortcut(this);
 	ctrlC->setKey(QKeySequence::Copy);  //ctrl + c
+
+	del = new QShortcut(this);
+	del->setKey(QKeySequence::Delete);
 }

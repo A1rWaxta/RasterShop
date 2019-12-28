@@ -51,11 +51,12 @@ private:
 	void ConnectLayerOperationButtonsToSlots();
 	void ShowLayerDeleteConfirmationDialog();
 	void CreateShortcuts();
-	std::shared_ptr<GraphicsScene> graphicsScene;
+	GraphicsScene* graphicsScene;
 	std::vector<LayerPreview*> layers;
 	LayerPreview* activeLayer;
 	int layersAddedCount;
 	QShortcut* ctrlC;
 	QShortcut* ctrlV;
+	QShortcut* del;
 	Ui::MainWindow* ui;
 };

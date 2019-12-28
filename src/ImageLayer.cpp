@@ -39,7 +39,7 @@ ImageLayer::~ImageLayer()
 
 void ImageLayer::mousePressEvent(QGraphicsSceneMouseEvent* mouseEvent)
 {
-    	if( mouseEvent->button() == Qt::LeftButton )
+    if( mouseEvent->button() == Qt::LeftButton )
 	{
 		if( contains(mouseEvent->pos()) == true )
 		{

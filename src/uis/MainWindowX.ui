@@ -183,17 +183,23 @@
          <layout class="QHBoxLayout" name="horizontalLayout_2">
           <item>
            <widget class="QPushButton" name="addLayerButton">
-            <property name="text">
-             <string/>
+            <property name="font">
+             <font>
+              <pointsize>7</pointsize>
+             </font>
             </property>
-            <property name="icon">
-             <iconset>
-              <normaloff>../../../Pictures/tux.jpg</normaloff>../../../Pictures/tux.jpg</iconset>
+            <property name="text">
+             <string>Nowa Warstwa</string>
             </property>
            </widget>
           </item>
           <item>
            <widget class="QPushButton" name="deleteLayerButton">
+            <property name="font">
+             <font>
+              <pointsize>7</pointsize>
+             </font>
+            </property>
             <property name="text">
              <string>Usuń warstwę</string>
             </property>
@@ -201,13 +207,23 @@
           </item>
           <item>
            <widget class="QPushButton" name="moveLayerUpButton">
+            <property name="font">
+             <font>
+              <pointsize>7</pointsize>
+             </font>
+            </property>
             <property name="text">
-             <string>PushButton</string>
+             <string>Góra</string>
             </property>
            </widget>
           </item>
           <item>
            <widget class="QPushButton" name="moveLayerDownButton">
+            <property name="font">
+             <font>
+              <pointsize>7</pointsize>
+             </font>
+            </property>
             <property name="text">
              <string>PushButton</string>
             </property>
@@ -226,7 +242,7 @@
              <x>0</x>
              <y>0</y>
              <width>276</width>
-             <height>322</height>
+             <height>331</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_2">
