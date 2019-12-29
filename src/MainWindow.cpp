@@ -216,14 +216,15 @@ void MainWindow::DeleteActiveLayer()
 
 	auto iterator = std::find(layers.begin(), layers.end(), activeLayer);
 	int index = std::distance(layers.begin(), iterator);
-	ui->scrollAreaWidgetContents->layout()->removeWidget(layers[index]);
+	QLayoutItem* item = ui->layerPreviewLayout->takeAt(index);
+	delete item->widget();
+	delete item;
 	layers.erase(iterator);
 	std::for_each(iterator, layers.end(), decrementLayerZValue);
-	delete activeLayer;
 
 	if( not layers.empty())
 	{
-		activeLayer = layers[index];
+		activeLayer = layers[index != 0 ? index - 1 : index];
 		graphicsScene->SetActiveLayer(activeLayer->GetLayer());
 		activeLayer->Select();
 	}

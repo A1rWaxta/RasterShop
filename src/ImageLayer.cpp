@@ -8,6 +8,7 @@
 
 ImageLayer::ImageLayer() : drawableList(0)
 {
+
 }
 
 void ImageLayer::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
@@ -39,23 +40,10 @@ ImageLayer::~ImageLayer()
 
 void ImageLayer::mousePressEvent(QGraphicsSceneMouseEvent* mouseEvent)
 {
-    if( mouseEvent->button() == Qt::LeftButton )
-	{
-		if( contains(mouseEvent->pos()) == true )
-		{
-		}
-		mouseLeftButtonPressed = true;
-	}
+	qDebug() << "selected";
 }
 
 void ImageLayer::mouseReleaseEvent(QGraphicsSceneMouseEvent* mouseEvent)
 {
-	if( mouseEvent->button() == Qt::LeftButton
-		and
-		sceneBoundingRect().contains(mouseEvent->scenePos())
-		)
-	{
-		qDebug() << "inside item";
-		mouseLeftButtonPressed = false;
-	}
+
 }

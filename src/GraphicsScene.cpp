@@ -8,7 +8,8 @@
 
 GraphicsScene::GraphicsScene(qreal width, qreal height, QObject* parent) : QGraphicsScene(parent), activeLayer(nullptr),
                                                                            canvas(nullptr),
-                                                                           leftMousePressed(false)
+                                                                           leftMousePressed(false),
+                                                                           activeTool(ActiveTool::None)
 {
 	auto canvas = new Canvas(0, 0, width, height);
 	this->canvas = canvas;
@@ -57,13 +58,13 @@ void GraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent* mouseEvent)
 	}
 	if( activeLayer->sceneBoundingRect().contains(mouseEvent->scenePos()))
 	{
+		activeLayer->setSelected(true);
 		leftMousePressed = true;
 	}
 	else
 	{
 
 	}
-//	selection->hide();
 }
 
 void GraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent* mouseEvent)

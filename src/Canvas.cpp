@@ -3,6 +3,7 @@
 //
 
 #include "Canvas.h"
+#include <QDebug>
 
 Canvas::Canvas(qreal x, qreal y, qreal w, qreal h, QGraphicsItem* parent)
 		: QGraphicsRectItem(x, y, w, h, parent)
@@ -10,8 +11,15 @@ Canvas::Canvas(qreal x, qreal y, qreal w, qreal h, QGraphicsItem* parent)
 	setPen(Qt::NoPen);
 	setBrush(QBrush(Qt::gray));
 	setFlag(QGraphicsItem::ItemClipsChildrenToShape);
+	setFlag(QGraphicsItem::ItemIsSelectable);
+	setSelected(true);
 }
 
 void Canvas::CreateLayer(QColor & color)
 {
+}
+
+void Canvas::mouseReleaseEvent(QGraphicsSceneMouseEvent* releaseMouseEvent)
+{
+	qDebug() << "XD";
 }

@@ -14,6 +14,9 @@ class Canvas : public QGraphicsRectItem
 public:
 	Canvas(qreal x, qreal y, qreal w, qreal h, QGraphicsItem* parent = nullptr);
 	void CreateLayer(QColor &color);
+
+private:
+	void mouseReleaseEvent(QGraphicsSceneMouseEvent* releaseMouseEvent) override;
 };
 
 
