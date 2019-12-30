@@ -17,11 +17,10 @@ public:
 	[[nodiscard]] QRectF boundingRect() const override;
 
 private:
-	void mousePressEvent(QGraphicsSceneMouseEvent* mouseEvent) override;
-	void mouseReleaseEvent(QGraphicsSceneMouseEvent* mouseEvent) override;
+	void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
+	void mouseReleaseEvent(QGraphicsSceneMouseEvent* event) override;
+	void mouseMoveEvent(QGraphicsSceneMouseEvent* event) override;
 	bool mouseLeftButtonPressed;
 	QVector<QGraphicsItem*> drawableList;
 	QGraphicsRectItem* item;
 };
-
-

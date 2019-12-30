@@ -6,13 +6,12 @@
 #include <QGraphicsSceneMouseEvent>
 #include "GraphicsScene.h"
 
-GraphicsScene::GraphicsScene(qreal width, qreal height, QObject* parent) : QGraphicsScene(parent), activeLayer(nullptr),
-                                                                           canvas(nullptr),
+GraphicsScene::GraphicsScene(qreal width, qreal height, QObject* parent) : QGraphicsScene(parent),
                                                                            leftMousePressed(false),
+                                                                           activeLayer(nullptr),
                                                                            activeTool(ActiveTool::None)
 {
-	auto canvas = new Canvas(0, 0, width, height);
-	this->canvas = canvas;
+	canvas = new Canvas(0, 0, width, height);
 	addItem(canvas);
 	connect(this, &QGraphicsScene::sceneRectChanged, this, &GraphicsScene::AdjustCanvasToSceneRect);
 }
@@ -29,10 +28,15 @@ void GraphicsScene::AddItemOnActiveLayer(QGraphicsItem* item)
 
 void GraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent* mouseEvent)
 {
+	QGraphicsScene::mouseMoveEvent(mouseEvent);
+
 	qreal xPos;
 	qreal yPos;
+
 	if( leftMousePressed )
 	{
+		mousePointerDistance += std::abs((mouseEvent->scenePos().x() - mouseEvent->lastScenePos().x()) +
+		                        (mouseEvent->scenePos().y() - mouseEvent->lastScenePos().y()));
 		switch( activeTool )
 		{
 			case ActiveTool::Move:
@@ -53,31 +57,33 @@ void GraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent* mouseEvent)
 
 void GraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent* mouseEvent)
 {
-	if( mouseEvent->button() == Qt::LeftButton )
-	{
-	}
-	if( activeLayer->sceneBoundingRect().contains(mouseEvent->scenePos()))
-	{
-		activeLayer->setSelected(true);
-		leftMousePressed = true;
-	}
-	else
-	{
+	QGraphicsScene::mousePressEvent(mouseEvent);
 
+	if( mouseEvent->button() == Qt::LeftButton
+	    and
+	    activeLayer->sceneBoundingRect().contains(mouseEvent->scenePos())
+			)
+	{
+		leftMousePressed = true;
 	}
 }
 
 void GraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent* mouseEvent)
 {
+	QGraphicsScene::mouseReleaseEvent(mouseEvent);
+
+	mousePointerDistance = 0;
+
 	if( mouseEvent->button() == Qt::LeftButton )
 	{
 		leftMousePressed = false;
 	}
 }
 
-void GraphicsScene::ToolSelected(ActiveTool tool)
+void GraphicsScene::ChangeActiveTool(ActiveTool tool)
 {
 	activeTool = tool;
+
 	switch( tool )
 	{
 		case ActiveTool::None:

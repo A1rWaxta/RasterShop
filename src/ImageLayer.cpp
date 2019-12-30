@@ -5,15 +5,19 @@
 #include "ImageLayer.h"
 #include <QGraphicsSceneMouseEvent>
 #include <QDebug>
+#include <QPen>
 
 ImageLayer::ImageLayer() : drawableList(0)
 {
-
+	setFlag(QGraphicsItem::ItemIsSelectable);
+	setFlag(QGraphicsItem::ItemIsMovable);
+	QPen pen(Qt::NoPen);
+	pen.setWidth(5);
 }
 
 void ImageLayer::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
 {
-	for( auto child : childItems())
+	for( auto child : childItems() )
 	{
 		child->paint(painter, option, widget);
 	}
@@ -27,7 +31,7 @@ void ImageLayer::AddDrawableItem(QGraphicsItem* item)
 QRectF ImageLayer::boundingRect() const
 {
 	QRectF boundingRect;
-	for( auto child : childItems())
+	for( auto child : childItems() )
 	{
 		boundingRect = boundingRect.united(child->boundingRect());
 	}
@@ -38,12 +42,14 @@ ImageLayer::~ImageLayer()
 {
 }
 
-void ImageLayer::mousePressEvent(QGraphicsSceneMouseEvent* mouseEvent)
+void ImageLayer::mousePressEvent(QGraphicsSceneMouseEvent* event)
 {
-	qDebug() << "selected";
 }
 
-void ImageLayer::mouseReleaseEvent(QGraphicsSceneMouseEvent* mouseEvent)
+void ImageLayer::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
 {
+}
 
+void ImageLayer::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
+{
 }

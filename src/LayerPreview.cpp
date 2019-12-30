@@ -35,18 +35,21 @@ ImageLayer* LayerPreview::GetLayer()
 void LayerPreview::Unselect()
 {
 	QPalette palette;
-	selected = false;
 	palette.setColor(QPalette::Window, Qt::white);
+	selected = false;
 	setPalette(palette);
+
+	layer->setSelected(false);
 }
-//	graphicsScene->setBackgroundBrush(QColor(123, 123, 123));
 
 void LayerPreview::Select()
 {
 	QPalette palette;
-	selected = true;
 	palette.setColor(QPalette::Window, QColor(140, 204, 245));
+	selected = true;
 	setPalette(palette);
+
+	layer->setSelected(true);
 }
 
 QString LayerPreview::GetLayerName()

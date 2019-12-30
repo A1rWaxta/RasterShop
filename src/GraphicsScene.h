@@ -19,7 +19,7 @@ public:
 	GraphicsScene(qreal width, qreal height, QObject* parent);
 
 public slots:
-	void ToolSelected(ActiveTool tool);
+	void ChangeActiveTool(ActiveTool tool);
 	void Paste();
 
 private slots:
@@ -36,5 +36,6 @@ private:
 	bool leftMousePressed;
 	ImageLayer* activeLayer;
 	Canvas* canvas;
+	qreal mousePointerDistance;
 	ActiveTool activeTool;
 };

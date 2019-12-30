@@ -16,7 +16,4 @@ public:
 	void CreateLayer(QColor &color);
 
 private:
-	void mouseReleaseEvent(QGraphicsSceneMouseEvent* releaseMouseEvent) override;
 };
-
-

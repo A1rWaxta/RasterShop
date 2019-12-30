@@ -83,7 +83,7 @@ void MainWindow::moveEvent(QMoveEvent* moveEvent)
 	menuList = ui->menuBar->findChildren<QMenu*>();
 	for( QMenu* menu : menuList )
 	{
-		if( menu->isVisible())
+		if( menu->isVisible() )
 		{
 			menu->hide();
 			return;
@@ -174,7 +174,7 @@ void MainWindow::CreateLayer()
 
 	QString layerName = "layer_" + QString::number(layersAddedCount);
 	auto layerPreview = new LayerPreview(newLayer, layerName, ui->scrollAreaWidgetContents);
-	ui->layerPreviewLayout->addWidget(layerPreview, ui->layerPreviewLayout->count());
+	ui->layerPreviewLayout->addWidget(layerPreview);
 	layers.push_back(layerPreview);
 	++layersAddedCount;
 
@@ -222,7 +222,7 @@ void MainWindow::DeleteActiveLayer()
 	layers.erase(iterator);
 	std::for_each(iterator, layers.end(), decrementLayerZValue);
 
-	if( not layers.empty())
+	if( not layers.empty() )
 	{
 		activeLayer = layers[index != 0 ? index - 1 : index];
 		graphicsScene->SetActiveLayer(activeLayer->GetLayer());
@@ -237,7 +237,7 @@ void MainWindow::DeleteActiveLayer()
 
 void MainWindow::MoveLayerUp()
 {
-	if( not layers.empty())
+	if( not layers.empty() )
 	{
 		MoveLayer(LayerMoveDirection::Up);
 	}
@@ -245,7 +245,7 @@ void MainWindow::MoveLayerUp()
 
 void MainWindow::MoveLayerDown()
 {
-	if( not layers.empty())
+	if( not layers.empty() )
 	{
 		MoveLayer(LayerMoveDirection::Down);
 	}
@@ -311,7 +311,6 @@ void MainWindow::NewActionClicked()
 		InitializeNewProject(canvasWidth, canvasHeight);
 
 		auto backgroundRectangle = new QGraphicsRectItem(0, 0, canvasWidth, canvasHeight);
-		backgroundRectangle->setPen(QPen(Qt::NoPen));
 		backgroundRectangle->setBrush(QBrush(backgroundColor));
 		graphicsScene->AddItemOnActiveLayer(backgroundRectangle);
 	}
@@ -322,7 +321,7 @@ void MainWindow::ClearScene()
 	QLayoutItem* item;
 	if( graphicsScene != nullptr )
 	{
-		while((item = ui->layerPreviewLayout->takeAt(0)) != nullptr )
+		while( (item = ui->layerPreviewLayout->takeAt(0)) != nullptr )
 		{
 			delete item->widget();
 			delete item;
@@ -339,7 +338,7 @@ void MainWindow::ClearScene()
 void MainWindow::CreateScene(int width, int height)
 {
 	graphicsScene = new GraphicsScene(width, height, this);
-	connect(ui->toolBar, &ToolBar::ToolSelected, graphicsScene, &GraphicsScene::ToolSelected);
+	connect(ui->toolBar, &ToolBar::ToolSelected, graphicsScene, &GraphicsScene::ChangeActiveTool);
 	connect(ctrlV, &QShortcut::activated, graphicsScene, &GraphicsScene::Paste);
 
 	ui->workSpace->setScene(graphicsScene);
