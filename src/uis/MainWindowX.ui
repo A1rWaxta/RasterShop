@@ -169,103 +169,19 @@
       <property name="currentIndex">
        <number>1</number>
       </property>
-      <widget class="QWidget" name="tab_3">
+      <widget class="QWidget" name="unnamedTab">
        <attribute name="title">
-        <string>Tab 1</string>
+        <string>Unnamed</string>
        </attribute>
       </widget>
-      <widget class="QWidget" name="layersTab">
+      <widget class="LayersView" name="layersTab">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
        <attribute name="title">
         <string>Warstwy</string>
        </attribute>
-       <layout class="QGridLayout" name="gridLayout_4">
-        <item row="3" column="0">
-         <layout class="QHBoxLayout" name="horizontalLayout_2">
-          <item>
-           <widget class="QPushButton" name="addLayerButton">
-            <property name="font">
-             <font>
-              <pointsize>7</pointsize>
-             </font>
-            </property>
-            <property name="text">
-             <string>Nowa Warstwa</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="deleteLayerButton">
-            <property name="font">
-             <font>
-              <pointsize>7</pointsize>
-             </font>
-            </property>
-            <property name="text">
-             <string>Usuń warstwę</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="moveLayerUpButton">
-            <property name="font">
-             <font>
-              <pointsize>7</pointsize>
-             </font>
-            </property>
-            <property name="text">
-             <string>Góra</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="moveLayerDownButton">
-            <property name="font">
-             <font>
-              <pointsize>7</pointsize>
-             </font>
-            </property>
-            <property name="text">
-             <string>PushButton</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-        <item row="0" column="0">
-         <widget class="QScrollArea" name="scrollArea">
-          <property name="widgetResizable">
-           <bool>true</bool>
-          </property>
-          <widget class="QWidget" name="scrollAreaWidgetContents">
-           <property name="geometry">
-            <rect>
-             <x>0</x>
-             <y>0</y>
-             <width>276</width>
-             <height>331</height>
-            </rect>
-           </property>
-           <layout class="QVBoxLayout" name="verticalLayout_2">
-            <property name="leftMargin">
-             <number>0</number>
-            </property>
-            <property name="topMargin">
-             <number>0</number>
-            </property>
-            <property name="rightMargin">
-             <number>0</number>
-            </property>
-            <property name="bottomMargin">
-             <number>0</number>
-            </property>
-            <item>
-             <layout class="QVBoxLayout" name="layerPreviewLayout"/>
-            </item>
-           </layout>
-          </widget>
-         </widget>
-        </item>
-       </layout>
+       <layout class="QGridLayout" name="gridLayout_4"/>
       </widget>
      </widget>
     </item>
@@ -402,6 +318,12 @@
    <class>WorkSpace</class>
    <extends>QGraphicsView</extends>
    <header location="global">Canvas.h</header>
+  </customwidget>
+  <customwidget>
+   <class>LayersView</class>
+   <extends>QWidget</extends>
+   <header location="global">LayersView.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources/>

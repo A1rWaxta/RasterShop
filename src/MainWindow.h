@@ -27,10 +27,7 @@ private slots:
 	void SaveAsActionClicked();
 	void SaveActionClicked();
 	void InitializeNewProject(int width, int height);
-	void CreateLayer();
 	void ActiveLayerChanged(LayerPreview* layer);
-	void MoveLayerUp();
-	void MoveLayerDown();
 
 private:
 	enum class LayerMoveDirection
@@ -39,16 +36,13 @@ private:
 	};
 
 	void ClearScene();
-	void MoveLayer(LayerMoveDirection direction);
 	void closeEvent(QCloseEvent* closeEvent) override;
 	void resizeEvent(QResizeEvent* resizeEvent) override;
 	void moveEvent(QMoveEvent* moveEvent) override;
 	void keyPressEvent(QKeyEvent* event) override;
 	void mouseReleaseEvent(QMouseEvent* event) override;
-	void DeleteActiveLayer();
 	void CreateScene(int width, int height);
 	void ConnectMenuBarActionsToSlots();
-	void ConnectLayerOperationButtonsToSlots();
 	void ShowLayerDeleteConfirmationDialog();
 	void CreateShortcuts();
 	GraphicsScene* graphicsScene;

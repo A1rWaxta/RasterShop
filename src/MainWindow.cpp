@@ -14,7 +14,6 @@ MainWindow::MainWindow(QWidget* parent) :
 	int xPos, yPos;
 
 	ui->setupUi(this);
-	ui->layerPreviewLayout->setAlignment(Qt::AlignTop);
 
 	setMinimumSize(740, 600);
 
@@ -29,11 +28,6 @@ MainWindow::MainWindow(QWidget* parent) :
 	//todo: connect button's slots after creating project
 	ConnectMenuBarActionsToSlots();
 
-	ui->addLayerButton->setDisabled(true);
-	ui->deleteLayerButton->setDisabled(true);
-	ui->moveLayerUpButton->setDisabled(true);
-	ui->moveLayerDownButton->setDisabled(true);
-
 	CreateShortcuts();
 }
 
@@ -43,14 +37,6 @@ void MainWindow::ConnectMenuBarActionsToSlots()
 	connect(ui->actionSave, &QAction::triggered, this, &MainWindow::SaveActionClicked);
 	connect(ui->actionSaveAs, &QAction::triggered, this, &MainWindow::SaveAsActionClicked);
 	connect(ui->actionOpen, &QAction::triggered, this, &MainWindow::OpenActionClicked);
-}
-
-void MainWindow::ConnectLayerOperationButtonsToSlots()
-{
-	connect(ui->addLayerButton, &QPushButton::released, this, &MainWindow::CreateLayer);
-	connect(ui->deleteLayerButton, &QPushButton::released, this, &MainWindow::ShowLayerDeleteConfirmationDialog);
-	connect(ui->moveLayerUpButton, &QPushButton::clicked, this, &MainWindow::MoveLayerUp);
-	connect(ui->moveLayerDownButton, &QPushButton::clicked, this, &MainWindow::MoveLayerDown);
 }
 
 MainWindow::~MainWindow()
@@ -156,31 +142,9 @@ void MainWindow::InitializeNewProject(int width, int height)
 
 	CreateScene(width, height);
 
-	CreateLayer();
+//	CreateLayer();
 
-	ConnectLayerOperationButtonsToSlots();
-
-	ui->addLayerButton->setDisabled(false);
-	ui->deleteLayerButton->setDisabled(false);
-	ui->moveLayerUpButton->setDisabled(false);
-	ui->moveLayerDownButton->setDisabled(false);
-}
-
-void MainWindow::CreateLayer()
-{
-	auto newLayer = new ImageLayer();
-	newLayer->setZValue(layers.size()); //places new layer on top of image
-	graphicsScene->AddLayer(newLayer);
-
-	QString layerName = "layer_" + QString::number(layersAddedCount);
-	auto layerPreview = new LayerPreview(newLayer, layerName, ui->scrollAreaWidgetContents);
-	ui->layerPreviewLayout->addWidget(layerPreview);
-	layers.push_back(layerPreview);
-	++layersAddedCount;
-
-	connect(layerPreview, &LayerPreview::Selected, this, &MainWindow::ActiveLayerChanged);
-
-	ActiveLayerChanged(layerPreview);
+//	ConnectLayerOperationButtonsToSlots();
 }
 
 void MainWindow::keyPressEvent(QKeyEvent* event)
@@ -204,94 +168,6 @@ void MainWindow::ActiveLayerChanged(LayerPreview* layer)
 	activeLayer = layer;
 	activeLayer->Select();
 	graphicsScene->SetActiveLayer(activeLayer->GetLayer());
-}
-
-void MainWindow::DeleteActiveLayer()
-{
-	auto decrementLayerZValue = [](LayerPreview* preview)
-	{
-		int zValue = preview->GetLayer()->zValue();
-		preview->GetLayer()->setZValue(zValue - 1);
-	};
-
-	auto iterator = std::find(layers.begin(), layers.end(), activeLayer);
-	int index = std::distance(layers.begin(), iterator);
-	QLayoutItem* item = ui->layerPreviewLayout->takeAt(index);
-	delete item->widget();
-	delete item;
-	layers.erase(iterator);
-	std::for_each(iterator, layers.end(), decrementLayerZValue);
-
-	if( not layers.empty() )
-	{
-		activeLayer = layers[index != 0 ? index - 1 : index];
-		graphicsScene->SetActiveLayer(activeLayer->GetLayer());
-		activeLayer->Select();
-	}
-	else
-	{
-		activeLayer = nullptr;
-		graphicsScene->SetActiveLayer(nullptr);
-	}
-}
-
-void MainWindow::MoveLayerUp()
-{
-	if( not layers.empty() )
-	{
-		MoveLayer(LayerMoveDirection::Up);
-	}
-}
-
-void MainWindow::MoveLayerDown()
-{
-	if( not layers.empty() )
-	{
-		MoveLayer(LayerMoveDirection::Down);
-	}
-}
-
-void MainWindow::MoveLayer(LayerMoveDirection direction)
-{
-	auto layersVectorIterator = std::find(layers.begin(), layers.end(), activeLayer);
-	int index = std::distance(layers.begin(), layersVectorIterator);
-	LayerPreview* tmpWidget;
-	int zValue;
-
-	switch( direction )
-	{
-		case LayerMoveDirection::Up:
-			if( index == 0 )
-			{
-				return;
-			}
-			tmpWidget = dynamic_cast<LayerPreview*>(ui->layerPreviewLayout->itemAt(index - 1)->widget());
-			zValue = tmpWidget->GetLayer()->zValue();
-			tmpWidget->GetLayer()->setZValue(activeLayer->GetLayer()->zValue());
-			activeLayer->GetLayer()->setZValue(zValue);
-			ui->layerPreviewLayout->removeWidget(tmpWidget);
-			ui->layerPreviewLayout->removeWidget(activeLayer);
-			ui->layerPreviewLayout->insertWidget(index - 1, activeLayer);
-			ui->layerPreviewLayout->insertWidget(index, tmpWidget);
-			std::iter_swap(layersVectorIterator, layersVectorIterator - 1);
-			break;
-
-		case LayerMoveDirection::Down:
-			if( index == layers.size() - 1 )
-			{
-				return;
-			}
-			tmpWidget = dynamic_cast<LayerPreview*>(ui->layerPreviewLayout->itemAt(index + 1)->widget());
-			zValue = tmpWidget->GetLayer()->zValue();
-			tmpWidget->GetLayer()->setZValue(activeLayer->GetLayer()->zValue());
-			activeLayer->GetLayer()->setZValue(zValue);
-			ui->layerPreviewLayout->removeWidget(tmpWidget);
-			ui->layerPreviewLayout->removeWidget(activeLayer);
-			ui->layerPreviewLayout->insertWidget(index, tmpWidget);
-			ui->layerPreviewLayout->insertWidget(index + 1, activeLayer);
-			std::iter_swap(layersVectorIterator, layersVectorIterator + 1);
-			break;
-	}
 }
 
 void MainWindow::NewActionClicked()
@@ -318,21 +194,21 @@ void MainWindow::NewActionClicked()
 
 void MainWindow::ClearScene()
 {
-	QLayoutItem* item;
-	if( graphicsScene != nullptr )
-	{
-		while( (item = ui->layerPreviewLayout->takeAt(0)) != nullptr )
-		{
-			delete item->widget();
-			delete item;
-		}
-
-		layers.clear();
-		graphicsScene->clear();
-		graphicsScene = nullptr;
-		activeLayer = nullptr;
-	}
-	layersAddedCount = 0;
+//	QLayoutItem* item;
+//	if( graphicsScene != nullptr )
+//	{
+//		while( (item = ui->layerPreviewLayout->takeAt(0)) != nullptr )
+//		{
+//			delete item->widget();
+//			delete item;
+//		}
+//
+//		layers.clear();
+//		graphicsScene->clear();
+//		graphicsScene = nullptr;
+//		activeLayer = nullptr;
+//	}
+//	layersAddedCount = 0;
 }
 
 void MainWindow::CreateScene(int width, int height)
@@ -355,7 +231,7 @@ void MainWindow::ShowLayerDeleteConfirmationDialog()
 
 		if( confirmationDialog.exec() == QMessageBox::Accepted )
 		{
-			DeleteActiveLayer();
+//			DeleteActiveLayer();
 		}
 	}
 }
