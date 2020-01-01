@@ -12,6 +12,10 @@ set(sources
 		ToolBarButton.cpp
 		Canvas.cpp
 		LayersView.cpp
+		LayerSystem/Model.cpp
+		LayerSystem/Controller.cpp
+		LayerSystem/LayerSystem.cpp
+		LayerSystem/View.cpp
 		)
 
 set(headers
@@ -28,4 +32,8 @@ set(headers
 		Canvas.h
 		Globals.h
 		LayersView.h
+		LayerSystem/Model.h
+		LayerSystem/Controller.h
+		LayerSystem/LayerSystem.h
+		LayerSystem/View.h
 		)
