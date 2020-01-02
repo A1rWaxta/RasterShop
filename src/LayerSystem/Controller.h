@@ -6,6 +6,8 @@
 
 #include <QGridLayout>
 #include <QPushButton>
+#include "View.h"
+#include "Model.h"
 
 namespace LayerSystem
 {
@@ -14,14 +16,20 @@ namespace LayerSystem
 	Q_OBJECT
 
 	public:
-		Controller(LayerSystemModel& model, LayerSystemView& view);
+		Controller(Model* model, View* view);
+
+	private slots:
+		void AddLayerButtonClicked();
+		void DeleteLayerButtonCliked();
+		void MoveLayerUpButtonClicked();
+		void MoveLayerDownButtonClicked();
 
 	private:
 		QPushButton* addLayer;
 		QPushButton* deleteLayer;
 		QPushButton* moveLayerUp;
 		QPushButton* moveLayerDown;
-		LayerSystemModel& model;
-		LayerSystemView& view;
+		Model* model;
+		View* view;
 	};
 }

@@ -5,11 +5,17 @@
 #pragma once
 
 #include <QScrollArea>
+#include <QtWidgets/QVBoxLayout>
 
 namespace LayerSystem
 {
 	class View : public QScrollArea
 	{
+	public:
+		View();
+		void Update();
 
+	private:
+		QVBoxLayout* layout;
 	};
 }

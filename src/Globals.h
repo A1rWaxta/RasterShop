@@ -12,3 +12,9 @@ enum class ActiveTool
 	Move
 };
 
+enum class LayerMoveDirection
+{
+	Up,
+	Down
+};
+
