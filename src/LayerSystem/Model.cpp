@@ -64,3 +64,8 @@ void Model::AttachView(View* view)
 	this->view = view;
 	view->Update();
 }
+
+std::vector<ImageLayer*> Model::GetLayers()
+{
+	return layerStack;
+}

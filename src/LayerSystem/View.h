@@ -6,6 +6,7 @@
 
 #include <QScrollArea>
 #include <QtWidgets/QVBoxLayout>
+#include "Model.h"
 
 namespace LayerSystem
 {
@@ -14,8 +15,10 @@ namespace LayerSystem
 	public:
 		View();
 		void Update();
+		void ObserveLayerModel(Model* model);
 
 	private:
 		QVBoxLayout* layout;
+		Model* model;
 	};
 }

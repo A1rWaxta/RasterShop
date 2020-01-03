@@ -18,6 +18,7 @@ namespace LayerSystem
 		void MoveActiveLayer(LayerMoveDirection direction);
 		void CreateImageLayer();
 		void AttachView(View* view);
+		std::vector<ImageLayer*> GetLayers();
 
 	private:
 		ImageLayer* activeLayer;
