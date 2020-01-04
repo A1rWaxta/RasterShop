@@ -9,17 +9,14 @@ using LayerSystem::Controller;
 
 Controller::Controller(Model* model, View* view) : model(model), view(view)
 {
-	addLayer = new QPushButton();
-	addLayer->setText(tr("Dodaj"));
+	addLayer = new QPushButton(tr("Dodaj"));
+	addLayer->setEnabled(true);
 
-	deleteLayer = new QPushButton();
-	deleteLayer->setText(tr("Usuń"));
+	deleteLayer = new QPushButton(tr("Usuń"));
 
-	moveLayerUp = new QPushButton();
-	moveLayerUp->setText(tr("Góra"));
+	moveLayerUp = new QPushButton(tr("Góra"));
 
-	moveLayerDown = new QPushButton();
-	moveLayerDown->setText(tr("Dół"));
+	moveLayerDown = new QPushButton(tr("Dół"));
 
 	addWidget(addLayer);
 	addWidget(deleteLayer);
@@ -27,24 +24,24 @@ Controller::Controller(Model* model, View* view) : model(model), view(view)
 	addWidget(moveLayerDown);
 
 	connect(addLayer, &QPushButton::released, this, &Controller::AddLayerButtonClicked);
-	connect(deleteLayer, &QPushButton::released, this, &Controller::DeleteLayerButtonCliked);
+	connect(deleteLayer, &QPushButton::released, this, &Controller::DeleteLayerButtonClicked);
 	connect(moveLayerDown, &QPushButton::released, this, &Controller::MoveLayerDownButtonClicked);
 	connect(moveLayerUp, &QPushButton::released, this, &Controller::MoveLayerUpButtonClicked);
 }
 
 void Controller::AddLayerButtonClicked()
 {
-	model->CreateImageLayer();
+	model->CreateLayer();
 }
 
-void Controller::DeleteLayerButtonCliked()
+void Controller::DeleteLayerButtonClicked()
 {
 	model->DeleteActiveLayer();
 }
 
 void Controller::MoveLayerUpButtonClicked()
 {
-	model->MoveActiveLayer(LayerMoveDirection::Up);
+	model->MoveActiveLayer(LayerMoveDirection::Down);
 }
 
 void Controller::MoveLayerDownButtonClicked()

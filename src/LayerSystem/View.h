@@ -10,6 +10,8 @@
 
 namespace LayerSystem
 {
+	class Model;
+
 	class View : public QScrollArea
 	{
 	public:

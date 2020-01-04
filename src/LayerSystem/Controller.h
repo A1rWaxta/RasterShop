@@ -20,7 +20,7 @@ namespace LayerSystem
 
 	private slots:
 		void AddLayerButtonClicked();
-		void DeleteLayerButtonCliked();
+		void DeleteLayerButtonClicked();
 		void MoveLayerUpButtonClicked();
 		void MoveLayerDownButtonClicked();
 

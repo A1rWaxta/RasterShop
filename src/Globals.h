@@ -17,4 +17,3 @@ enum class LayerMoveDirection
 	Up,
 	Down
 };
-

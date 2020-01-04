@@ -174,7 +174,7 @@
         <string>Unnamed</string>
        </attribute>
       </widget>
-      <widget class="LayersView" name="layersTab">
+      <widget class="QWidget" name="layersTab">
        <property name="enabled">
         <bool>true</bool>
        </property>
@@ -318,12 +318,6 @@
    <class>WorkSpace</class>
    <extends>QGraphicsView</extends>
    <header location="global">Canvas.h</header>
-  </customwidget>
-  <customwidget>
-   <class>LayersView</class>
-   <extends>QWidget</extends>
-   <header location="global">LayersView.h</header>
-   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources/>

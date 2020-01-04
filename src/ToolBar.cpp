@@ -6,10 +6,10 @@ ToolBar::ToolBar(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::ToolBar)
 {
-    ui->setupUi(this);
-    layout()->setAlignment(Qt::AlignTop);
+	ui->setupUi(this);
+	layout()->setAlignment(Qt::AlignTop);
 
-    connect(ui->selectToolButton, &QPushButton::released, this, &ToolBar::SelectionToolSelected);
+	connect(ui->selectToolButton, &QPushButton::released, this, &ToolBar::SelectionToolSelected);
 	connect(ui->moveToolButton, &QPushButton::released, this, &ToolBar::MoveToolSelected);
 	connect(ui->penToolButton, &QPushButton::released, this, &ToolBar::PenToolSelected);
 }

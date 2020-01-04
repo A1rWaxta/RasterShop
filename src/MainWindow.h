@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QtWidgets>
+#include <LayerSystem/LayerSystemMain.h>
 #include "WorkSpace.h"
 #include "LayerPreview.h"
 #include "Globals.h"
@@ -52,5 +53,6 @@ private:
 	QShortcut* ctrlC;
 	QShortcut* ctrlV;
 	QShortcut* del;
+	LayerSystem::LayerSystemMain* main;
 	Ui::MainWindow* ui;
 };

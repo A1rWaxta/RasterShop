@@ -14,7 +14,7 @@ set(sources
 		LayersView.cpp
 		LayerSystem/Model.cpp
 		LayerSystem/Controller.cpp
-		LayerSystem/LayerSystem.cpp
+		LayerSystem/LayerSystemMain.cpp
 		LayerSystem/View.cpp
 		)
 
@@ -34,6 +34,6 @@ set(headers
 		LayersView.h
 		LayerSystem/Model.h
 		LayerSystem/Controller.h
-		LayerSystem/LayerSystem.h
+		LayerSystem/LayerSystemMain.h
 		LayerSystem/View.h
 		)

@@ -7,7 +7,7 @@
 #include <QDebug>
 #include <QPen>
 
-ImageLayer::ImageLayer() : drawableList(0)
+ImageLayer::ImageLayer(QString& identifier): identifier(identifier)
 {
 	setFlag(QGraphicsItem::ItemIsSelectable);
 	setFlag(QGraphicsItem::ItemIsMovable);
@@ -21,11 +21,6 @@ void ImageLayer::paint(QPainter* painter, const QStyleOptionGraphicsItem* option
 	{
 		child->paint(painter, option, widget);
 	}
-}
-
-void ImageLayer::AddDrawableItem(QGraphicsItem* item)
-{
-	drawableList.push_back(item);
 }
 
 QRectF ImageLayer::boundingRect() const
@@ -52,4 +47,14 @@ void ImageLayer::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
 
 void ImageLayer::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
 {
+}
+
+void ImageLayer::SetLayerIdentifier(QString& identifier)
+{
+	this->identifier = identifier;
+}
+
+QString& ImageLayer::GetLayerIdentifier()
+{
+	return identifier;
 }

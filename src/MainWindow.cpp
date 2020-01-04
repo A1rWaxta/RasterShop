@@ -28,6 +28,9 @@ MainWindow::MainWindow(QWidget* parent) :
 	//todo: connect button's slots after creating project
 	ConnectMenuBarActionsToSlots();
 
+	main = new LayerSystem::LayerSystemMain();
+	ui->layersTab->layout()->addWidget(main);
+
 	CreateShortcuts();
 }
 
@@ -157,17 +160,16 @@ void MainWindow::keyPressEvent(QKeyEvent* event)
 
 void MainWindow::ActiveLayerChanged(LayerPreview* layer)
 {
-	if( activeLayer == layer )
-	{
-		return;
-	}
-	if( activeLayer != nullptr )
-	{
-		activeLayer->Unselect();
-	}
-	activeLayer = layer;
-	activeLayer->Select();
-	graphicsScene->SetActiveLayer(activeLayer->GetLayer());
+//	if( activeLayer == layer )
+//	{
+//		return;
+//	}
+//	if( activeLayer != nullptr )
+//	{
+//		activeLayer->Unselect();
+//	}
+//	activeLayer = layer;
+//	activeLayer->Select();
 }
 
 void MainWindow::NewActionClicked()

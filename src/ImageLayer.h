@@ -10,17 +10,18 @@
 class ImageLayer : public QGraphicsRectItem
 {
 public:
-	explicit ImageLayer();
+	explicit ImageLayer(QString& identifier);
 	~ImageLayer() override;
 	void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) override;
-	void AddDrawableItem(QGraphicsItem* item);
 	[[nodiscard]] QRectF boundingRect() const override;
+	void SetLayerIdentifier(QString& identifier);
+	[[nodiscard]] QString& GetLayerIdentifier();
 
 private:
 	void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
 	void mouseReleaseEvent(QGraphicsSceneMouseEvent* event) override;
 	void mouseMoveEvent(QGraphicsSceneMouseEvent* event) override;
 	bool mouseLeftButtonPressed;
-	QVector<QGraphicsItem*> drawableList;
+	QString identifier;
 	QGraphicsRectItem* item;
 };

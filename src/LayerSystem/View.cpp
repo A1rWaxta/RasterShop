@@ -11,21 +11,46 @@ View::View()
 {
 	auto scrollAreaWidget = new QWidget();
 	setWidget(scrollAreaWidget); //becomes a child
-	layout = new QVBoxLayout(widget());
+	layout = new QVBoxLayout();
+	layout->setAlignment(Qt::AlignTop);
+	scrollAreaWidget->setLayout(layout);
 }
 
 void View::Update()
 {
-	int count = layout->count();
+	QLayoutItem* item;
+	LayerPreview* layerPreview;
+	int currentNumberOfItems = layout->count();
 	auto layers = model->GetLayers();
-	for(int i = 0; i < layers.size(); ++i)
+
+	if( currentNumberOfItems != layers.size() )
 	{
-		auto layerPreview = dynamic_cast<LayerPreview*>(layout->itemAt(i)->widget());
-		layerPreview->SetText(layers[i].GetLayerIdentifier());
+		if( currentNumberOfItems < layers.size() )
+		{
+			for( int i = 0; i < ( layers.size() - currentNumberOfItems ); ++i )
+			{
+				layerPreview = new LayerPreview();
+				layout->addWidget(layerPreview);
+			}
+		}
+		else
+		{
+			for( int i = 0; i < ( currentNumberOfItems - layers.size() ); ++i )
+			{
+				item = layout->takeAt(0);
+				delete item->widget();
+				delete item;
+			}
+		}
+	}
+	for( int i = 0; i < layers.size(); ++i )
+	{
+		layerPreview = dynamic_cast<LayerPreview*>(layout->itemAt(i)->widget());
+		layerPreview->SetLayerName(layers[i]->GetLayerIdentifier());
 	}
 }
 
-void LayerSystem::View::ObserveLayerModel(LayerSystem::Model* model)
+void View::ObserveLayerModel(LayerSystem::Model* model)
 {
 	this->model = model;
 }
