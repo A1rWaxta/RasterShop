@@ -22,6 +22,7 @@ private slots:
 	void SelectionToolSelected();
 	void MoveToolSelected();
 	void PenToolSelected();
+	void RectangleShapeSelected();
 
 signals:
 	void ToolSelected(ActiveTool tool);

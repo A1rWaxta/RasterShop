@@ -33,13 +33,4 @@ void WorkSpace::wheelEvent(QWheelEvent* event)
 
 void WorkSpace::keyPressEvent(QKeyEvent* event)
 {
-	QTransform currentTranform = transform();
-	QTransform newTranform = currentTranform;
-	QPointF centerPoint = rect().center();
-	if( event->key() == Qt::Key_Up )
-	{
-	}
-	if( event->key() == Qt::Key_Down )
-	{
-	}
 }

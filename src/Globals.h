@@ -9,6 +9,7 @@ enum class ActiveTool
 	None,
 	Selection,
 	Pen,
+	RectangleShape,
 	Move
 };
 

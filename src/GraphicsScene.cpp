@@ -14,11 +14,17 @@ GraphicsScene::GraphicsScene(qreal width, qreal height, QObject* parent) : QGrap
 	canvas = new Canvas(0, 0, width, height);
 	addItem(canvas);
 	connect(this, &QGraphicsScene::sceneRectChanged, this, &GraphicsScene::AdjustCanvasToSceneRect);
+
+	selectionRectangle = new QGraphicsRectItem(0, 0, 0, 0);
+	selectionRectangle->setPen(QPen(Qt::black, 1, Qt::DashDotDotLine));
+	addItem(selectionRectangle);
 }
 
 void GraphicsScene::SetActiveLayer(ImageLayer* layer)
 {
 	activeLayer = layer;
+	selectionRectangle->setRect(activeLayer->boundingRect());
+	selectionRectangle->setPos(activeLayer->pos());
 }
 
 void GraphicsScene::AddItemOnActiveLayer(QGraphicsItem* item)
@@ -35,22 +41,33 @@ void GraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent* mouseEvent)
 
 	if( leftMousePressed )
 	{
-		mousePointerDistance += std::abs((mouseEvent->scenePos().x() - mouseEvent->lastScenePos().x()) +
-		                        (mouseEvent->scenePos().y() - mouseEvent->lastScenePos().y()));
+		mousePointerDistance += std::abs(( mouseEvent->pos().x() - mouseEvent->lastPos().x() ) +
+		                                 ( mouseEvent->pos().y() - mouseEvent->lastPos().y() ));
 		switch( activeTool )
 		{
 			case ActiveTool::Move:
+			{
 				xPos = mouseEvent->scenePos().x() - mouseEvent->lastScenePos().x();
 				yPos = mouseEvent->scenePos().y() - mouseEvent->lastScenePos().y();
 				activeLayer->moveBy(xPos, yPos);
+				selectionRectangle->moveBy(xPos, yPos);
 				break;
-
+			}
 			case ActiveTool::Pen:
-				auto ellipse = new QGraphicsEllipseItem(mouseEvent->scenePos().x(), mouseEvent->scenePos().y(), 10, 10);
-				ellipse->setBrush(QColor(123, 123, 123));
-				ellipse->setPen(Qt::NoPen);
-				ellipse->setParentItem(activeLayer);
+			{
+				if( activeLayer->contains(mouseEvent->pos()) )
+				{
+					qDebug() << "rysowańsko";
+					auto line = new QGraphicsLineItem(QLineF(mouseEvent->pos(), mouseEvent->lastPos()));
+					line->setPen(QPen(QColor(123, 13, 123), 2));
+					line->setParentItem(activeLayer);
+				}
 				break;
+			}
+			case ActiveTool::RectangleShape:
+			{
+				break;
+			}
 		}
 	}
 }
@@ -59,10 +76,8 @@ void GraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent* mouseEvent)
 {
 	QGraphicsScene::mousePressEvent(mouseEvent);
 
-	if( mouseEvent->button() == Qt::LeftButton
-	    and
-	    activeLayer->sceneBoundingRect().contains(mouseEvent->scenePos())
-			)
+	if( mouseEvent->button() == Qt::LeftButton and activeLayer != nullptr and
+	    activeLayer->sceneBoundingRect().contains(mouseEvent->scenePos()) )
 	{
 		leftMousePressed = true;
 	}
@@ -111,10 +126,14 @@ void GraphicsScene::AddLayer(ImageLayer* layer)
 
 void GraphicsScene::Paste()
 {
-	auto clipboard = QGuiApplication::clipboard();
-	QImage image = clipboard->image();
-	auto graphicsPixmap = new QGraphicsPixmapItem(QPixmap::fromImage(image));
-	AddItemOnActiveLayer(graphicsPixmap);
+	QPixmap pixmap = QPixmap::fromImage(QGuiApplication::clipboard()->image());
+	if( pixmap.size().width() > 0 and pixmap.size().height() > 0 )
+	{
+		auto graphicsPixmap = new QGraphicsPixmapItem(pixmap, activeLayer);
+		qreal xPos = canvas->rect().center().x() - ( pixmap.width() / 2 );
+		qreal yPos = canvas->rect().center().y() - ( pixmap.height() / 2 );
+		graphicsPixmap->setPos(xPos, yPos);
+	}
 }
 
 void GraphicsScene::AdjustCanvasToSceneRect()

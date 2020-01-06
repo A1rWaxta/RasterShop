@@ -15,6 +15,7 @@ public:
 	void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) override;
 	void AddDrawableItem(QGraphicsItem* item);
 	[[nodiscard]] QRectF boundingRect() const override;
+	void SetSize(qreal width, qreal height);
 
 private:
 	void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
@@ -23,4 +24,6 @@ private:
 	bool mouseLeftButtonPressed;
 	QVector<QGraphicsItem*> drawableList;
 	QGraphicsRectItem* item;
+	qreal width;
+	qreal heigt;
 };

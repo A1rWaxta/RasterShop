@@ -9,8 +9,7 @@
 
 ImageLayer::ImageLayer() : drawableList(0)
 {
-	setFlag(QGraphicsItem::ItemIsSelectable);
-	setFlag(QGraphicsItem::ItemIsMovable);
+	setFlag(QGraphicsItem::ItemClipsChildrenToShape);
 	QPen pen(Qt::NoPen);
 	pen.setWidth(5);
 }
@@ -30,12 +29,7 @@ void ImageLayer::AddDrawableItem(QGraphicsItem* item)
 
 QRectF ImageLayer::boundingRect() const
 {
-	QRectF boundingRect;
-	for( auto child : childItems() )
-	{
-		boundingRect = boundingRect.united(child->boundingRect());
-	}
-	return boundingRect;
+	return QRectF(0, 0, width, heigt);
 }
 
 ImageLayer::~ImageLayer()
@@ -52,4 +46,10 @@ void ImageLayer::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
 
 void ImageLayer::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
 {
+}
+
+void ImageLayer::SetSize(qreal width, qreal height)
+{
+	this->width = width;
+	this->heigt = height;
 }

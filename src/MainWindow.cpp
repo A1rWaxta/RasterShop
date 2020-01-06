@@ -112,6 +112,8 @@ void MainWindow::SaveAsActionClicked()
 		saveFileDialog.setAcceptMode(QFileDialog::AcceptSave);
 		saveFileDialog.setNameFilter("*.png *.bmp *.jpg *.jpeg");
 
+		graphicsScene->selectionRectangle->hide();
+//		graphicsScene->canvas->hide();
 		if( saveFileDialog.exec() == QFileDialog::Accepted )
 		{
 			QStringList file = saveFileDialog.selectedFiles();
@@ -121,6 +123,8 @@ void MainWindow::SaveAsActionClicked()
 			painter.end();
 			image.save(file[0]);
 		}
+//		graphicsScene->canvas->show();
+		graphicsScene->selectionRectangle->show();
 	}
 }
 
@@ -170,6 +174,7 @@ void MainWindow::CreateLayer()
 {
 	auto newLayer = new ImageLayer();
 	newLayer->setZValue(layers.size()); //places new layer on top of image
+	newLayer->SetSize(graphicsScene->canvas->rect().width(), graphicsScene->canvas->rect().height());
 	graphicsScene->AddLayer(newLayer);
 
 	QString layerName = "layer_" + QString::number(layersAddedCount);
@@ -321,7 +326,7 @@ void MainWindow::ClearScene()
 	QLayoutItem* item;
 	if( graphicsScene != nullptr )
 	{
-		while( (item = ui->layerPreviewLayout->takeAt(0)) != nullptr )
+		while( ( item = ui->layerPreviewLayout->takeAt(0) ) != nullptr )
 		{
 			delete item->widget();
 			delete item;
@@ -342,6 +347,19 @@ void MainWindow::CreateScene(int width, int height)
 	connect(ctrlV, &QShortcut::activated, graphicsScene, &GraphicsScene::Paste);
 
 	ui->workSpace->setScene(graphicsScene);
+	if( ui->workSpace->width() / width < 1 or ui->workSpace->height() / height < 1 )
+	{
+		qreal scaleFactorX = static_cast<qreal>(ui->workSpace->width()) / static_cast<qreal>(width);
+		qreal scaleFactorY = static_cast<qreal>(ui->workSpace->height()) / static_cast<qreal>(height);
+		if( scaleFactorX <= scaleFactorY )
+		{
+			ui->workSpace->scale(scaleFactorX, scaleFactorX);
+		}
+		else
+		{
+			ui->workSpace->scale(scaleFactorY, scaleFactorY);
+		}
+	}
 }
 
 void MainWindow::ShowLayerDeleteConfirmationDialog()
