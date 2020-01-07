@@ -25,6 +25,7 @@ void GraphicsScene::SetActiveLayer(ImageLayer* layer)
 	activeLayer = layer;
 	selectionRectangle->setRect(activeLayer->boundingRect());
 	selectionRectangle->setPos(activeLayer->pos());
+	setFocusItem(activeLayer);
 }
 
 void GraphicsScene::AddItemOnActiveLayer(QGraphicsItem* item)
@@ -57,7 +58,6 @@ void GraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent* mouseEvent)
 			{
 				if( activeLayer->contains(mouseEvent->pos()) )
 				{
-					qDebug() << "rysowańsko";
 					auto line = new QGraphicsLineItem(QLineF(mouseEvent->pos(), mouseEvent->lastPos()));
 					line->setPen(QPen(QColor(123, 13, 123), 2));
 					line->setParentItem(activeLayer);
@@ -77,7 +77,7 @@ void GraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent* mouseEvent)
 	QGraphicsScene::mousePressEvent(mouseEvent);
 
 	if( mouseEvent->button() == Qt::LeftButton and activeLayer != nullptr and
-	    activeLayer->sceneBoundingRect().contains(mouseEvent->scenePos()) )
+	    activeLayer->contains(mouseEvent->scenePos()) )
 	{
 		leftMousePressed = true;
 	}
@@ -110,6 +110,9 @@ void GraphicsScene::ChangeActiveTool(ActiveTool tool)
 		case ActiveTool::Pen:
 			break;
 
+		case ActiveTool::RectangleShape:
+			break;
+
 		default:
 			break;
 	}
@@ -117,11 +120,24 @@ void GraphicsScene::ChangeActiveTool(ActiveTool tool)
 
 void GraphicsScene::keyPressEvent(QKeyEvent* event)
 {
+	if( event->key() == Qt::UpArrow )
+	{
+		if( activeTool == ActiveTool::Scale )
+		{
+			activeLayer->setScale(activeLayer->scale() + 0.1);
+			activeLayer->setTransformOriginPoint(activeLayer->boundingRect().width() / 2,
+			                                     activeLayer->boundingRect().height() / 2);
+			selectionRectangle->setRect(activeLayer->boundingRect());
+//			selectionRectangle->setPos()
+		}
+	}
 }
 
 void GraphicsScene::AddLayer(ImageLayer* layer)
 {
 	layer->setParentItem(canvas);
+	layer->setTransformOriginPoint(layer->boundingRect().width() / 2,
+	                               layer->boundingRect().height() / 2);
 }
 
 void GraphicsScene::Paste()

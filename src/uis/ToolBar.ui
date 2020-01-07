@@ -77,10 +77,6 @@
      <property name="text">
       <string/>
      </property>
-     <property name="icon">
-      <iconset>
-       <normaloff>../../bin/res/edit.svg</normaloff>../../bin/res/edit.svg</iconset>
-     </property>
     </widget>
    </item>
    <item>
@@ -122,7 +118,7 @@
     </widget>
    </item>
    <item>
-    <widget class="ToolBarButton" name="pushButton_3">
+    <widget class="ToolBarButton" name="scaleToolButton">
      <property name="minimumSize">
       <size>
        <width>60</width>

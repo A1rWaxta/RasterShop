@@ -38,5 +38,6 @@ private:
 	Canvas* canvas;
 	qreal mousePointerDistance;
 	ActiveTool activeTool;
+
 	QGraphicsRectItem* selectionRectangle;
 };

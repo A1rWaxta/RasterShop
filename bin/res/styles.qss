@@ -7,3 +7,16 @@ QMainWindow
 {
     background-color: #7D7D7D;
 }
+
+.ToolBarButton
+{
+    background-color: white;
+}
+
+QPushButton:hover
+{
+    border-style: solid;
+    border-width: 2px;
+    border-color: #871f55;
+    background-color: white;
+}

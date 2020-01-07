@@ -21,9 +21,10 @@ private:
 	void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
 	void mouseReleaseEvent(QGraphicsSceneMouseEvent* event) override;
 	void mouseMoveEvent(QGraphicsSceneMouseEvent* event) override;
+	void focusInEvent(QFocusEvent* event) override;
 	bool mouseLeftButtonPressed;
 	QVector<QGraphicsItem*> drawableList;
-	QGraphicsRectItem* item;
+	QGraphicsRectItem* selectionRect;
 	qreal width;
 	qreal heigt;
 };

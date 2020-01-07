@@ -51,6 +51,7 @@ private:
 	void ConnectLayerOperationButtonsToSlots();
 	void ShowLayerDeleteConfirmationDialog();
 	void CreateShortcuts();
+	void ToolSelected(ActiveTool activeTool);
 	GraphicsScene* graphicsScene;
 	std::vector<LayerPreview*> layers;
 	LayerPreview* activeLayer;

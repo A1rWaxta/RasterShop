@@ -26,7 +26,6 @@ MainWindow::MainWindow(QWidget* parent) :
 	yPos = settings.value("window/ypos", 0).toInt();
 	setGeometry(xPos, yPos, width, height);
 
-	//todo: connect button's slots after creating project
 	ConnectMenuBarActionsToSlots();
 
 	ui->addLayerButton->setDisabled(true);
@@ -343,7 +342,7 @@ void MainWindow::ClearScene()
 void MainWindow::CreateScene(int width, int height)
 {
 	graphicsScene = new GraphicsScene(width, height, this);
-	connect(ui->toolBar, &ToolBar::ToolSelected, graphicsScene, &GraphicsScene::ChangeActiveTool);
+	connect(ui->toolBar, &ToolBar::ToolSelected, this, &MainWindow::ToolSelected);
 	connect(ctrlV, &QShortcut::activated, graphicsScene, &GraphicsScene::Paste);
 
 	ui->workSpace->setScene(graphicsScene);
@@ -388,4 +387,28 @@ void MainWindow::CreateShortcuts()
 
 	del = new QShortcut(this);
 	del->setKey(QKeySequence::Delete);
+}
+
+void MainWindow::ToolSelected(ActiveTool tool)
+{
+	graphicsScene->ChangeActiveTool(tool);
+	switch(tool)
+	{
+		case ActiveTool::Selection:
+			qDebug() << "selection";
+			ui->activeToolLabel->setText("Selection Tool");
+			break;
+		case ActiveTool::Pen:
+			ui->activeToolLabel->setText("Pen Tool");
+			break;
+		case ActiveTool::RectangleShape:
+			ui->activeToolLabel->setText("Rectangle Tool");
+			break;
+		case ActiveTool::Move:
+			ui->activeToolLabel->setText("Move Tool");
+			break;
+		case ActiveTool::Scale:
+			ui->activeToolLabel->setText("Scale Tool");
+			break;
+	}
 }

@@ -28,5 +28,9 @@ signals:
 	void ToolSelected(ActiveTool tool);
 
 private:
+	QPalette selectionPalette;
+	QPalette normalPalette;
+	QBrush activeToolBrush;
+	ToolBarButton* active;
 	Ui::ToolBar* ui;
 };

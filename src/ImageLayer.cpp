@@ -10,6 +10,7 @@
 ImageLayer::ImageLayer() : drawableList(0)
 {
 	setFlag(QGraphicsItem::ItemClipsChildrenToShape);
+	setFlag(QGraphicsItem::ItemIsFocusable);
 	QPen pen(Qt::NoPen);
 	pen.setWidth(5);
 }
@@ -52,4 +53,8 @@ void ImageLayer::SetSize(qreal width, qreal height)
 {
 	this->width = width;
 	this->heigt = height;
+}
+
+void ImageLayer::focusInEvent(QFocusEvent* event)
+{
 }
