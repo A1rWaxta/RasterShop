@@ -11,6 +11,7 @@ set(sources
 		NewCanvasDialog.cpp
 		ToolBarButton.cpp
 		Canvas.cpp
+		ColorPicker.cpp
 		)
 
 set(headers
@@ -26,4 +27,5 @@ set(headers
 		ToolBarButton.h
 		Canvas.h
 		Globals.h
+		ColorPicker.h
 		)

@@ -16,7 +16,7 @@ Q_OBJECT
 	friend class MainWindow;
 
 public:
-	GraphicsScene(qreal width, qreal height, QObject* parent);
+	GraphicsScene(qreal width, qreal height, QColor& color, QObject* parent);
 
 public slots:
 	void ChangeActiveTool(ActiveTool tool);
@@ -38,6 +38,7 @@ private:
 	Canvas* canvas;
 	qreal mousePointerDistance;
 	ActiveTool activeTool;
+	QColor& toolColor;
 
 	QGraphicsRectItem* selectionRectangle;
 };

@@ -16,6 +16,9 @@ MainWindow::MainWindow(QWidget* parent) :
 	ui->setupUi(this);
 	ui->layerPreviewLayout->setAlignment(Qt::AlignTop);
 
+	ui->toolLayout->setAlignment(Qt::AlignTop);
+	ui->colorPicker->hide();
+
 	setMinimumSize(740, 600);
 
 	width = qApp->screens()[0]->size().width() / 2;
@@ -112,7 +115,6 @@ void MainWindow::SaveAsActionClicked()
 		saveFileDialog.setNameFilter("*.png *.bmp *.jpg *.jpeg");
 
 		graphicsScene->selectionRectangle->hide();
-//		graphicsScene->canvas->hide();
 		if( saveFileDialog.exec() == QFileDialog::Accepted )
 		{
 			QStringList file = saveFileDialog.selectedFiles();
@@ -122,7 +124,6 @@ void MainWindow::SaveAsActionClicked()
 			painter.end();
 			image.save(file[0]);
 		}
-//		graphicsScene->canvas->show();
 		graphicsScene->selectionRectangle->show();
 	}
 }
@@ -341,7 +342,7 @@ void MainWindow::ClearScene()
 
 void MainWindow::CreateScene(int width, int height)
 {
-	graphicsScene = new GraphicsScene(width, height, this);
+	graphicsScene = new GraphicsScene(width, height, ui->colorPicker->GetColor(), this);
 	connect(ui->toolBar, &ToolBar::ToolSelected, this, &MainWindow::ToolSelected);
 	connect(ctrlV, &QShortcut::activated, graphicsScene, &GraphicsScene::Paste);
 
@@ -391,24 +392,31 @@ void MainWindow::CreateShortcuts()
 
 void MainWindow::ToolSelected(ActiveTool tool)
 {
-	graphicsScene->ChangeActiveTool(tool);
-	switch(tool)
+	if( tool == ActiveTool::RectangleShape or tool == ActiveTool::Pen )
+	{
+		ui->colorPicker->show();
+	}
+	else
+	{
+		ui->colorPicker->hide();
+	}
+	switch( tool )
 	{
 		case ActiveTool::Selection:
-			qDebug() << "selection";
-			ui->activeToolLabel->setText("Selection Tool");
+			ui->activeToolLabel->setText("Narzędzie zaznaczanie");
 			break;
 		case ActiveTool::Pen:
-			ui->activeToolLabel->setText("Pen Tool");
+			ui->activeToolLabel->setText("Pędzel");
 			break;
 		case ActiveTool::RectangleShape:
-			ui->activeToolLabel->setText("Rectangle Tool");
+			ui->activeToolLabel->setText("Narząedzie prostokąt");
 			break;
 		case ActiveTool::Move:
-			ui->activeToolLabel->setText("Move Tool");
+			ui->activeToolLabel->setText("Narzędzie przemieszczanie");
 			break;
 		case ActiveTool::Scale:
-			ui->activeToolLabel->setText("Scale Tool");
+			ui->activeToolLabel->setText("Skalowanie");
 			break;
 	}
+	graphicsScene->ChangeActiveTool(tool);
 }

@@ -6,10 +6,11 @@
 #include <QGraphicsSceneMouseEvent>
 #include "GraphicsScene.h"
 
-GraphicsScene::GraphicsScene(qreal width, qreal height, QObject* parent) : QGraphicsScene(parent),
-                                                                           leftMousePressed(false),
-                                                                           activeLayer(nullptr),
-                                                                           activeTool(ActiveTool::None)
+GraphicsScene::GraphicsScene(qreal width, qreal height, QColor& color, QObject* parent) : QGraphicsScene(parent),
+                                                                                          leftMousePressed(false),
+                                                                                          activeLayer(nullptr),
+                                                                                          toolColor(color),
+                                                                                          activeTool(ActiveTool::None)
 {
 	canvas = new Canvas(0, 0, width, height);
 	addItem(canvas);
@@ -23,9 +24,17 @@ GraphicsScene::GraphicsScene(qreal width, qreal height, QObject* parent) : QGrap
 void GraphicsScene::SetActiveLayer(ImageLayer* layer)
 {
 	activeLayer = layer;
-	selectionRectangle->setRect(activeLayer->boundingRect());
-	selectionRectangle->setPos(activeLayer->pos());
-	setFocusItem(activeLayer);
+	if( activeLayer != nullptr )
+	{
+		selectionRectangle->show();
+		selectionRectangle->setRect(activeLayer->boundingRect());
+		selectionRectangle->setPos(activeLayer->pos());
+		setFocusItem(activeLayer);
+	}
+	else
+	{
+		selectionRectangle->hide();
+	}
 }
 
 void GraphicsScene::AddItemOnActiveLayer(QGraphicsItem* item)
@@ -59,7 +68,7 @@ void GraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent* mouseEvent)
 				if( activeLayer->contains(mouseEvent->pos()) )
 				{
 					auto line = new QGraphicsLineItem(QLineF(mouseEvent->pos(), mouseEvent->lastPos()));
-					line->setPen(QPen(QColor(123, 13, 123), 2));
+					line->setPen(QPen(toolColor, 2));
 					line->setParentItem(activeLayer);
 				}
 				break;

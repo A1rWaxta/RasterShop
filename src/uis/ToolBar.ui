@@ -52,6 +52,9 @@
        <height>60</height>
       </size>
      </property>
+     <property name="toolTip">
+      <string>Narzędzie zaznaczanie</string>
+     </property>
      <property name="autoFillBackground">
       <bool>false</bool>
      </property>
@@ -74,6 +77,9 @@
        <height>60</height>
       </size>
      </property>
+     <property name="toolTip">
+      <string>Narzędzie przemieszczanie</string>
+     </property>
      <property name="text">
       <string/>
      </property>
@@ -92,6 +98,9 @@
        <width>60</width>
        <height>60</height>
       </size>
+     </property>
+     <property name="toolTip">
+      <string>Pędzel</string>
      </property>
      <property name="text">
       <string/>
@@ -112,6 +121,9 @@
        <height>60</height>
       </size>
      </property>
+     <property name="toolTip">
+      <string>Narzędzie prostokąt</string>
+     </property>
      <property name="text">
       <string/>
      </property>
@@ -130,6 +142,9 @@
        <width>60</width>
        <height>60</height>
       </size>
+     </property>
+     <property name="toolTip">
+      <string>Skalowanie</string>
      </property>
      <property name="text">
       <string/>
