@@ -111,6 +111,9 @@
             </property>
            </spacer>
           </item>
+          <item row="1" column="0" colspan="3">
+           <widget class="ColorPicker" name="colorPicker" native="true"/>
+          </item>
           <item row="0" column="2">
            <spacer name="horizontalSpacer_2">
             <property name="orientation">
@@ -123,9 +126,6 @@
              </size>
             </property>
            </spacer>
-          </item>
-          <item row="1" column="0" colspan="3">
-           <widget class="ColorPicker" name="colorPicker" native="true"/>
           </item>
          </layout>
         </item>

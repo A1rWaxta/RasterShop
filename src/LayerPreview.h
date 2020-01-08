@@ -23,6 +23,9 @@ public:
 signals:
 	void Selected(LayerPreview* layer);
 
+private slots:
+	void ToggleVisibility();
+
 private:
 	void mouseReleaseEvent(QMouseEvent* mouseEvent) override;
 	bool selected;

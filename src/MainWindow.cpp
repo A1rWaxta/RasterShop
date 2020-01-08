@@ -345,6 +345,7 @@ void MainWindow::CreateScene(int width, int height)
 	graphicsScene = new GraphicsScene(width, height, ui->colorPicker->GetColor(), this);
 	connect(ui->toolBar, &ToolBar::ToolSelected, this, &MainWindow::ToolSelected);
 	connect(ctrlV, &QShortcut::activated, graphicsScene, &GraphicsScene::Paste);
+	connect(esc, &QShortcut::activated, graphicsScene, &GraphicsScene::CancelSelection);
 
 	ui->workSpace->setScene(graphicsScene);
 	if( ui->workSpace->width() / width < 1 or ui->workSpace->height() / height < 1 )
@@ -388,11 +389,14 @@ void MainWindow::CreateShortcuts()
 
 	del = new QShortcut(this);
 	del->setKey(QKeySequence::Delete);
+
+	esc = new QShortcut(this);
+	esc->setKey(Qt::Key_Escape);
 }
 
 void MainWindow::ToolSelected(ActiveTool tool)
 {
-	if( tool == ActiveTool::RectangleShape or tool == ActiveTool::Pen )
+	if( tool == ActiveTool::Paint or tool == ActiveTool::Pen )
 	{
 		ui->colorPicker->show();
 	}
@@ -408,8 +412,8 @@ void MainWindow::ToolSelected(ActiveTool tool)
 		case ActiveTool::Pen:
 			ui->activeToolLabel->setText("Pędzel");
 			break;
-		case ActiveTool::RectangleShape:
-			ui->activeToolLabel->setText("Narząedzie prostokąt");
+		case ActiveTool::Paint:
+			ui->activeToolLabel->setText("Narzędzie wiadro z farbą");
 			break;
 		case ActiveTool::Move:
 			ui->activeToolLabel->setText("Narzędzie przemieszczanie");

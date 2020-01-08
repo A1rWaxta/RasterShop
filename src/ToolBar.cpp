@@ -14,7 +14,7 @@ ToolBar::ToolBar(QWidget* parent) :
 	connect(ui->selectToolButton, &QPushButton::released, this, &ToolBar::SelectionToolSelected);
 	connect(ui->moveToolButton, &QPushButton::released, this, &ToolBar::MoveToolSelected);
 	connect(ui->penToolButton, &QPushButton::released, this, &ToolBar::PenToolSelected);
-	connect(ui->rectangleToolButton, &QPushButton::released, this, &ToolBar::RectangleShapeSelected);
+	connect(ui->paintToolButton, &QPushButton::released, this, &ToolBar::PaintToolSelected);
 
 	activeToolBrush.setColor(QColor(145, 102, 144));
 
@@ -35,10 +35,10 @@ ToolBar::ToolBar(QWidget* parent) :
 	ui->penToolButton->setIcon(brushToolIcon);
 	ui->penToolButton->setIconSize(QSize(45, 45));
 
-	pixmap.load("res/rectangle.svg");
-	QIcon rectangleToolIcon(pixmap);
-	ui->rectangleToolButton->setIcon(rectangleToolIcon);
-	ui->rectangleToolButton->setIconSize(QSize(45, 45));
+	pixmap.load("res/bucket.svg");
+	QIcon paintToolIcon(pixmap);
+	ui->paintToolButton->setIcon(paintToolIcon);
+	ui->paintToolButton->setIconSize(QSize(45, 45));
 
 	pixmap.load("res/scale.svg");
 	QIcon scaleToolIcon(pixmap);
@@ -66,7 +66,7 @@ void ToolBar::PenToolSelected()
 	emit ToolSelected(ActiveTool::Pen);
 }
 
-void ToolBar::RectangleShapeSelected()
+void ToolBar::PaintToolSelected()
 {
-	emit ToolSelected(ActiveTool::RectangleShape);
+	emit ToolSelected(ActiveTool::Paint);
 }

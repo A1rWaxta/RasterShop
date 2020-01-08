@@ -53,9 +53,12 @@
     </widget>
    </item>
    <item>
-    <widget class="QCheckBox" name="checkBox">
+    <widget class="QCheckBox" name="visiblityCheckBox">
      <property name="text">
-      <string>Hide</string>
+      <string>visible</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
      </property>
     </widget>
    </item>

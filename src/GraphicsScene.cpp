@@ -19,6 +19,9 @@ GraphicsScene::GraphicsScene(qreal width, qreal height, QColor& color, QObject* 
 	selectionRectangle = new QGraphicsRectItem(0, 0, 0, 0);
 	selectionRectangle->setPen(QPen(Qt::black, 1, Qt::DashDotDotLine));
 	addItem(selectionRectangle);
+
+	selectionTool = new RectangleSelectionTool();
+	addItem(selectionTool);
 }
 
 void GraphicsScene::SetActiveLayer(ImageLayer* layer)
@@ -57,6 +60,7 @@ void GraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent* mouseEvent)
 		{
 			case ActiveTool::Move:
 			{
+				qDebug() << "moving";
 				xPos = mouseEvent->scenePos().x() - mouseEvent->lastScenePos().x();
 				yPos = mouseEvent->scenePos().y() - mouseEvent->lastScenePos().y();
 				activeLayer->moveBy(xPos, yPos);
@@ -68,13 +72,14 @@ void GraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent* mouseEvent)
 				if( activeLayer->contains(mouseEvent->pos()) )
 				{
 					auto line = new QGraphicsLineItem(QLineF(mouseEvent->pos(), mouseEvent->lastPos()));
-					line->setPen(QPen(toolColor, 2));
+					line->setPen(QPen(toolColor, 10));
 					line->setParentItem(activeLayer);
 				}
 				break;
 			}
-			case ActiveTool::RectangleShape:
+			case ActiveTool::Selection:
 			{
+				selectionTool->Update(mouseEvent->scenePos());
 				break;
 			}
 		}
@@ -86,8 +91,28 @@ void GraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent* mouseEvent)
 	QGraphicsScene::mousePressEvent(mouseEvent);
 
 	if( mouseEvent->button() == Qt::LeftButton and activeLayer != nullptr and
-	    activeLayer->contains(mouseEvent->scenePos()) )
+	    activeLayer->boundingRect().contains(mouseEvent->scenePos()) )
 	{
+		switch( activeTool )
+		{
+			case ActiveTool::Selection:
+			{
+				leftMousePressed = true;
+				selectionTool->Start(mouseEvent->scenePos());
+				break;
+			}
+			case ActiveTool::Paint:
+			{
+				if( selectionTool->GetSelectedRegion().contains(mouseEvent->scenePos()) )
+				{
+					auto selectionAreaRectangle = new QGraphicsRectItem();
+					selectionAreaRectangle->setRect(selectionTool->GetSelectedRegion());
+					selectionAreaRectangle->setPen(Qt::NoPen);
+					selectionAreaRectangle->setBrush(toolColor);
+					AddItemOnActiveLayer(selectionAreaRectangle);
+				}
+			}
+		}
 		leftMousePressed = true;
 	}
 }
@@ -119,7 +144,7 @@ void GraphicsScene::ChangeActiveTool(ActiveTool tool)
 		case ActiveTool::Pen:
 			break;
 
-		case ActiveTool::RectangleShape:
+		case ActiveTool::Paint:
 			break;
 
 		default:
@@ -164,4 +189,9 @@ void GraphicsScene::Paste()
 void GraphicsScene::AdjustCanvasToSceneRect()
 {
 	setSceneRect(canvas->sceneBoundingRect());
+}
+
+void GraphicsScene::CancelSelection()
+{
+	selectionTool->setRect(QRectF(0, 0, 0, 0));
 }

@@ -108,7 +108,7 @@
     </widget>
    </item>
    <item>
-    <widget class="ToolBarButton" name="rectangleToolButton">
+    <widget class="ToolBarButton" name="paintToolButton">
      <property name="minimumSize">
       <size>
        <width>60</width>
@@ -122,7 +122,7 @@
       </size>
      </property>
      <property name="toolTip">
-      <string>Narzędzie prostokąt</string>
+      <string>Narzędzie wiadro z farbą</string>
      </property>
      <property name="text">
       <string/>

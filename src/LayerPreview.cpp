@@ -11,6 +11,7 @@ LayerPreview::LayerPreview(ImageLayer* layer, QString& layerIdentifier, QWidget*
 	ui->setupUi(this);
 	setAutoFillBackground(true);
 	ui->layerName->setText(layerIdentifier);
+	connect(ui->visiblityCheckBox, &QCheckBox::stateChanged, this, &LayerPreview::ToggleVisibility);
 }
 
 LayerPreview::~LayerPreview()
@@ -55,4 +56,16 @@ void LayerPreview::Select()
 QString LayerPreview::GetLayerName()
 {
 	return ui->layerName->text();
+}
+
+void LayerPreview::ToggleVisibility()
+{
+	if(layer->isVisible())
+	{
+		layer->hide();
+	}
+	else
+	{
+		layer->show();
+	}
 }

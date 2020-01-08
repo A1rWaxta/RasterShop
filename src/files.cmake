@@ -12,6 +12,7 @@ set(sources
 		ToolBarButton.cpp
 		Canvas.cpp
 		ColorPicker.cpp
+		RectangleSelectionTool.cpp
 		)
 
 set(headers
@@ -28,4 +29,5 @@ set(headers
 		Canvas.h
 		Globals.h
 		ColorPicker.h
+		RectangleSelectionTool.h
 		)
