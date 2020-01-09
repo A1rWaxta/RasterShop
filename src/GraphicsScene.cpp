@@ -16,12 +16,12 @@ GraphicsScene::GraphicsScene(qreal width, qreal height, QColor& color, QObject* 
 	addItem(canvas);
 	connect(this, &QGraphicsScene::sceneRectChanged, this, &GraphicsScene::AdjustCanvasToSceneRect);
 
-	selectionRectangle = new QGraphicsRectItem(0, 0, 0, 0);
-	selectionRectangle->setPen(QPen(Qt::black, 1, Qt::DashDotDotLine));
-	addItem(selectionRectangle);
+	layerSelection = new QGraphicsRectItem(0, 0, 0, 0);
+	layerSelection->setPen(QPen(Qt::black, 1, Qt::DashDotDotLine));
+	addItem(layerSelection);
 
-	selectionTool = new RectangleSelectionTool();
-	addItem(selectionTool);
+	addItem(&selectionTool);
+	addItem(&scaleTool);
 }
 
 void GraphicsScene::SetActiveLayer(ImageLayer* layer)
@@ -29,14 +29,20 @@ void GraphicsScene::SetActiveLayer(ImageLayer* layer)
 	activeLayer = layer;
 	if( activeLayer != nullptr )
 	{
-		selectionRectangle->show();
-		selectionRectangle->setRect(activeLayer->boundingRect());
-		selectionRectangle->setPos(activeLayer->pos());
+		layerSelection->show();
+		layerSelection->setRect(activeLayer->boundingRect());
+		layerSelection->setPos(activeLayer->pos());
 		setFocusItem(activeLayer);
+
+		if( activeTool == ActiveTool::Scale )
+		{
+			scaleTool.SetLayer(activeLayer);
+		}
 	}
 	else
 	{
-		selectionRectangle->hide();
+		scaleTool.hide();
+		layerSelection->hide();
 	}
 }
 
@@ -60,11 +66,9 @@ void GraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent* mouseEvent)
 		{
 			case ActiveTool::Move:
 			{
-				qDebug() << "moving";
 				xPos = mouseEvent->scenePos().x() - mouseEvent->lastScenePos().x();
 				yPos = mouseEvent->scenePos().y() - mouseEvent->lastScenePos().y();
 				activeLayer->moveBy(xPos, yPos);
-				selectionRectangle->moveBy(xPos, yPos);
 				break;
 			}
 			case ActiveTool::Pen:
@@ -79,10 +83,16 @@ void GraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent* mouseEvent)
 			}
 			case ActiveTool::Selection:
 			{
-				selectionTool->Update(mouseEvent->scenePos());
+				selectionTool.Update(mouseEvent->scenePos());
+				break;
+			}
+			case ActiveTool::Scale:
+			{
+				scaleTool.Update(mouseEvent->scenePos());
 				break;
 			}
 		}
+		layerSelection->moveBy(xPos, yPos);
 	}
 }
 
@@ -90,30 +100,55 @@ void GraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent* mouseEvent)
 {
 	QGraphicsScene::mousePressEvent(mouseEvent);
 
-	if( mouseEvent->button() == Qt::LeftButton and activeLayer != nullptr and
-	    activeLayer->boundingRect().contains(mouseEvent->scenePos()) )
+	if( mouseEvent->button() == Qt::LeftButton and activeLayer != nullptr )
 	{
 		switch( activeTool )
 		{
+			case ActiveTool::Pen:
+			{
+				if( activeLayer->boundingRect().contains(mouseEvent->scenePos()) )
+				{
+					leftMousePressed = true;
+				}
+				break;
+			}
 			case ActiveTool::Selection:
 			{
 				leftMousePressed = true;
-				selectionTool->Start(mouseEvent->scenePos());
+				selectionTool.Start(mouseEvent->scenePos());
 				break;
 			}
 			case ActiveTool::Paint:
 			{
-				if( selectionTool->GetSelectedRegion().contains(mouseEvent->scenePos()) )
+				if( selectionTool.GetSelectedRegion().contains(mouseEvent->scenePos()) )
 				{
 					auto selectionAreaRectangle = new QGraphicsRectItem();
-					selectionAreaRectangle->setRect(selectionTool->GetSelectedRegion());
+					selectionAreaRectangle->setRect(
+							activeLayer->mapRectFromScene(
+									activeLayer->boundingRect().intersected(selectionTool.GetSelectedRegion())));
 					selectionAreaRectangle->setPen(Qt::NoPen);
 					selectionAreaRectangle->setBrush(toolColor);
 					AddItemOnActiveLayer(selectionAreaRectangle);
 				}
+				break;
+			}
+			case ActiveTool::Move:
+			{
+				if( activeLayer->boundingRect().contains(mouseEvent->scenePos()) )
+				{
+					leftMousePressed = true;
+				}
+				break;
+			}
+			case ActiveTool::Scale:
+			{
+				if( scaleTool.IsPointRectangleSelected(mouseEvent->scenePos()) )
+				{
+					leftMousePressed = true;
+					scaleTool.Start();
+				}
 			}
 		}
-		leftMousePressed = true;
 	}
 }
 
@@ -133,6 +168,8 @@ void GraphicsScene::ChangeActiveTool(ActiveTool tool)
 {
 	activeTool = tool;
 
+	scaleTool.hide();
+
 	switch( tool )
 	{
 		case ActiveTool::None:
@@ -145,6 +182,11 @@ void GraphicsScene::ChangeActiveTool(ActiveTool tool)
 			break;
 
 		case ActiveTool::Paint:
+			break;
+
+		case ActiveTool::Scale:
+			scaleTool.show();
+			scaleTool.SetLayer(activeLayer);
 			break;
 
 		default:
@@ -161,7 +203,7 @@ void GraphicsScene::keyPressEvent(QKeyEvent* event)
 			activeLayer->setScale(activeLayer->scale() + 0.1);
 			activeLayer->setTransformOriginPoint(activeLayer->boundingRect().width() / 2,
 			                                     activeLayer->boundingRect().height() / 2);
-			selectionRectangle->setRect(activeLayer->boundingRect());
+			layerSelection->setRect(activeLayer->boundingRect());
 //			selectionRectangle->setPos()
 		}
 	}
@@ -170,8 +212,8 @@ void GraphicsScene::keyPressEvent(QKeyEvent* event)
 void GraphicsScene::AddLayer(ImageLayer* layer)
 {
 	layer->setParentItem(canvas);
-	layer->setTransformOriginPoint(layer->boundingRect().width() / 2,
-	                               layer->boundingRect().height() / 2);
+//	layer->setTransformOriginPoint(layer->boundingRect().width() / 2,
+//	                               layer->boundingRect().height() / 2);
 }
 
 void GraphicsScene::Paste()
@@ -183,6 +225,7 @@ void GraphicsScene::Paste()
 		qreal xPos = canvas->rect().center().x() - ( pixmap.width() / 2 );
 		qreal yPos = canvas->rect().center().y() - ( pixmap.height() / 2 );
 		graphicsPixmap->setPos(xPos, yPos);
+
 	}
 }
 
@@ -193,5 +236,17 @@ void GraphicsScene::AdjustCanvasToSceneRect()
 
 void GraphicsScene::CancelSelection()
 {
-	selectionTool->setRect(QRectF(0, 0, 0, 0));
+	selectionTool.setRect(QRectF(0, 0, 0, 0));
+}
+
+void GraphicsScene::ToggleLayerSelectionVisibility()
+{
+	if( layerSelection->isVisible() )
+	{
+		layerSelection->hide();
+	}
+	else
+	{
+		layerSelection->show();
+	}
 }

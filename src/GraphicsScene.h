@@ -9,6 +9,7 @@
 #include "ImageLayer.h"
 #include "Canvas.h"
 #include "RectangleSelectionTool.h"
+#include "ScaleTool.h"
 
 class GraphicsScene : public QGraphicsScene
 {
@@ -23,6 +24,7 @@ public slots:
 	void ChangeActiveTool(ActiveTool tool);
 	void Paste();
 	void CancelSelection();
+	void ToggleLayerSelectionVisibility();
 
 private slots:
 	void AdjustCanvasToSceneRect();
@@ -41,6 +43,8 @@ private:
 	qreal mousePointerDistance;
 	ActiveTool activeTool;
 	QColor& toolColor;
-	RectangleSelectionTool* selectionTool;
-	QGraphicsRectItem* selectionRectangle;
+	QGraphicsRectItem* layerSelection;
+
+	RectangleSelectionTool selectionTool;
+	ScaleTool scaleTool;
 };

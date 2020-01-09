@@ -7,17 +7,17 @@
 #include <QDebug>
 #include <QPen>
 
-ImageLayer::ImageLayer() : drawableList(0)
+ImageLayer::ImageLayer(qreal width, qreal height) : drawableList(0)
 {
-	setFlag(QGraphicsItem::ItemClipsChildrenToShape);
-	setFlag(QGraphicsItem::ItemIsFocusable);
-	QPen pen(Qt::NoPen);
-	pen.setWidth(5);
+	QGraphicsRectItem::setFlag(QGraphicsItem::ItemClipsChildrenToShape);
+	QGraphicsRectItem::setFlag(QGraphicsItem::ItemIsFocusable);
+
+	setRect(QRectF(0, 0, width, height));
 }
 
 void ImageLayer::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
 {
-	for( auto child : childItems() )
+	for( auto child : QGraphicsRectItem::childItems() )
 	{
 		child->paint(painter, option, widget);
 	}
@@ -30,7 +30,7 @@ void ImageLayer::AddDrawableItem(QGraphicsItem* item)
 
 QRectF ImageLayer::boundingRect() const
 {
-	return QRectF(0, 0, width, heigt);
+	return mapRectToScene(rect());
 }
 
 ImageLayer::~ImageLayer()
@@ -47,12 +47,6 @@ void ImageLayer::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
 
 void ImageLayer::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
 {
-}
-
-void ImageLayer::SetSize(qreal width, qreal height)
-{
-	this->width = width;
-	this->heigt = height;
 }
 
 void ImageLayer::focusInEvent(QFocusEvent* event)

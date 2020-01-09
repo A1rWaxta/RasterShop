@@ -15,6 +15,7 @@ ToolBar::ToolBar(QWidget* parent) :
 	connect(ui->moveToolButton, &QPushButton::released, this, &ToolBar::MoveToolSelected);
 	connect(ui->penToolButton, &QPushButton::released, this, &ToolBar::PenToolSelected);
 	connect(ui->paintToolButton, &QPushButton::released, this, &ToolBar::PaintToolSelected);
+	connect(ui->scaleToolButton, &QPushButton::released, this, &ToolBar::ScaleToolSelected);
 
 	activeToolBrush.setColor(QColor(145, 102, 144));
 
@@ -69,4 +70,9 @@ void ToolBar::PenToolSelected()
 void ToolBar::PaintToolSelected()
 {
 	emit ToolSelected(ActiveTool::Paint);
+}
+
+void ToolBar::ScaleToolSelected()
+{
+	emit ToolSelected(ActiveTool::Scale);
 }

@@ -10,6 +10,7 @@
 WorkSpace::WorkSpace(QWidget* parent)
 {
 	setTransformationAnchor(AnchorUnderMouse);
+	setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
 }
 
 WorkSpace::~WorkSpace()

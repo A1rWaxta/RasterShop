@@ -114,7 +114,7 @@ void MainWindow::SaveAsActionClicked()
 		saveFileDialog.setAcceptMode(QFileDialog::AcceptSave);
 		saveFileDialog.setNameFilter("*.png *.bmp *.jpg *.jpeg");
 
-		graphicsScene->selectionRectangle->hide();
+		graphicsScene->layerSelection->hide();
 		if( saveFileDialog.exec() == QFileDialog::Accepted )
 		{
 			QStringList file = saveFileDialog.selectedFiles();
@@ -124,7 +124,7 @@ void MainWindow::SaveAsActionClicked()
 			painter.end();
 			image.save(file[0]);
 		}
-		graphicsScene->selectionRectangle->show();
+		graphicsScene->layerSelection->show();
 	}
 }
 
@@ -172,9 +172,8 @@ void MainWindow::InitializeNewProject(int width, int height)
 
 void MainWindow::CreateLayer()
 {
-	auto newLayer = new ImageLayer();
+	auto newLayer = new ImageLayer(graphicsScene->canvas->rect().width(), graphicsScene->canvas->rect().height());
 	newLayer->setZValue(layers.size()); //places new layer on top of image
-	newLayer->SetSize(graphicsScene->canvas->rect().width(), graphicsScene->canvas->rect().height());
 	graphicsScene->AddLayer(newLayer);
 
 	QString layerName = "layer_" + QString::number(layersAddedCount);
@@ -346,6 +345,8 @@ void MainWindow::CreateScene(int width, int height)
 	connect(ui->toolBar, &ToolBar::ToolSelected, this, &MainWindow::ToolSelected);
 	connect(ctrlV, &QShortcut::activated, graphicsScene, &GraphicsScene::Paste);
 	connect(esc, &QShortcut::activated, graphicsScene, &GraphicsScene::CancelSelection);
+	connect(hShortcut, &QShortcut::activated, graphicsScene, &GraphicsScene::ToggleLayerSelectionVisibility);
+
 
 	ui->workSpace->setScene(graphicsScene);
 	if( ui->workSpace->width() / width < 1 or ui->workSpace->height() / height < 1 )
@@ -392,6 +393,9 @@ void MainWindow::CreateShortcuts()
 
 	esc = new QShortcut(this);
 	esc->setKey(Qt::Key_Escape);
+
+	hShortcut = new QShortcut(this);
+	hShortcut->setKey(Qt::Key_H);
 }
 
 void MainWindow::ToolSelected(ActiveTool tool)

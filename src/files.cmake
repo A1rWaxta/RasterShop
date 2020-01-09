@@ -13,6 +13,7 @@ set(sources
 		Canvas.cpp
 		ColorPicker.cpp
 		RectangleSelectionTool.cpp
+		ScaleTool.cpp
 		)
 
 set(headers
@@ -30,4 +31,5 @@ set(headers
 		Globals.h
 		ColorPicker.h
 		RectangleSelectionTool.h
+		ScaleTool.h
 		)
