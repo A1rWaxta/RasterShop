@@ -114,7 +114,7 @@ void MainWindow::SaveAsActionClicked()
 		saveFileDialog.setAcceptMode(QFileDialog::AcceptSave);
 		saveFileDialog.setNameFilter("*.png *.bmp *.jpg *.jpeg");
 
-		graphicsScene->layerSelection->hide();
+		graphicsScene->layerSelection.hide();
 		if( saveFileDialog.exec() == QFileDialog::Accepted )
 		{
 			QStringList file = saveFileDialog.selectedFiles();
@@ -124,7 +124,7 @@ void MainWindow::SaveAsActionClicked()
 			painter.end();
 			image.save(file[0]);
 		}
-		graphicsScene->layerSelection->show();
+		graphicsScene->layerSelection.show();
 	}
 }
 
@@ -207,7 +207,7 @@ void MainWindow::ActiveLayerChanged(LayerPreview* layer)
 	}
 	activeLayer = layer;
 	activeLayer->Select();
-	graphicsScene->SetActiveLayer(activeLayer->GetLayer());
+	graphicsScene->ChangeActiveLayer(activeLayer->GetLayer());
 }
 
 void MainWindow::DeleteActiveLayer()
@@ -229,13 +229,13 @@ void MainWindow::DeleteActiveLayer()
 	if( not layers.empty() )
 	{
 		activeLayer = layers[index != 0 ? index - 1 : index];
-		graphicsScene->SetActiveLayer(activeLayer->GetLayer());
+		graphicsScene->ChangeActiveLayer(activeLayer->GetLayer());
 		activeLayer->Select();
 	}
 	else
 	{
 		activeLayer = nullptr;
-		graphicsScene->SetActiveLayer(nullptr);
+		graphicsScene->ChangeActiveLayer(nullptr);
 	}
 }
 

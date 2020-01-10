@@ -32,15 +32,17 @@ ScaleTool::ScaleTool() : layer(nullptr)
 
 void ScaleTool::SetLayer(ImageLayer* layer)
 {
+	this->layer = layer;
 	setRect(layer->boundingRect());
-	setPos(layer->pos());
 	QPointF topLeft(rect().width() - DISTANCE_FROM_BOTTOM_RIGHT_POINT,
 	                rect().height() - DISTANCE_FROM_BOTTOM_RIGHT_POINT);
 	QPointF bottomRight(rect().width() + DISTANCE_FROM_BOTTOM_RIGHT_POINT,
 	                    rect().height() + DISTANCE_FROM_BOTTOM_RIGHT_POINT);
+	qDebug() << layer->boundingRect();
+	qDebug() << topLeft;
+	qDebug() << bottomRight;
 	QRectF rect(topLeft, bottomRight);
 	pointRectangle.setRect(rect);
-	this->layer = layer;
 }
 
 void ScaleTool::Update(QPointF currentPoint)
@@ -49,8 +51,14 @@ void ScaleTool::Update(QPointF currentPoint)
 	                                  std::pow(rect().topLeft().y() - currentPoint.y(), 2));
 	layer->setScale(currentDistance / startDistance);
 
+	QPointF topLeft(rect().width() - DISTANCE_FROM_BOTTOM_RIGHT_POINT,
+	                rect().height() - DISTANCE_FROM_BOTTOM_RIGHT_POINT);
+	QPointF bottomRight(rect().width() + DISTANCE_FROM_BOTTOM_RIGHT_POINT,
+	                    rect().height() + DISTANCE_FROM_BOTTOM_RIGHT_POINT);
+	QRectF rect(topLeft, bottomRight);
+	pointRectangle.setRect(rect);
+
 	setRect(layer->boundingRect());
-	qDebug() << rect().size();
 }
 
 void ScaleTool::Start()

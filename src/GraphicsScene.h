@@ -32,7 +32,7 @@ private slots:
 private:
 	void AddItemOnActiveLayer(QGraphicsItem* item);
 	void AddLayer(ImageLayer* layer);
-	void SetActiveLayer(ImageLayer* layer);
+	void ChangeActiveLayer(ImageLayer* layer);
 	void mouseMoveEvent(QGraphicsSceneMouseEvent* mouseEvent) override;
 	void mousePressEvent(QGraphicsSceneMouseEvent* mouseEvent) override;
 	void mouseReleaseEvent(QGraphicsSceneMouseEvent* mouseEvent) override;
@@ -43,7 +43,7 @@ private:
 	qreal mousePointerDistance;
 	ActiveTool activeTool;
 	QColor& toolColor;
-	QGraphicsRectItem* layerSelection;
+	QGraphicsRectItem layerSelection;
 
 	RectangleSelectionTool selectionTool;
 	ScaleTool scaleTool;
