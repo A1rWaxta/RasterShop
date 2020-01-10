@@ -14,33 +14,24 @@ namespace
 
 ScaleTool::ScaleTool() : layer(nullptr)
 {
-	normalPen.setColor(Qt::black);
-	normalPen.setWidth(2);
-	normalPen.setStyle(Qt::SolidLine);
-	setPen(normalPen);
+	setPen(QPen(Qt::black, 2, Qt::SolidLine));
 	setBrush(Qt::NoBrush);
-	pointRectangle.setPen(normalPen);
 	pointRectangle.setBrush(Qt::NoBrush);
 	setRect(QRectF(0, 0, 0, 0));
 	pointRectangle.setRect(QRectF(0, 0, 0, 0));
 	pointRectangle.setParentItem(this);
 
-	selectedIndicatorPen.setWidth(2);
-	selectedIndicatorPen.setColor(Qt::yellow);
-	selectedIndicatorPen.setStyle(Qt::SolidLine);
+	pointRectangle.setPen(QPen(Qt::green, 2, Qt::SolidLine));
 }
 
 void ScaleTool::SetLayer(ImageLayer* layer)
 {
 	this->layer = layer;
 	setRect(layer->boundingRect());
-	QPointF topLeft(rect().width() - DISTANCE_FROM_BOTTOM_RIGHT_POINT,
-	                rect().height() - DISTANCE_FROM_BOTTOM_RIGHT_POINT);
-	QPointF bottomRight(rect().width() + DISTANCE_FROM_BOTTOM_RIGHT_POINT,
-	                    rect().height() + DISTANCE_FROM_BOTTOM_RIGHT_POINT);
-	qDebug() << layer->boundingRect();
-	qDebug() << topLeft;
-	qDebug() << bottomRight;
+	QPointF topLeft(layer->boundingRect().bottomRight().x() - DISTANCE_FROM_BOTTOM_RIGHT_POINT,
+	                layer->boundingRect().bottomRight().y() + DISTANCE_FROM_BOTTOM_RIGHT_POINT);
+	QPointF bottomRight(layer->boundingRect().bottomRight().x() + DISTANCE_FROM_BOTTOM_RIGHT_POINT,
+	                layer->boundingRect().bottomRight().y() - DISTANCE_FROM_BOTTOM_RIGHT_POINT);
 	QRectF rect(topLeft, bottomRight);
 	pointRectangle.setRect(rect);
 }
@@ -51,10 +42,10 @@ void ScaleTool::Update(QPointF currentPoint)
 	                                  std::pow(rect().topLeft().y() - currentPoint.y(), 2));
 	layer->setScale(currentDistance / startDistance);
 
-	QPointF topLeft(rect().width() - DISTANCE_FROM_BOTTOM_RIGHT_POINT,
-	                rect().height() - DISTANCE_FROM_BOTTOM_RIGHT_POINT);
-	QPointF bottomRight(rect().width() + DISTANCE_FROM_BOTTOM_RIGHT_POINT,
-	                    rect().height() + DISTANCE_FROM_BOTTOM_RIGHT_POINT);
+	QPointF topLeft(layer->boundingRect().bottomRight().x() - DISTANCE_FROM_BOTTOM_RIGHT_POINT,
+	                layer->boundingRect().bottomRight().y() + DISTANCE_FROM_BOTTOM_RIGHT_POINT);
+	QPointF bottomRight(layer->boundingRect().bottomRight().x() + DISTANCE_FROM_BOTTOM_RIGHT_POINT,
+	                    layer->boundingRect().bottomRight().y() - DISTANCE_FROM_BOTTOM_RIGHT_POINT);
 	QRectF rect(topLeft, bottomRight);
 	pointRectangle.setRect(rect);
 

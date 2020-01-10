@@ -43,8 +43,8 @@ private:
 	qreal mousePointerDistance;
 	ActiveTool activeTool;
 	QColor& toolColor;
-	QGraphicsRectItem layerSelection;
 
+	QGraphicsRectItem layerSelection;
 	RectangleSelectionTool selectionTool;
 	ScaleTool scaleTool;
 };

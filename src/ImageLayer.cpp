@@ -10,7 +10,6 @@
 ImageLayer::ImageLayer(qreal width, qreal height) : drawableList(0)
 {
 	QGraphicsRectItem::setFlag(QGraphicsItem::ItemClipsChildrenToShape);
-	QGraphicsRectItem::setFlag(QGraphicsItem::ItemIsFocusable);
 
 	setRect(QRectF(0, 0, width, height));
 }

@@ -19,8 +19,6 @@ public:
 private:
 	ImageLayer* layer;
 	QGraphicsRectItem pointRectangle;
-	QPen selectedIndicatorPen;
-	QPen normalPen;
 	qreal startDistance;
 };
 

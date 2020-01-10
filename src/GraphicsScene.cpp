@@ -30,9 +30,7 @@ void GraphicsScene::ChangeActiveLayer(ImageLayer* layer)
 	if( activeLayer != nullptr )
 	{
 		layerSelection.show();
-		layerSelection.setRect(activeLayer->mapRectFromScene(activeLayer->boundingRect()));
-		layerSelection.setPos(activeLayer->pos());
-		setFocusItem(activeLayer);
+		layerSelection.setRect(layerSelection.mapRectFromScene(activeLayer->boundingRect()));
 
 		if( activeTool == ActiveTool::Scale )
 		{
@@ -74,9 +72,10 @@ void GraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent* mouseEvent)
 			}
 			case ActiveTool::Pen:
 			{
-				if( activeLayer->contains(mouseEvent->pos()) )
+				if( activeLayer->boundingRect().contains(mouseEvent->scenePos()) )
 				{
-					auto line = new QGraphicsLineItem(QLineF(mouseEvent->pos(), mouseEvent->lastPos()));
+					auto line = new QGraphicsLineItem(QLineF(activeLayer->mapFromScene(mouseEvent->scenePos()),
+					                                         activeLayer->mapFromScene(mouseEvent->lastScenePos())));
 					line->setPen(QPen(toolColor, 10));
 					line->setParentItem(activeLayer);
 				}
@@ -90,6 +89,7 @@ void GraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent* mouseEvent)
 			case ActiveTool::Scale:
 			{
 				scaleTool.Update(mouseEvent->scenePos());
+				layerSelection.setRect(layerSelection.mapRectFromScene(activeLayer->boundingRect()));
 				break;
 			}
 		}
@@ -166,9 +166,16 @@ void GraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent* mouseEvent)
 
 void GraphicsScene::ChangeActiveTool(ActiveTool tool)
 {
-	activeTool = tool;
-
 	scaleTool.hide();
+
+	if( activeLayer != nullptr )
+	{
+		activeTool = tool;
+	}
+	else
+	{
+		return;
+	}
 
 	switch( tool )
 	{
@@ -196,17 +203,6 @@ void GraphicsScene::ChangeActiveTool(ActiveTool tool)
 
 void GraphicsScene::keyPressEvent(QKeyEvent* event)
 {
-	if( event->key() == Qt::UpArrow )
-	{
-		if( activeTool == ActiveTool::Scale )
-		{
-			activeLayer->setScale(activeLayer->scale() + 0.1);
-			activeLayer->setTransformOriginPoint(activeLayer->boundingRect().width() / 2,
-			                                     activeLayer->boundingRect().height() / 2);
-			layerSelection.setRect(activeLayer->boundingRect());
-//			selectionRectangle->setPos()
-		}
-	}
 }
 
 void GraphicsScene::AddLayer(ImageLayer* layer)
