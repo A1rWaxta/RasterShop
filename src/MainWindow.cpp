@@ -428,6 +428,9 @@ void MainWindow::ToolSelected(ActiveTool tool)
 		case ActiveTool::Rotation:
 			ui->activeToolLabel->setText("Obracanie");
 			break;
+		case ActiveTool::Text:
+			ui->activeToolLabel->setText("Narzędzie tekst");
+			break;
 	}
 	graphicsScene->ChangeActiveTool(tool);
 }

@@ -23,6 +23,9 @@ private slots:
 	void MoveToolSelected();
 	void PenToolSelected();
 	void PaintToolSelected();
+	void ScaleToolSelected();
+	void RotationToolSelected();
+	void TextToolSelected();
 
 signals:
 	void ToolSelected(ActiveTool tool);
@@ -33,6 +36,4 @@ private:
 	QBrush activeToolBrush;
 	ToolBarButton* active;
 	Ui::ToolBar* ui;
-	void ScaleToolSelected();
-	void RotationToolSelected();
 };

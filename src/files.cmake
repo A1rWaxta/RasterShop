@@ -15,6 +15,8 @@ set(sources
 		RectangleSelectionTool.cpp
 		ScaleTool.cpp
 		RotationTool.cpp
+		TextTool.cpp
+		TextEditOptions.cpp
 		)
 
 set(headers
@@ -34,4 +36,6 @@ set(headers
 		RectangleSelectionTool.h
 		ScaleTool.h
 		RotationTool.h
+		TextTool.h
+		TextEditOptions.h
 		)

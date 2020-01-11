@@ -50,6 +50,12 @@ ToolBar::ToolBar(QWidget* parent) :
 	ui->rotationToolButton->setIcon(rotateToolIcon);
 	ui->rotationToolButton->setIconSize(QSize(45, 45));
 	connect(ui->rotationToolButton, &QPushButton::released, this, &ToolBar::RotationToolSelected);
+
+	pixmap.load("res/text.svg");
+	QIcon textToolIcon(pixmap);
+	ui->textToolButton->setIcon(textToolIcon);
+	ui->textToolButton->setIconSize(QSize(45, 45));
+	connect(ui->textToolButton, &QPushButton::released, this, &ToolBar::TextToolSelected);
 }
 
 ToolBar::~ToolBar()
@@ -85,4 +91,9 @@ void ToolBar::ScaleToolSelected()
 void ToolBar::RotationToolSelected()
 {
 	emit ToolSelected(ActiveTool::Rotation);
+}
+
+void ToolBar::TextToolSelected()
+{
+	emit ToolSelected(ActiveTool::Text);
 }
