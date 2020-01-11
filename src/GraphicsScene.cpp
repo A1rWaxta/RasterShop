@@ -22,6 +22,7 @@ GraphicsScene::GraphicsScene(qreal width, qreal height, QColor& color, QObject* 
 	addItem(&layerSelection);
 	addItem(&selectionTool);
 	addItem(&scaleTool);
+	addItem(&rotationTool);
 }
 
 void GraphicsScene::ChangeActiveLayer(ImageLayer* layer)
@@ -92,6 +93,12 @@ void GraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent* mouseEvent)
 				layerSelection.setRect(layerSelection.mapRectFromScene(activeLayer->boundingRect()));
 				break;
 			}
+			case ActiveTool::Rotation:
+			{
+				rotationTool.Update(mouseEvent->scenePos());
+				layerSelection.setRect(layerSelection.mapRectFromScene(activeLayer->boundingRect()));
+				break;
+			}
 		}
 	}
 }
@@ -147,6 +154,16 @@ void GraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent* mouseEvent)
 					leftMousePressed = true;
 					scaleTool.Start();
 				}
+				break;
+			}
+			case ActiveTool::Rotation:
+			{
+				if( activeLayer->boundingRect().contains(mouseEvent->scenePos()) )
+				{
+					leftMousePressed = true;
+					rotationTool.Start(mouseEvent->scenePos());
+				}
+				break;
 			}
 		}
 	}
@@ -161,12 +178,18 @@ void GraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent* mouseEvent)
 	if( mouseEvent->button() == Qt::LeftButton )
 	{
 		leftMousePressed = false;
+
+		if( activeTool == ActiveTool::Rotation )
+		{
+			rotationTool.Stop();
+		}
 	}
 }
 
 void GraphicsScene::ChangeActiveTool(ActiveTool tool)
 {
 	scaleTool.hide();
+	rotationTool.hide();
 
 	if( activeLayer != nullptr )
 	{
@@ -196,6 +219,11 @@ void GraphicsScene::ChangeActiveTool(ActiveTool tool)
 			scaleTool.SetLayer(activeLayer);
 			break;
 
+		case ActiveTool::Rotation:
+			rotationTool.show();
+			rotationTool.SetLayer(activeLayer);
+			break;
+
 		default:
 			break;
 	}
@@ -208,8 +236,8 @@ void GraphicsScene::keyPressEvent(QKeyEvent* event)
 void GraphicsScene::AddLayer(ImageLayer* layer)
 {
 	layer->setParentItem(canvas);
-//	layer->setTransformOriginPoint(layer->boundingRect().width() / 2,
-//	                               layer->boundingRect().height() / 2);
+	layer->setTransformOriginPoint(layer->boundingRect().width() / 2,
+	                               layer->boundingRect().height() / 2);
 }
 
 void GraphicsScene::Paste()
@@ -217,11 +245,12 @@ void GraphicsScene::Paste()
 	QPixmap pixmap = QPixmap::fromImage(QGuiApplication::clipboard()->image());
 	if( pixmap.size().width() > 0 and pixmap.size().height() > 0 )
 	{
-		auto graphicsPixmap = new QGraphicsPixmapItem(pixmap, activeLayer);
+		auto graphicsPixmap = new QGraphicsPixmapItem;
+		graphicsPixmap->setPixmap(pixmap);
+		graphicsPixmap->setParentItem(activeLayer);
 		qreal xPos = canvas->rect().center().x() - ( pixmap.width() / 2 );
 		qreal yPos = canvas->rect().center().y() - ( pixmap.height() / 2 );
-		graphicsPixmap->setPos(xPos, yPos);
-
+//		graphicsPixmap->setPos(xPos, yPos);
 	}
 }
 

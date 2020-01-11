@@ -152,7 +152,7 @@
     </widget>
    </item>
    <item>
-    <widget class="ToolBarButton" name="pushButton_2">
+    <widget class="ToolBarButton" name="rotationToolButton">
      <property name="minimumSize">
       <size>
        <width>60</width>
@@ -164,6 +164,9 @@
        <width>60</width>
        <height>60</height>
       </size>
+     </property>
+     <property name="toolTip">
+      <string>Obracanie</string>
      </property>
      <property name="text">
       <string/>

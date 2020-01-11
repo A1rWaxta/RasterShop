@@ -11,12 +11,6 @@ ToolBar::ToolBar(QWidget* parent) :
 	layout()->setAlignment(Qt::AlignTop);
 	setAutoFillBackground(true);
 
-	connect(ui->selectToolButton, &QPushButton::released, this, &ToolBar::SelectionToolSelected);
-	connect(ui->moveToolButton, &QPushButton::released, this, &ToolBar::MoveToolSelected);
-	connect(ui->penToolButton, &QPushButton::released, this, &ToolBar::PenToolSelected);
-	connect(ui->paintToolButton, &QPushButton::released, this, &ToolBar::PaintToolSelected);
-	connect(ui->scaleToolButton, &QPushButton::released, this, &ToolBar::ScaleToolSelected);
-
 	activeToolBrush.setColor(QColor(145, 102, 144));
 
 	QPixmap pixmap;
@@ -25,26 +19,37 @@ ToolBar::ToolBar(QWidget* parent) :
 	QIcon selectionTooIcon(pixmap);
 	ui->selectToolButton->setIcon(selectionTooIcon);
 	ui->selectToolButton->setIconSize(QSize(40, 40));
+	connect(ui->selectToolButton, &QPushButton::released, this, &ToolBar::SelectionToolSelected);
 
 	pixmap.load("res/move-arrows.svg");
 	QIcon moveToolIcon(pixmap);
 	ui->moveToolButton->setIcon(moveToolIcon);
 	ui->moveToolButton->setIconSize(QSize(42, 42));
+	connect(ui->moveToolButton, &QPushButton::released, this, &ToolBar::MoveToolSelected);
 
 	pixmap.load("res/brush.svg");
 	QIcon brushToolIcon(pixmap);
 	ui->penToolButton->setIcon(brushToolIcon);
 	ui->penToolButton->setIconSize(QSize(45, 45));
+	connect(ui->penToolButton, &QPushButton::released, this, &ToolBar::PenToolSelected);
 
 	pixmap.load("res/bucket.svg");
 	QIcon paintToolIcon(pixmap);
 	ui->paintToolButton->setIcon(paintToolIcon);
 	ui->paintToolButton->setIconSize(QSize(45, 45));
+	connect(ui->paintToolButton, &QPushButton::released, this, &ToolBar::PaintToolSelected);
 
 	pixmap.load("res/scale.svg");
 	QIcon scaleToolIcon(pixmap);
 	ui->scaleToolButton->setIcon(scaleToolIcon);
 	ui->scaleToolButton->setIconSize(QSize(45, 45));
+	connect(ui->scaleToolButton, &QPushButton::released, this, &ToolBar::ScaleToolSelected);
+
+	pixmap.load("res/rotate.svg");
+	QIcon rotateToolIcon(pixmap);
+	ui->rotationToolButton->setIcon(rotateToolIcon);
+	ui->rotationToolButton->setIconSize(QSize(45, 45));
+	connect(ui->rotationToolButton, &QPushButton::released, this, &ToolBar::RotationToolSelected);
 }
 
 ToolBar::~ToolBar()
@@ -75,4 +80,9 @@ void ToolBar::PaintToolSelected()
 void ToolBar::ScaleToolSelected()
 {
 	emit ToolSelected(ActiveTool::Scale);
+}
+
+void ToolBar::RotationToolSelected()
+{
+	emit ToolSelected(ActiveTool::Rotation);
 }

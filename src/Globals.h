@@ -11,6 +11,7 @@ enum class ActiveTool
 	Pen,
 	Paint,
 	Move,
-	Scale
+	Scale,
+	Rotation
 };
 

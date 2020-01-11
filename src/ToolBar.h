@@ -34,4 +34,5 @@ private:
 	ToolBarButton* active;
 	Ui::ToolBar* ui;
 	void ScaleToolSelected();
+	void RotationToolSelected();
 };

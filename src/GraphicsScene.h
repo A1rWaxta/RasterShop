@@ -10,6 +10,7 @@
 #include "Canvas.h"
 #include "RectangleSelectionTool.h"
 #include "ScaleTool.h"
+#include "RotationTool.h"
 
 class GraphicsScene : public QGraphicsScene
 {
@@ -47,4 +48,5 @@ private:
 	QGraphicsRectItem layerSelection;
 	RectangleSelectionTool selectionTool;
 	ScaleTool scaleTool;
+	RotationTool rotationTool;
 };

@@ -14,6 +14,7 @@ set(sources
 		ColorPicker.cpp
 		RectangleSelectionTool.cpp
 		ScaleTool.cpp
+		RotationTool.cpp
 		)
 
 set(headers
@@ -32,4 +33,5 @@ set(headers
 		ColorPicker.h
 		RectangleSelectionTool.h
 		ScaleTool.h
+		RotationTool.h
 		)

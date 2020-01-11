@@ -346,7 +346,7 @@ void MainWindow::CreateScene(int width, int height)
 	connect(ctrlV, &QShortcut::activated, graphicsScene, &GraphicsScene::Paste);
 	connect(esc, &QShortcut::activated, graphicsScene, &GraphicsScene::CancelSelection);
 	connect(hShortcut, &QShortcut::activated, graphicsScene, &GraphicsScene::ToggleLayerSelectionVisibility);
-
+	connect(del, &QShortcut::activated, this, &MainWindow::ShowLayerDeleteConfirmationDialog);
 
 	ui->workSpace->setScene(graphicsScene);
 	if( ui->workSpace->width() / width < 1 or ui->workSpace->height() / height < 1 )
@@ -424,6 +424,9 @@ void MainWindow::ToolSelected(ActiveTool tool)
 			break;
 		case ActiveTool::Scale:
 			ui->activeToolLabel->setText("Skalowanie");
+			break;
+		case ActiveTool::Rotation:
+			ui->activeToolLabel->setText("Obracanie");
 			break;
 	}
 	graphicsScene->ChangeActiveTool(tool);

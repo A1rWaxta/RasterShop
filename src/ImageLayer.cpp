@@ -12,6 +12,7 @@ ImageLayer::ImageLayer(qreal width, qreal height) : drawableList(0)
 	QGraphicsRectItem::setFlag(QGraphicsItem::ItemClipsChildrenToShape);
 
 	setRect(QRectF(0, 0, width, height));
+	setFlag(QGraphicsItem::ItemSendsGeometryChanges);
 }
 
 void ImageLayer::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
@@ -29,6 +30,7 @@ void ImageLayer::AddDrawableItem(QGraphicsItem* item)
 
 QRectF ImageLayer::boundingRect() const
 {
+
 	return mapRectToScene(rect());
 }
 
@@ -50,4 +52,29 @@ void ImageLayer::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
 
 void ImageLayer::focusInEvent(QFocusEvent* event)
 {
+}
+
+QVariant ImageLayer::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant& value)
+{
+	switch( change )
+	{
+		case GraphicsItemChange::ItemRotationHasChanged:
+		{
+			qDebug();
+			break;
+		}
+		case GraphicsItemChange::ItemPositionHasChanged:
+		{
+			break;
+		}
+		case GraphicsItemChange::ItemScaleHasChanged:
+		{
+			break;
+		}
+		default:
+		{
+			break;
+		}
+	}
+	return QGraphicsItem::itemChange(change, value);
 }

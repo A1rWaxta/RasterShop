@@ -60,5 +60,5 @@ void ScaleTool::Start()
 
 bool ScaleTool::IsPointRectangleSelected(QPointF point)
 {
-	return pointRectangle.contains(point);
+	return pointRectangle.boundingRect().contains(point);
 }
