@@ -13,7 +13,6 @@ public:
 	explicit ImageLayer(qreal width, qreal height);
 	~ImageLayer() override;
 	void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) override;
-	void AddDrawableItem(QGraphicsItem* item);
 	[[nodiscard]] QRectF boundingRect() const override;
 
 private:

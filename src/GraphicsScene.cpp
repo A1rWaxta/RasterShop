@@ -114,12 +114,12 @@ void GraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent* mouseEvent)
 			}
 			case ActiveTool::Rotation:
 			{
-				rotationTool.Update(mouseEvent->scenePos());
-				layerSelection.setRect(layerSelection.mapRectFromScene(activeLayer->boundingRect()));
+				layerSelection.setRect(activeLayer->boundingRect());
 				break;
 			}
 		}
 	}
+	layerSelection.setRect(layerSelection.mapRectFromScene(activeLayer->boundingRect()));
 }
 
 void GraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent* mouseEvent)
@@ -172,15 +172,6 @@ void GraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent* mouseEvent)
 				{
 					leftMousePressed = true;
 					scaleTool.Start();
-				}
-				break;
-			}
-			case ActiveTool::Rotation:
-			{
-				if( activeLayer->boundingRect().contains(mouseEvent->scenePos()) )
-				{
-					leftMousePressed = true;
-					rotationTool.Start(mouseEvent->scenePos());
 				}
 				break;
 			}

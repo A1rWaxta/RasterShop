@@ -17,7 +17,10 @@ public:
 	void SetLayer(ImageLayer* layer);
 
 private:
-	QGraphicsEllipseItem ellipseItem;
+	void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
+	void mouseMoveEvent(QGraphicsSceneMouseEvent* event) override;
+	void mouseReleaseEvent(QGraphicsSceneMouseEvent* event) override;
 	ImageLayer* layer;
 	QPointF startPoint;
+	bool leftMousePressed;
 };

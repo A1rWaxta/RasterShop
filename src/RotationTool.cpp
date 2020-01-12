@@ -5,19 +5,16 @@
 #include "RotationTool.h"
 #include <QtGui/QPen>
 #include <QDebug>
-#include <cmath>
+#include <QGraphicsSceneMouseEvent>
 
 namespace
 {
 	constexpr auto DISTANCE_FROM_MID_POINT = 8;
 }
 
-RotationTool::RotationTool() : layer(nullptr)
+RotationTool::RotationTool() : layer(nullptr), leftMousePressed(false)
 {
 	setPen(QPen(Qt::black, 2, Qt::SolidLine));
-	ellipseItem.setRect(QRectF(0, 0, 0, 0));
-	ellipseItem.setBrush(Qt::NoBrush);
-	ellipseItem.setPen(QPen(Qt::green, 2, Qt::SolidLine));
 //	ellipseItem.setParentItem(this);
 }
 
@@ -30,7 +27,8 @@ void RotationTool::Update(QPointF currentPoint)
 {
 	layer->setRotation(startPoint.y() - currentPoint.y());
 
-	setRect(layer->boundingRect());
+	setRotation(layer->rotation());
+//	setRect(layer->boundingRect());
 }
 
 void RotationTool::Stop()
@@ -40,12 +38,40 @@ void RotationTool::Stop()
 void RotationTool::SetLayer(ImageLayer* layer)
 {
 	this->layer = layer;
-	setRect(layer->boundingRect());
-	QPointF topLeft((layer->boundingRect().bottomRight().x() / 2) - DISTANCE_FROM_MID_POINT,
-	                (layer->boundingRect().bottomRight().y() / 2) + DISTANCE_FROM_MID_POINT);
-	QPointF bottomRight((layer->boundingRect().bottomRight().x() / 2) + DISTANCE_FROM_MID_POINT,
-	                    (layer->boundingRect().bottomRight().y() / 2) - DISTANCE_FROM_MID_POINT);
+	QPointF topLeft(( layer->boundingRect().bottomRight().x() / 2 ) - DISTANCE_FROM_MID_POINT,
+	                ( layer->boundingRect().bottomRight().y() / 2 ) + DISTANCE_FROM_MID_POINT);
+	QPointF bottomRight(( layer->boundingRect().bottomRight().x() / 2 ) + DISTANCE_FROM_MID_POINT,
+	                    ( layer->boundingRect().bottomRight().y() / 2 ) - DISTANCE_FROM_MID_POINT);
 	QRectF rect(topLeft, bottomRight);
 
-	ellipseItem.setRect(rect);
+	setRect(layer->rect());
+	setTransformOriginPoint(layer->transformOriginPoint());
+	setRotation(layer->rotation());
+	setPos(layer->pos());
+	setScale(layer->scale());
+}
+
+void RotationTool::mousePressEvent(QGraphicsSceneMouseEvent* event)
+{
+	if(event->button() == Qt::LeftButton)
+	{
+		leftMousePressed = true;
+		startPoint = event->scenePos();
+	}
+}
+
+void RotationTool::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
+{
+	if( leftMousePressed == true )
+	{
+		QPointF currentPoint = event->scenePos();
+		layer->setRotation(startPoint.y() - currentPoint.y());
+
+		setRotation(layer->rotation());
+	}
+}
+
+void RotationTool::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
+{
+	leftMousePressed = false;
 }
