@@ -44,7 +44,6 @@ private:
 	void resizeEvent(QResizeEvent* resizeEvent) override;
 	void moveEvent(QMoveEvent* moveEvent) override;
 	void keyPressEvent(QKeyEvent* event) override;
-	void inputMethodEvent(QInputMethodEvent* event) override;
 	void mouseReleaseEvent(QMouseEvent* event) override;
 	void DeleteActiveLayer();
 	void CreateScene(int width, int height);
@@ -59,8 +58,8 @@ private:
 	int layersAddedCount;
 	QShortcut* ctrlC;
 	QShortcut* ctrlV;
+	QShortcut* ctrlH;
 	QShortcut* del;
 	QShortcut* esc;
-	QShortcut* hShortcut;
 	Ui::MainWindow* ui;
 };

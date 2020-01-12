@@ -347,7 +347,7 @@ void MainWindow::CreateScene(int width, int height)
 	connect(ui->toolBar, &ToolBar::ToolSelected, this, &MainWindow::ToolSelected);
 	connect(ctrlV, &QShortcut::activated, graphicsScene, &GraphicsScene::Paste);
 	connect(esc, &QShortcut::activated, graphicsScene, &GraphicsScene::CancelSelection);
-	connect(hShortcut, &QShortcut::activated, graphicsScene, &GraphicsScene::ToggleLayerSelectionVisibility);
+	connect(ctrlH, &QShortcut::activated, graphicsScene, &GraphicsScene::ToggleLayerSelectionVisibility);
 	connect(del, &QShortcut::activated, this, &MainWindow::ShowLayerDeleteConfirmationDialog);
 
 	ui->workSpace->setScene(graphicsScene);
@@ -396,8 +396,8 @@ void MainWindow::CreateShortcuts()
 	esc = new QShortcut(this);
 	esc->setKey(Qt::Key_Escape);
 
-	hShortcut = new QShortcut(this);
-	hShortcut->setKey(Qt::Key_H);
+	ctrlH = new QShortcut(this);
+	ctrlH->setKey(Qt::Key_H + Qt::CTRL);
 }
 
 void MainWindow::ToolSelected(ActiveTool tool)
@@ -435,10 +435,4 @@ void MainWindow::ToolSelected(ActiveTool tool)
 			break;
 	}
 	graphicsScene->ChangeActiveTool(tool);
-}
-
-void MainWindow::inputMethodEvent(QInputMethodEvent* event)
-{
-	qDebug() << "Main window inputmethodevent";
-//	QWidget::inputMethodEvent(event);
 }

@@ -69,6 +69,72 @@ void GraphicsScene::AddItemOnActiveLayer(QGraphicsItem* item)
 	item->setParentItem(activeLayer);
 }
 
+void GraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent* mouseEvent)
+{
+	QGraphicsScene::mousePressEvent(mouseEvent);
+	if( mouseEvent->button() == Qt::LeftButton and activeLayer != nullptr )
+	{
+		switch( activeTool )
+		{
+			case ActiveTool::Pen:
+			{
+				if( activeLayer->boundingRect().contains(mouseEvent->scenePos()) )
+				{
+					leftMousePressed = true;
+				}
+				break;
+			}
+			case ActiveTool::Selection:
+			{
+				leftMousePressed = true;
+				selectionTool.Start(mouseEvent->scenePos());
+				break;
+			}
+			case ActiveTool::Paint:
+			{
+				if( selectionTool.GetSelectedRegion().contains(mouseEvent->scenePos()) )
+				{
+					QPolygonF selectionPolygon(selectionTool.boundingRect());
+					QPolygonF layerPolygon(activeLayer->mapToScene(activeLayer->rect()));
+					QPolygonF paintPolygon = selectionPolygon.intersected(layerPolygon);
+					auto selectionAreaRectangle = new QGraphicsPolygonItem(activeLayer->mapFromScene(paintPolygon));
+					selectionAreaRectangle->setPen(Qt::NoPen);
+					selectionAreaRectangle->setBrush(toolColor);
+					AddItemOnActiveLayer(selectionAreaRectangle);
+				}
+				break;
+			}
+			case ActiveTool::Move:
+			{
+				if( activeLayer->boundingRect().contains(mouseEvent->scenePos()) )
+				{
+					leftMousePressed = true;
+				}
+				break;
+			}
+			case ActiveTool::Scale:
+			{
+				if( scaleTool.IsPointRectangleSelected(mouseEvent->scenePos()) )
+				{
+					leftMousePressed = true;
+					scaleTool.Start();
+				}
+				break;
+			}
+			case ActiveTool::Text:
+			{
+				if( activeLayer->boundingRect().contains(mouseEvent->scenePos()) )
+				{
+					auto text = new TextTool(activeLayer);
+					text->Start(mouseEvent->scenePos());
+					setFocusItem(text);
+				}
+				break;
+			}
+		}
+	}
+}
+
 void GraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent* mouseEvent)
 {
 	QGraphicsScene::mouseMoveEvent(mouseEvent);
@@ -120,73 +186,6 @@ void GraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent* mouseEvent)
 		}
 	}
 	layerSelection.setRect(layerSelection.mapRectFromScene(activeLayer->boundingRect()));
-}
-
-void GraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent* mouseEvent)
-{
-	QGraphicsScene::mousePressEvent(mouseEvent);
-
-	if( mouseEvent->button() == Qt::LeftButton and activeLayer != nullptr )
-	{
-		switch( activeTool )
-		{
-			case ActiveTool::Pen:
-			{
-				if( activeLayer->boundingRect().contains(mouseEvent->scenePos()) )
-				{
-					leftMousePressed = true;
-				}
-				break;
-			}
-			case ActiveTool::Selection:
-			{
-				leftMousePressed = true;
-				selectionTool.Start(mouseEvent->scenePos());
-				break;
-			}
-			case ActiveTool::Paint:
-			{
-				if( selectionTool.GetSelectedRegion().contains(mouseEvent->scenePos()) )
-				{
-					auto selectionAreaRectangle = new QGraphicsRectItem();
-					selectionAreaRectangle->setRect(
-							activeLayer->mapRectFromScene(
-									activeLayer->boundingRect().intersected(selectionTool.GetSelectedRegion())));
-					selectionAreaRectangle->setPen(Qt::NoPen);
-					selectionAreaRectangle->setBrush(toolColor);
-					AddItemOnActiveLayer(selectionAreaRectangle);
-				}
-				break;
-			}
-			case ActiveTool::Move:
-			{
-				if( activeLayer->boundingRect().contains(mouseEvent->scenePos()) )
-				{
-					leftMousePressed = true;
-				}
-				break;
-			}
-			case ActiveTool::Scale:
-			{
-				if( scaleTool.IsPointRectangleSelected(mouseEvent->scenePos()) )
-				{
-					leftMousePressed = true;
-					scaleTool.Start();
-				}
-				break;
-			}
-			case ActiveTool::Text:
-			{
-				if( activeLayer->boundingRect().contains(mouseEvent->scenePos()) )
-				{
-					auto text = new TextTool(activeLayer);
-					text->Start(mouseEvent->scenePos());
-					setFocusItem(text);
-				}
-				break;
-			}
-		}
-	}
 }
 
 void GraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent* mouseEvent)
