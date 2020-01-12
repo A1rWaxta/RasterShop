@@ -11,7 +11,6 @@
 #include "RectangleSelectionTool.h"
 #include "ScaleTool.h"
 #include "RotationTool.h"
-#include "TextTool.h"
 
 class GraphicsScene : public QGraphicsScene
 {
@@ -50,5 +49,4 @@ private:
 	RectangleSelectionTool selectionTool;
 	ScaleTool scaleTool;
 	RotationTool rotationTool;
-	TextTool textTool;
 };

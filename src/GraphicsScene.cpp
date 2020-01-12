@@ -5,6 +5,7 @@
 #include <QDebug>
 #include <QGraphicsSceneMouseEvent>
 #include "GraphicsScene.h"
+#include "TextTool.h"
 
 GraphicsScene::GraphicsScene(qreal width, qreal height, QColor& color, QObject* parent) : QGraphicsScene(parent),
                                                                                           leftMousePressed(false),
@@ -23,7 +24,6 @@ GraphicsScene::GraphicsScene(qreal width, qreal height, QColor& color, QObject* 
 	addItem(&selectionTool);
 	addItem(&scaleTool);
 	addItem(&rotationTool);
-	addItem(&textTool);
 }
 
 void GraphicsScene::ChangeActiveLayer(ImageLayer* layer)
@@ -48,7 +48,7 @@ void GraphicsScene::ChangeActiveLayer(ImageLayer* layer)
 			}
 			case ActiveTool::Text:
 			{
-				textTool.SetLayer(activeLayer);
+
 				break;
 			}
 			default:
@@ -186,12 +186,13 @@ void GraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent* mouseEvent)
 			}
 			case ActiveTool::Text:
 			{
-//				if( activeLayer->boundingRect().contains(mouseEvent->scenePos()) )
-//				{
-//					leftMousePressed = true;
-//					textTool.Start(mouseEvent->scenePos());
-//					setFocusItem(&textTool);
-//				}
+				if( activeLayer->boundingRect().contains(mouseEvent->scenePos()) )
+				{
+					auto text = new TextTool(activeLayer);
+					text->Start(mouseEvent->scenePos());
+					setFocusItem(text);
+				}
+				break;
 			}
 		}
 	}
@@ -256,7 +257,6 @@ void GraphicsScene::ChangeActiveTool(ActiveTool tool)
 		}
 		case ActiveTool::Text:
 		{
-			textTool.SetLayer(activeLayer);
 		}
 		default:
 			break;
@@ -285,7 +285,6 @@ void GraphicsScene::Paste()
 		graphicsPixmap->setParentItem(activeLayer);
 		qreal xPos = canvas->rect().center().x() - ( pixmap.width() / 2 );
 		qreal yPos = canvas->rect().center().y() - ( pixmap.height() / 2 );
-//		graphicsPixmap->setPos(xPos, yPos);
 	}
 }
 

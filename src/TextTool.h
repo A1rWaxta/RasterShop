@@ -11,8 +11,7 @@
 class TextTool : public QGraphicsTextItem
 {
 public:
-	TextTool();
-	void SetLayer(ImageLayer* layer);
+	TextTool(ImageLayer* parent);
 	void Start(QPointF point);
 
 private:

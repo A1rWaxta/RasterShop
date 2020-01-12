@@ -8,25 +8,19 @@
 #include <QDebug>
 #include <QTextCursor>
 
-TextTool::TextTool() : layer(nullptr)
+TextTool::TextTool(ImageLayer* parent) : QGraphicsTextItem(parent), layer(nullptr)
 {
+	layer = parent;
 	QFont font("Times", 10, QFont::Bold);
 	setFont(font);
-	setFlag(QGraphicsItem::ItemIsFocusable, true);
+	setFlag(QGraphicsItem::ItemIsFocusable);
 	setTextInteractionFlags(Qt::TextEditorInteraction);
-	setPos(mapToScene(25, 25));
-	setTextWidth(75);
-}
-
-void TextTool::SetLayer(ImageLayer* layer)
-{
-	this->layer = layer;
 }
 
 void TextTool::Start(QPointF point)
 {
-//	setTextWidth(layer->boundingRect().left() - point.x());
-//	setPos(point);
+	setTextWidth(layer->boundingRect().left() - point.x());
+	setPos(75, 75);
 }
 
 void TextTool::keyPressEvent(QKeyEvent* event)
@@ -86,5 +80,4 @@ void TextTool::keyPressEvent(QKeyEvent* event)
 
 void TextTool::focusInEvent(QFocusEvent* event)
 {
-	qDebug() << "otrzymalem focusa";
 }
