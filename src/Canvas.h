@@ -16,4 +16,5 @@ public:
 	void CreateLayer(QColor &color);
 
 private:
+
 };

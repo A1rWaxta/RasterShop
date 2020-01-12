@@ -17,6 +17,7 @@ set(sources
 		RotationTool.cpp
 		TextTool.cpp
 		TextEditOptions.cpp
+		TextAreaTool.cpp
 		)
 
 set(headers
@@ -38,4 +39,5 @@ set(headers
 		RotationTool.h
 		TextTool.h
 		TextEditOptions.h
+		TextAreaTool.h
 		)

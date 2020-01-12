@@ -16,6 +16,8 @@ public:
 	void Start(QPointF point);
 
 private:
+	void keyPressEvent(QKeyEvent* event) override;
+	void focusInEvent(QFocusEvent* event) override;
 	ImageLayer* layer;
 };
 

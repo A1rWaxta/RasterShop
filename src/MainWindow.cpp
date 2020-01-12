@@ -20,6 +20,7 @@ MainWindow::MainWindow(QWidget* parent) :
 	ui->colorPicker->hide();
 
 	setMinimumSize(740, 600);
+	setAttribute(Qt::WA_InputMethodEnabled);
 
 	width = qApp->screens()[0]->size().width() / 2;
 	height = qApp->screens()[0]->size().height() / 2;
@@ -108,6 +109,7 @@ void MainWindow::mouseReleaseEvent(QMouseEvent* event)
 void MainWindow::SaveAsActionClicked()
 {
 	QPainter painter;
+	painter.setRenderHint(QPainter::Antialiasing);
 	if( graphicsScene != nullptr )
 	{
 		QFileDialog saveFileDialog(this);
@@ -433,4 +435,10 @@ void MainWindow::ToolSelected(ActiveTool tool)
 			break;
 	}
 	graphicsScene->ChangeActiveTool(tool);
+}
+
+void MainWindow::inputMethodEvent(QInputMethodEvent* event)
+{
+	qDebug() << "Main window inputmethodevent";
+//	QWidget::inputMethodEvent(event);
 }

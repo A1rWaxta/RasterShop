@@ -16,9 +16,9 @@ RectangleSelectionTool::RectangleSelectionTool()
 	setBrush(Qt::NoBrush);
 }
 
-void RectangleSelectionTool::Start(QPointF pos)
+void RectangleSelectionTool::Start(QPointF point)
 {
-	startPoint = pos;
+	startPoint = point;
 	selectionArea.setWidth(0);
 	selectionArea.setHeight(0);
 	setRect(selectionArea);

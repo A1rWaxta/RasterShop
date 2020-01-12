@@ -23,6 +23,7 @@ GraphicsScene::GraphicsScene(qreal width, qreal height, QColor& color, QObject* 
 	addItem(&selectionTool);
 	addItem(&scaleTool);
 	addItem(&rotationTool);
+	addItem(&textTool);
 }
 
 void GraphicsScene::ChangeActiveLayer(ImageLayer* layer)
@@ -33,9 +34,27 @@ void GraphicsScene::ChangeActiveLayer(ImageLayer* layer)
 		layerSelection.show();
 		layerSelection.setRect(layerSelection.mapRectFromScene(activeLayer->boundingRect()));
 
-		if( activeTool == ActiveTool::Scale )
+		switch( activeTool )
 		{
-			scaleTool.SetLayer(activeLayer);
+			case ActiveTool::Scale:
+			{
+				scaleTool.SetLayer(activeLayer);
+				break;
+			}
+			case ActiveTool::Rotation:
+			{
+				rotationTool.SetLayer(activeLayer);
+				break;
+			}
+			case ActiveTool::Text:
+			{
+				textTool.SetLayer(activeLayer);
+				break;
+			}
+			default:
+			{
+				break;
+			}
 		}
 	}
 	else
@@ -165,6 +184,15 @@ void GraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent* mouseEvent)
 				}
 				break;
 			}
+			case ActiveTool::Text:
+			{
+//				if( activeLayer->boundingRect().contains(mouseEvent->scenePos()) )
+//				{
+//					leftMousePressed = true;
+//					textTool.Start(mouseEvent->scenePos());
+//					setFocusItem(&textTool);
+//				}
+			}
 		}
 	}
 }
@@ -215,15 +243,21 @@ void GraphicsScene::ChangeActiveTool(ActiveTool tool)
 			break;
 
 		case ActiveTool::Scale:
+		{
 			scaleTool.show();
 			scaleTool.SetLayer(activeLayer);
 			break;
-
+		}
 		case ActiveTool::Rotation:
+		{
 			rotationTool.show();
 			rotationTool.SetLayer(activeLayer);
 			break;
-
+		}
+		case ActiveTool::Text:
+		{
+			textTool.SetLayer(activeLayer);
+		}
 		default:
 			break;
 	}
@@ -231,6 +265,7 @@ void GraphicsScene::ChangeActiveTool(ActiveTool tool)
 
 void GraphicsScene::keyPressEvent(QKeyEvent* event)
 {
+	QGraphicsScene::keyPressEvent(event);
 }
 
 void GraphicsScene::AddLayer(ImageLayer* layer)

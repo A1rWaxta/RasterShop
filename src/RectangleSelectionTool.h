@@ -11,7 +11,7 @@ class RectangleSelectionTool : public QGraphicsRectItem
 {
 public:
 	RectangleSelectionTool();
-	void Start(QPointF pos);
+	void Start(QPointF point);
 	void Update(QPointF currentPoint);
 	QRectF GetSelectedRegion();
 

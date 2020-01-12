@@ -11,6 +11,7 @@ WorkSpace::WorkSpace(QWidget* parent)
 {
 	setTransformationAnchor(AnchorUnderMouse);
 	setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
+	setAttribute(Qt::WA_InputMethodEnabled);
 }
 
 WorkSpace::~WorkSpace()
@@ -34,4 +35,15 @@ void WorkSpace::wheelEvent(QWheelEvent* event)
 
 void WorkSpace::keyPressEvent(QKeyEvent* event)
 {
+	QGraphicsView::keyPressEvent(event);
+}
+
+void WorkSpace::inputMethodEvent(QInputMethodEvent* event)
+{
+	QGraphicsView::inputMethodEvent(event);
+}
+
+QVariant WorkSpace::inputMethodQuery(Qt::InputMethodQuery query) const
+{
+	return QGraphicsView::inputMethodQuery(query);
 }
