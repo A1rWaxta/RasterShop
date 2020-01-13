@@ -1,0 +1,6 @@
+build/
+.idea
+lib/
+test-image.png
+bin/RasterShop
+bin/RasterShop-debug
