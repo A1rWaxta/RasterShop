@@ -32,7 +32,7 @@ void GraphicsScene::ChangeActiveLayer(ImageLayer* layer)
 	if( activeLayer != nullptr )
 	{
 		layerSelection.show();
-		layerSelection.setRect(layerSelection.mapRectFromScene(activeLayer->boundingRect()));
+		layerSelection.setRect(layerSelection.mapRectFromScene(activeLayer->mappedToSceneBoundingRect()));
 
 		switch( activeTool )
 		{
@@ -78,7 +78,7 @@ void GraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent* mouseEvent)
 		{
 			case ActiveTool::Pen:
 			{
-				if( activeLayer->boundingRect().contains(mouseEvent->scenePos()) )
+				if( activeLayer->mappedToSceneBoundingRect().contains(mouseEvent->scenePos()) )
 				{
 					leftMousePressed = true;
 				}
@@ -106,7 +106,7 @@ void GraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent* mouseEvent)
 			}
 			case ActiveTool::Move:
 			{
-				if( activeLayer->boundingRect().contains(mouseEvent->scenePos()) )
+				if( activeLayer->mappedToSceneBoundingRect().contains(mouseEvent->scenePos()) )
 				{
 					leftMousePressed = true;
 				}
@@ -123,7 +123,7 @@ void GraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent* mouseEvent)
 			}
 			case ActiveTool::Text:
 			{
-				if( activeLayer->boundingRect().contains(mouseEvent->scenePos()) )
+				if( activeLayer->mappedToSceneBoundingRect().contains(mouseEvent->scenePos()) )
 				{
 					auto text = new TextTool(activeLayer);
 					text->Start(mouseEvent->scenePos());
@@ -158,7 +158,7 @@ void GraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent* mouseEvent)
 			}
 			case ActiveTool::Pen:
 			{
-				if( activeLayer->boundingRect().contains(mouseEvent->scenePos()) )
+				if( activeLayer->mappedToSceneBoundingRect().contains(mouseEvent->scenePos()) )
 				{
 					auto line = new QGraphicsLineItem(QLineF(activeLayer->mapFromScene(mouseEvent->scenePos()),
 					                                         activeLayer->mapFromScene(mouseEvent->lastScenePos())));
@@ -175,17 +175,17 @@ void GraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent* mouseEvent)
 			case ActiveTool::Scale:
 			{
 				scaleTool.Update(mouseEvent->scenePos());
-				layerSelection.setRect(layerSelection.mapRectFromScene(activeLayer->boundingRect()));
+				layerSelection.setRect(layerSelection.mapRectFromScene(activeLayer->mappedToSceneBoundingRect()));
 				break;
 			}
 			case ActiveTool::Rotation:
 			{
-				layerSelection.setRect(activeLayer->boundingRect());
+				layerSelection.setRect(activeLayer->mappedToSceneBoundingRect());
 				break;
 			}
 		}
 	}
-	layerSelection.setRect(layerSelection.mapRectFromScene(activeLayer->boundingRect()));
+	layerSelection.setRect(layerSelection.mapRectFromScene(activeLayer->mappedToSceneBoundingRect()));
 }
 
 void GraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent* mouseEvent)
@@ -261,8 +261,8 @@ void GraphicsScene::keyPressEvent(QKeyEvent* event)
 void GraphicsScene::AddLayer(ImageLayer* layer)
 {
 	layer->setParentItem(canvas);
-	layer->setTransformOriginPoint(layer->boundingRect().width() / 2,
-	                               layer->boundingRect().height() / 2);
+	layer->setTransformOriginPoint(layer->mappedToSceneBoundingRect().width() / 2,
+	                               layer->mappedToSceneBoundingRect().height() / 2);
 }
 
 void GraphicsScene::Paste()

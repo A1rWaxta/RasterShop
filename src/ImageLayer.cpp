@@ -17,15 +17,11 @@ ImageLayer::ImageLayer(qreal width, qreal height) : drawableList(0)
 
 void ImageLayer::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
 {
-	for( auto child : QGraphicsRectItem::childItems() )
-	{
-		child->paint(painter, option, widget);
-	}
 }
 
 QRectF ImageLayer::boundingRect() const
 {
-	return mapRectToScene(rect());
+	return rect();
 }
 
 ImageLayer::~ImageLayer()
@@ -70,4 +66,9 @@ QVariant ImageLayer::itemChange(QGraphicsItem::GraphicsItemChange change, const 
 		}
 	}
 	return QGraphicsItem::itemChange(change, value);
+}
+
+QRectF ImageLayer::mappedToSceneBoundingRect()
+{
+	return mapRectToScene(boundingRect());
 }

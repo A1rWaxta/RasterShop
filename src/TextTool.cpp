@@ -19,7 +19,7 @@ TextTool::TextTool(ImageLayer* parent) : QGraphicsTextItem(parent), layer(nullpt
 
 void TextTool::Start(QPointF point)
 {
-	setTextWidth(layer->boundingRect().left() - point.x());
+	setTextWidth(layer->mappedToSceneBoundingRect().left() - point.x());
 	setPos(75, 75);
 }
 

@@ -27,11 +27,11 @@ ScaleTool::ScaleTool() : layer(nullptr)
 void ScaleTool::SetLayer(ImageLayer* layer)
 {
 	this->layer = layer;
-	setRect(layer->boundingRect());
-	QPointF topLeft(layer->boundingRect().bottomRight().x() - DISTANCE_FROM_BOTTOM_RIGHT_POINT,
-	                layer->boundingRect().bottomRight().y() + DISTANCE_FROM_BOTTOM_RIGHT_POINT);
-	QPointF bottomRight(layer->boundingRect().bottomRight().x() + DISTANCE_FROM_BOTTOM_RIGHT_POINT,
-	                layer->boundingRect().bottomRight().y() - DISTANCE_FROM_BOTTOM_RIGHT_POINT);
+	setRect(layer->mappedToSceneBoundingRect());
+	QPointF topLeft(layer->mappedToSceneBoundingRect().bottomRight().x() - DISTANCE_FROM_BOTTOM_RIGHT_POINT,
+	                layer->mappedToSceneBoundingRect().bottomRight().y() + DISTANCE_FROM_BOTTOM_RIGHT_POINT);
+	QPointF bottomRight(layer->mappedToSceneBoundingRect().bottomRight().x() + DISTANCE_FROM_BOTTOM_RIGHT_POINT,
+	                layer->mappedToSceneBoundingRect().bottomRight().y() - DISTANCE_FROM_BOTTOM_RIGHT_POINT);
 	QRectF rect(topLeft, bottomRight);
 	pointRectangle.setRect(rect);
 }
@@ -42,14 +42,14 @@ void ScaleTool::Update(QPointF currentPoint)
 	                                  std::pow(rect().topLeft().y() - currentPoint.y(), 2));
 	layer->setScale(currentDistance / startDistance);
 
-	QPointF topLeft(layer->boundingRect().bottomRight().x() - DISTANCE_FROM_BOTTOM_RIGHT_POINT,
-	                layer->boundingRect().bottomRight().y() + DISTANCE_FROM_BOTTOM_RIGHT_POINT);
-	QPointF bottomRight(layer->boundingRect().bottomRight().x() + DISTANCE_FROM_BOTTOM_RIGHT_POINT,
-	                    layer->boundingRect().bottomRight().y() - DISTANCE_FROM_BOTTOM_RIGHT_POINT);
+	QPointF topLeft(layer->mappedToSceneBoundingRect().bottomRight().x() - DISTANCE_FROM_BOTTOM_RIGHT_POINT,
+	                layer->mappedToSceneBoundingRect().bottomRight().y() + DISTANCE_FROM_BOTTOM_RIGHT_POINT);
+	QPointF bottomRight(layer->mappedToSceneBoundingRect().bottomRight().x() + DISTANCE_FROM_BOTTOM_RIGHT_POINT,
+	                    layer->mappedToSceneBoundingRect().bottomRight().y() - DISTANCE_FROM_BOTTOM_RIGHT_POINT);
 	QRectF rect(topLeft, bottomRight);
 	pointRectangle.setRect(rect);
 
-	setRect(layer->boundingRect());
+	setRect(layer->mappedToSceneBoundingRect());
 }
 
 void ScaleTool::Start()

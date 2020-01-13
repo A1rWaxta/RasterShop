@@ -14,6 +14,7 @@ public:
 	~ImageLayer() override;
 	void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) override;
 	[[nodiscard]] QRectF boundingRect() const override;
+	QRectF mappedToSceneBoundingRect();
 
 private:
 	void mousePressEvent(QGraphicsSceneMouseEvent* event) override;

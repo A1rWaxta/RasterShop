@@ -28,7 +28,7 @@ void RotationTool::Update(QPointF currentPoint)
 	layer->setRotation(startPoint.y() - currentPoint.y());
 
 	setRotation(layer->rotation());
-//	setRect(layer->boundingRect());
+//	setRect(layer->mappedToSceneBoundingRect());
 }
 
 void RotationTool::Stop()
@@ -38,10 +38,10 @@ void RotationTool::Stop()
 void RotationTool::SetLayer(ImageLayer* layer)
 {
 	this->layer = layer;
-	QPointF topLeft(( layer->boundingRect().bottomRight().x() / 2 ) - DISTANCE_FROM_MID_POINT,
-	                ( layer->boundingRect().bottomRight().y() / 2 ) + DISTANCE_FROM_MID_POINT);
-	QPointF bottomRight(( layer->boundingRect().bottomRight().x() / 2 ) + DISTANCE_FROM_MID_POINT,
-	                    ( layer->boundingRect().bottomRight().y() / 2 ) - DISTANCE_FROM_MID_POINT);
+	QPointF topLeft(( layer->mappedToSceneBoundingRect().bottomRight().x() / 2 ) - DISTANCE_FROM_MID_POINT,
+	                ( layer->mappedToSceneBoundingRect().bottomRight().y() / 2 ) + DISTANCE_FROM_MID_POINT);
+	QPointF bottomRight(( layer->mappedToSceneBoundingRect().bottomRight().x() / 2 ) + DISTANCE_FROM_MID_POINT,
+	                    ( layer->mappedToSceneBoundingRect().bottomRight().y() / 2 ) - DISTANCE_FROM_MID_POINT);
 	QRectF rect(topLeft, bottomRight);
 
 	setRect(layer->rect());
