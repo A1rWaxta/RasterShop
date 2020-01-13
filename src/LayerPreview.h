@@ -25,6 +25,7 @@ signals:
 
 private slots:
 	void ToggleVisibility();
+	void SetOpacity(int i);
 
 private:
 	void mouseReleaseEvent(QMouseEvent* mouseEvent) override;

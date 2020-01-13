@@ -38,6 +38,28 @@ MainWindow::MainWindow(QWidget* parent) :
 	ui->moveLayerDownButton->setDisabled(true);
 
 	CreateShortcuts();
+
+	QPixmap pixmap;
+
+	pixmap.load("res/plus.svg");
+	QIcon addLayerIcon(pixmap);
+	ui->addLayerButton->setIcon(addLayerIcon);
+	ui->addLayerButton->setIconSize(QSize(37, 37));
+
+	pixmap.load("res/trash.svg");
+	QIcon deleteLayerIcon(pixmap);
+	ui->deleteLayerButton->setIcon(deleteLayerIcon);
+	ui->deleteLayerButton->setIconSize(QSize(37, 37));
+
+	pixmap.load("res/arrowUp.svg");
+	QIcon moveLayerUpIcon(pixmap);
+	ui->moveLayerUpButton->setIcon(moveLayerUpIcon);
+	ui->moveLayerUpButton->setIconSize(QSize(37, 37));
+
+	pixmap.load("res/arrowDown.svg");
+	QIcon moveLayerDownIcon(pixmap);
+	ui->moveLayerDownButton->setIcon(moveLayerDownIcon);
+	ui->moveLayerDownButton->setIconSize(QSize(37, 37));
 }
 
 void MainWindow::ConnectMenuBarActionsToSlots()

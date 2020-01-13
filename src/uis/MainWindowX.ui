@@ -71,18 +71,18 @@
      <widget class="QTabWidget" name="tabWidget">
       <property name="minimumSize">
        <size>
-        <width>300</width>
+        <width>390</width>
         <height>0</height>
        </size>
       </property>
       <property name="maximumSize">
        <size>
-        <width>300</width>
+        <width>390</width>
         <height>16777215</height>
        </size>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="tab_3">
        <attribute name="title">
@@ -143,53 +143,109 @@
          <layout class="QHBoxLayout" name="horizontalLayout_2">
           <item>
            <widget class="QPushButton" name="addLayerButton">
+            <property name="minimumSize">
+             <size>
+              <width>50</width>
+              <height>50</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>50</width>
+              <height>50</height>
+             </size>
+            </property>
             <property name="font">
              <font>
               <pointsize>7</pointsize>
              </font>
             </property>
+            <property name="toolTip">
+             <string>Stwórz warstwę</string>
+            </property>
             <property name="text">
-             <string>Nowa Warstwa</string>
+             <string/>
             </property>
            </widget>
           </item>
           <item>
            <widget class="QPushButton" name="deleteLayerButton">
+            <property name="minimumSize">
+             <size>
+              <width>50</width>
+              <height>50</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>50</width>
+              <height>50</height>
+             </size>
+            </property>
             <property name="font">
              <font>
               <pointsize>7</pointsize>
              </font>
             </property>
-            <property name="text">
+            <property name="toolTip">
              <string>Usuń warstwę</string>
+            </property>
+            <property name="text">
+             <string/>
             </property>
            </widget>
           </item>
           <item>
            <widget class="QPushButton" name="moveLayerUpButton">
+            <property name="minimumSize">
+             <size>
+              <width>50</width>
+              <height>50</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>50</width>
+              <height>50</height>
+             </size>
+            </property>
             <property name="font">
              <font>
               <pointsize>7</pointsize>
              </font>
             </property>
+            <property name="toolTip">
+             <string>Przesuń warstwę do góry</string>
+            </property>
             <property name="text">
-             <string>Góra</string>
+             <string/>
             </property>
            </widget>
           </item>
           <item>
            <widget class="QPushButton" name="moveLayerDownButton">
+            <property name="minimumSize">
+             <size>
+              <width>50</width>
+              <height>50</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>50</width>
+              <height>50</height>
+             </size>
+            </property>
             <property name="font">
              <font>
               <pointsize>7</pointsize>
              </font>
             </property>
+            <property name="toolTip">
+             <string>Przesuń warstwę na dół</string>
+            </property>
             <property name="text">
              <string/>
-            </property>
-            <property name="icon">
-             <iconset>
-              <normaloff>../../bin/res/pencil.svg</normaloff>../../bin/res/pencil.svg</iconset>
             </property>
            </widget>
           </item>
@@ -205,8 +261,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>276</width>
-             <height>343</height>
+             <width>366</width>
+             <height>317</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_2">

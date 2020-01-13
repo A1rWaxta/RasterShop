@@ -1,6 +1,7 @@
 #include "LayerPreview.h"
 #include "ui_LayerPreview.h"
 #include "ImageLayer.h"
+#include <QDebug>
 
 LayerPreview::LayerPreview(ImageLayer* layer, QString& layerIdentifier, QWidget* parent) :
 		QWidget(parent),
@@ -12,6 +13,7 @@ LayerPreview::LayerPreview(ImageLayer* layer, QString& layerIdentifier, QWidget*
 	setAutoFillBackground(true);
 	ui->layerName->setText(layerIdentifier);
 	connect(ui->visiblityCheckBox, &QCheckBox::stateChanged, this, &LayerPreview::ToggleVisibility);
+	connect(ui->opacitySpinBox, SIGNAL(valueChanged(int)), this, SLOT(SetOpacity(int)));
 }
 
 LayerPreview::~LayerPreview()
@@ -68,4 +70,11 @@ void LayerPreview::ToggleVisibility()
 	{
 		layer->show();
 	}
+}
+
+void LayerPreview::SetOpacity(int value)
+{
+	double i = static_cast<double>(value) / 100;
+	qDebug() << i;
+	layer->setOpacity(i);
 }
