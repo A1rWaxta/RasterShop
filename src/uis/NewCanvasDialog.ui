@@ -15,7 +15,7 @@
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="2" column="0" rowspan="2">
-    <widget class="QGroupBox" name="groupBox_2">
+    <widget class="QGroupBox" name="sizeGroupBox">
      <property name="title">
       <string>Rozmiar</string>
      </property>
@@ -25,7 +25,7 @@
         <item row="0" column="0">
          <widget class="QLabel" name="widthLabel">
           <property name="text">
-           <string>Szerokość</string>
+           <string>Szerokość:</string>
           </property>
          </widget>
         </item>
@@ -47,7 +47,7 @@
       <item row="1" column="0">
        <widget class="QLabel" name="heightLabel">
         <property name="text">
-         <string>Wysokość</string>
+         <string>Wysokość:</string>
         </property>
        </widget>
       </item>
@@ -68,7 +68,7 @@
     </widget>
    </item>
    <item row="4" column="0">
-    <layout class="QHBoxLayout" name="horizontalLayout">
+    <layout class="QHBoxLayout" name="buttonsLayout">
      <item>
       <widget class="QPushButton" name="cancelButton">
        <property name="text">
@@ -86,7 +86,7 @@
     </layout>
    </item>
    <item row="0" column="0" rowspan="2">
-    <widget class="QGroupBox" name="groupBox">
+    <widget class="QGroupBox" name="backgroundGroupBox">
      <property name="title">
       <string>Tło</string>
      </property>

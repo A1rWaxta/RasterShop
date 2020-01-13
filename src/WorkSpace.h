@@ -21,10 +21,6 @@ public:
 private:
 	void wheelEvent(QWheelEvent* event) override;
 	void keyPressEvent(QKeyEvent* event) override;
-	void inputMethodEvent(QInputMethodEvent* event) override;
-public:
-	QVariant inputMethodQuery(Qt::InputMethodQuery query) const override;
-private:
 	QVector<ImageLayer*> layers;
 	ImageLayer* activeLayer;
 };

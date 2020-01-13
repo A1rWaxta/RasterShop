@@ -18,6 +18,8 @@ set(sources
 		TextTool.cpp
 		TextEditOptions.cpp
 		TextAreaTool.cpp
+		ChangeCanvasSizeDialog.cpp
+
 		)
 
 set(headers
@@ -40,4 +42,5 @@ set(headers
 		TextTool.h
 		TextEditOptions.h
 		TextAreaTool.h
+		ChangeCanvasSizeDialog.h
 		)

@@ -2,6 +2,7 @@
 #include "ui_MainWindowX.h"
 #include "NewCanvasDialog.h"
 #include "LayerPreview.h"
+#include "ChangeCanvasSizeDialog.h"
 
 MainWindow::MainWindow(QWidget* parent) :
 		QMainWindow(parent),
@@ -19,8 +20,12 @@ MainWindow::MainWindow(QWidget* parent) :
 	ui->toolLayout->setAlignment(Qt::AlignTop);
 	ui->colorPicker->hide();
 
+	ui->tabWidget->setDisabled(true);
+	ui->menuEdit->setDisabled(true);
+	ui->menuFiltry->setDisabled(true);
+	ui->menuObraz->setDisabled(true);
+
 	setMinimumSize(740, 600);
-	setAttribute(Qt::WA_InputMethodEnabled);
 
 	width = qApp->screens()[0]->size().width() / 2;
 	height = qApp->screens()[0]->size().height() / 2;
@@ -31,12 +36,6 @@ MainWindow::MainWindow(QWidget* parent) :
 	setGeometry(xPos, yPos, width, height);
 
 	ConnectMenuBarActionsToSlots();
-
-	ui->addLayerButton->setDisabled(true);
-	ui->deleteLayerButton->setDisabled(true);
-	ui->moveLayerUpButton->setDisabled(true);
-	ui->moveLayerDownButton->setDisabled(true);
-
 	CreateShortcuts();
 
 	QPixmap pixmap;
@@ -68,6 +67,8 @@ void MainWindow::ConnectMenuBarActionsToSlots()
 	connect(ui->actionSave, &QAction::triggered, this, &MainWindow::SaveActionClicked);
 	connect(ui->actionSaveAs, &QAction::triggered, this, &MainWindow::SaveAsActionClicked);
 	connect(ui->actionOpen, &QAction::triggered, this, &MainWindow::OpenActionClicked);
+
+	connect(ui->actionChangeSize, &QAction::triggered, this, &MainWindow::ChangeCanvasSize);
 }
 
 void MainWindow::ConnectLayerOperationButtonsToSlots()
@@ -188,10 +189,10 @@ void MainWindow::InitializeNewProject(int width, int height)
 
 	ConnectLayerOperationButtonsToSlots();
 
-	ui->addLayerButton->setDisabled(false);
-	ui->deleteLayerButton->setDisabled(false);
-	ui->moveLayerUpButton->setDisabled(false);
-	ui->moveLayerDownButton->setDisabled(false);
+	ui->tabWidget->setEnabled(true);
+	ui->menuEdit->setEnabled(true);
+	ui->menuFiltry->setEnabled(true);
+	ui->menuObraz->setEnabled(true);
 }
 
 void MainWindow::CreateLayer()
@@ -457,4 +458,21 @@ void MainWindow::ToolSelected(ActiveTool tool)
 			break;
 	}
 	graphicsScene->ChangeActiveTool(tool);
+}
+
+void MainWindow::ChangeCanvasSize()
+{
+	int width;
+	int height;
+	ChangeCanvasSizeDialog canvasSizeDialog;
+	canvasSizeDialog.SetSize(graphicsScene->canvas->rect().size().toSize());
+
+	if( canvasSizeDialog.exec() == QDialog::Accepted )
+	{
+		QSizeF newSize(canvasSizeDialog.GetSize());
+		QRectF newRect(graphicsScene->canvas->pos(), newSize);
+		graphicsScene->canvas->setRect(newRect);
+//		ui->workSpace->centerOn(graphicsScene->itemsBoundingRect().center());
+		ui->workSpace->setSceneRect(graphicsScene->itemsBoundingRect());
+	}
 }

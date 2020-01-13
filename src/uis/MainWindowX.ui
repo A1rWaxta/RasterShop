@@ -82,7 +82,7 @@
        </size>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab_3">
        <attribute name="title">
@@ -355,6 +355,8 @@
     <addaction name="actionObr_o_90_w_lewo"/>
     <addaction name="actionObr_o_180"/>
     <addaction name="actionLustrzane_odbicie"/>
+    <addaction name="separator"/>
+    <addaction name="actionChangeSize"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
@@ -427,6 +429,11 @@
   <action name="actionDopasowanie_kontrastu">
    <property name="text">
     <string>Dopasowanie kontrastu</string>
+   </property>
+  </action>
+  <action name="actionChangeSize">
+   <property name="text">
+    <string>Zmień rozmiar...</string>
    </property>
   </action>
  </widget>

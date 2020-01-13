@@ -62,4 +62,5 @@ private:
 	QShortcut* del;
 	QShortcut* esc;
 	Ui::MainWindow* ui;
+	void ChangeCanvasSize();
 };

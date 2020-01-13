@@ -17,3 +17,8 @@ Canvas::Canvas(qreal x, qreal y, qreal w, qreal h, QGraphicsItem* parent)
 void Canvas::CreateLayer(QColor& color)
 {
 }
+
+QRectF Canvas::boundingRect() const
+{
+	return rect();
+}
