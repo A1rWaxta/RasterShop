@@ -19,6 +19,7 @@ public:
 	void Select();
 	void Unselect();
 	QString GetLayerName();
+	void SetLayerName(QString& newName);
 
 signals:
 	void Selected(LayerPreview* layer);

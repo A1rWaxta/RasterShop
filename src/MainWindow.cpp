@@ -3,6 +3,7 @@
 #include "NewCanvasDialog.h"
 #include "LayerPreview.h"
 #include "ChangeCanvasSizeDialog.h"
+#include "NewLayerDialog.h"
 
 MainWindow::MainWindow(QWidget* parent) :
 		QMainWindow(parent),
@@ -69,11 +70,14 @@ void MainWindow::ConnectMenuBarActionsToSlots()
 	connect(ui->actionOpen, &QAction::triggered, this, &MainWindow::OpenActionClicked);
 
 	connect(ui->actionChangeSize, &QAction::triggered, this, &MainWindow::ChangeCanvasSize);
+	connect(ui->actionRotate90DegreesRight, &QAction::triggered, this, &MainWindow::Rotate90DegreesRight);
+	connect(ui->actionRotate90DegreesLeft, &QAction::triggered, this, &MainWindow::Rotate90DegreesLeft);
+	connect(ui->actionRotate180Degrees, &QAction::triggered, this, &MainWindow::Rotate180Degrees);
 }
 
 void MainWindow::ConnectLayerOperationButtonsToSlots()
 {
-	connect(ui->addLayerButton, &QPushButton::released, this, &MainWindow::CreateLayer);
+	connect(ui->addLayerButton, &QPushButton::released, this, &MainWindow::ShowLayerCreationDialog);
 	connect(ui->deleteLayerButton, &QPushButton::released, this, &MainWindow::ShowLayerDeleteConfirmationDialog);
 	connect(ui->moveLayerUpButton, &QPushButton::clicked, this, &MainWindow::MoveLayerUp);
 	connect(ui->moveLayerDownButton, &QPushButton::clicked, this, &MainWindow::MoveLayerDown);
@@ -185,7 +189,7 @@ void MainWindow::InitializeNewProject(int width, int height)
 
 	CreateScene(width, height);
 
-	CreateLayer();
+	CreateLayer(width, height, "background");
 
 	ConnectLayerOperationButtonsToSlots();
 
@@ -195,13 +199,12 @@ void MainWindow::InitializeNewProject(int width, int height)
 	ui->menuObraz->setEnabled(true);
 }
 
-void MainWindow::CreateLayer()
+void MainWindow::CreateLayer(int width, int height, QString layerName)
 {
-	auto newLayer = new ImageLayer(graphicsScene->canvas->rect().width(), graphicsScene->canvas->rect().height());
+	auto newLayer = new ImageLayer(width, height);
 	newLayer->setZValue(layers.size()); //places new layer on top of image
 	graphicsScene->AddLayer(newLayer);
 
-	QString layerName = "layer_" + QString::number(layersAddedCount);
 	auto layerPreview = new LayerPreview(newLayer, layerName, ui->scrollAreaWidgetContents);
 	ui->layerPreviewLayout->addWidget(layerPreview);
 	layers.push_back(layerPreview);
@@ -472,7 +475,49 @@ void MainWindow::ChangeCanvasSize()
 		QSizeF newSize(canvasSizeDialog.GetSize());
 		QRectF newRect(graphicsScene->canvas->pos(), newSize);
 		graphicsScene->canvas->setRect(newRect);
-//		ui->workSpace->centerOn(graphicsScene->itemsBoundingRect().center());
 		ui->workSpace->setSceneRect(graphicsScene->itemsBoundingRect());
+	}
+}
+
+void MainWindow::Rotate90DegreesLeft()
+{
+	ui->workSpace->rotate(-90);
+}
+
+void MainWindow::Rotate90DegreesRight()
+{
+	ui->workSpace->rotate(90);
+}
+
+void MainWindow::Rotate180Degrees()
+{
+	ui->workSpace->rotate(180);
+}
+
+void MainWindow::ShowLayerCreationDialog()
+{
+	NewLayerDialog newLayerDialog(graphicsScene->canvas->rect().size().toSize());
+	bool isDuplicate = false;
+
+	if( newLayerDialog.exec() == QDialog::Accepted )
+	{
+		QSize newLayerSize = newLayerDialog.GetSize();
+		QString newLayerName = newLayerDialog.GetLayerName();
+		for( auto layerPreview : layers )
+		{
+			if( layerPreview->GetLayerName() == newLayerName )
+			{
+				isDuplicate = true;
+				break;
+			}
+		}
+		if( isDuplicate )
+		{
+			QMessageBox::critical(nullptr, "Błąd", tr("Warstwa o podanej nazwie już istnieje!"));
+		}
+		else
+		{
+			CreateLayer(newLayerSize.width(), newLayerSize.height(), newLayerName);
+		}
 	}
 }

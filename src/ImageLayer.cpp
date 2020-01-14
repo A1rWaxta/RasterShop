@@ -70,5 +70,12 @@ QVariant ImageLayer::itemChange(QGraphicsItem::GraphicsItemChange change, const 
 
 QRectF ImageLayer::mappedToSceneBoundingRect()
 {
-	return mapRectToScene(boundingRect());
+	if(this == nullptr)
+	{
+		return QRectF();
+	}
+	else
+	{
+		return mapRectToScene(boundingRect());
+	}
 }

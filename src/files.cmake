@@ -19,7 +19,7 @@ set(sources
 		TextEditOptions.cpp
 		TextAreaTool.cpp
 		ChangeCanvasSizeDialog.cpp
-
+		NewLayerDialog.cpp
 		)
 
 set(headers
@@ -43,4 +43,5 @@ set(headers
 		TextEditOptions.h
 		TextAreaTool.h
 		ChangeCanvasSizeDialog.h
+		NewLayerDialog.h
 		)

@@ -82,7 +82,7 @@
        </size>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="tab_3">
        <attribute name="title">
@@ -352,8 +352,8 @@
      <string>Obraz</string>
     </property>
     <addaction name="actionRotate90DegreesRight"/>
-    <addaction name="actionObr_o_90_w_lewo"/>
-    <addaction name="actionObr_o_180"/>
+    <addaction name="actionRotate90DegreesLeft"/>
+    <addaction name="actionRotate180Degrees"/>
     <addaction name="actionLustrzane_odbicie"/>
     <addaction name="separator"/>
     <addaction name="actionChangeSize"/>
@@ -401,12 +401,12 @@
     <string>Obróć o 90 w prawo</string>
    </property>
   </action>
-  <action name="actionObr_o_90_w_lewo">
+  <action name="actionRotate90DegreesLeft">
    <property name="text">
     <string>Obróć o 90 w lewo</string>
    </property>
   </action>
-  <action name="actionObr_o_180">
+  <action name="actionRotate180Degrees">
    <property name="text">
     <string>Obróć o 180</string>
    </property>

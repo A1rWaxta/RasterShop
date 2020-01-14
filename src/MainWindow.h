@@ -27,7 +27,7 @@ private slots:
 	void SaveAsActionClicked();
 	void SaveActionClicked();
 	void InitializeNewProject(int width, int height);
-	void CreateLayer();
+	void CreateLayer(int width, int height, QString layerName);
 	void ActiveLayerChanged(LayerPreview* layer);
 	void MoveLayerUp();
 	void MoveLayerDown();
@@ -63,4 +63,8 @@ private:
 	QShortcut* esc;
 	Ui::MainWindow* ui;
 	void ChangeCanvasSize();
+	void Rotate90DegreesLeft();
+	void Rotate90DegreesRight();
+	void Rotate180Degrees();
+	void ShowLayerCreationDialog();
 };
