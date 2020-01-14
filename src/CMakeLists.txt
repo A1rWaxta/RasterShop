@@ -1,4 +1,4 @@
-find_package(Qt5 REQUIRED COMPONENTS Core Widgets UiTools)
+find_package(Qt5 REQUIRED COMPONENTS Core Widgets UiTools Svg)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
@@ -21,5 +21,5 @@ set_target_properties(RasterShop PROPERTIES OUTPUT_NAME_RELEASE RasterShop)
 
 if(Qt5Widgets_FOUND AND Qt5UiTools_FOUND)
 	message(STATUS "Qt has been found")
-	target_link_libraries(RasterShop Qt5::Widgets Qt5::UiTools)
+	target_link_libraries(RasterShop Qt5::Widgets Qt5::UiTools Qt5::Svg)
 endif()

@@ -1,5 +1,4 @@
-#ifndef TEXTEDITOPTIONS_H
-#define TEXTEDITOPTIONS_H
+#pragma once
 
 #include <QWidget>
 
@@ -14,9 +13,15 @@ class TextEditOptions : public QWidget
 public:
     explicit TextEditOptions(QWidget *parent = nullptr);
     ~TextEditOptions();
+	QFont& GetFont();
+	int& GetSize();
+
+public slots:
+	void UpdateCurrentFont(const QFont& font);
+	void UpdateSize(int i);
 
 private:
+	QFont currentFont;
+	int currentFontSize;
     Ui::TextEditOptions *ui;
 };
-
-#endif // TEXTEDITOPTIONS_H

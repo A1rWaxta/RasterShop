@@ -70,7 +70,7 @@ QVariant ImageLayer::itemChange(QGraphicsItem::GraphicsItemChange change, const 
 
 QRectF ImageLayer::mappedToSceneBoundingRect()
 {
-	if(this == nullptr)
+	if( this == nullptr )
 	{
 		return QRectF();
 	}

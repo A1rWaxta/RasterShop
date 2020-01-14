@@ -11,6 +11,7 @@
 #include "RectangleSelectionTool.h"
 #include "ScaleTool.h"
 #include "RotationTool.h"
+#include "TextTool.h"
 
 class GraphicsScene : public QGraphicsScene
 {
@@ -19,7 +20,7 @@ Q_OBJECT
 	friend class MainWindow;
 
 public:
-	GraphicsScene(qreal width, qreal height, QColor& color, QObject* parent);
+	GraphicsScene(qreal width, qreal height, QColor& color, QFont& font, int& fontSize, QObject* parent);
 
 public slots:
 	void ChangeActiveTool(ActiveTool tool);
@@ -44,6 +45,8 @@ private:
 	qreal mousePointerDistance;
 	ActiveTool activeTool;
 	QColor& toolColor;
+	QFont& font;
+	int& textSize;
 
 	QGraphicsRectItem layerSelection;
 	RectangleSelectionTool selectionTool;

@@ -5,7 +5,7 @@
 #include "TextAreaTool.h"
 #include <QPen>
 
-TextAreaTool::TextAreaTool() : textTool(nullptr)
+TextAreaTool::TextAreaTool()
 {
 	setPen(QPen(Qt::darkGray, 2, Qt::SolidLine));
 	setFlags(QGraphicsItem::ItemIsFocusable | QGraphicsItem::ItemClipsChildrenToShape);

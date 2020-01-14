@@ -11,12 +11,15 @@
 class TextTool : public QGraphicsTextItem
 {
 public:
-	TextTool(ImageLayer* parent);
+	TextTool();
 	void Start(QPointF point);
+	void SetLayer(ImageLayer* layer);
 
 private:
 	void keyPressEvent(QKeyEvent* event) override;
 	void focusInEvent(QFocusEvent* event) override;
+	QGraphicsRectItem boundingRectangle;
+	bool leftMousePressed;
 	ImageLayer* layer;
 };
 

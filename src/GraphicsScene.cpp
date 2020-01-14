@@ -7,12 +7,15 @@
 #include "GraphicsScene.h"
 #include "TextTool.h"
 
-GraphicsScene::GraphicsScene(qreal width, qreal height, QColor& color, QObject* parent) : QGraphicsScene(parent),
-                                                                                          leftMousePressed(false),
-                                                                                          activeLayer(nullptr),
-                                                                                          toolColor(color),
-                                                                                          layerSelection(0, 0, 0, 0),
-                                                                                          activeTool(ActiveTool::None)
+GraphicsScene::GraphicsScene(qreal width, qreal height, QColor& color, QFont& font, int& fontSize, QObject* parent)
+		: QGraphicsScene(parent),
+		  leftMousePressed(false),
+		  activeLayer(nullptr),
+		  toolColor(color),
+		  layerSelection(0, 0, 0, 0),
+		  font(font),
+		  textSize(fontSize),
+		  activeTool(ActiveTool::None)
 {
 	canvas = new Canvas(0, 0, width, height);
 	addItem(canvas);
@@ -125,8 +128,12 @@ void GraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent* mouseEvent)
 			{
 				if( activeLayer->mappedToSceneBoundingRect().contains(mouseEvent->scenePos()) )
 				{
-					auto text = new TextTool(activeLayer);
-					text->Start(mouseEvent->scenePos());
+					auto text = new TextTool();
+					text->setFont(QFont(font.family(), textSize));
+					text->setDefaultTextColor(toolColor);
+					text->SetLayer(activeLayer);
+					AddItemOnActiveLayer(text);
+					text->Start(mouseEvent->pos());
 					setFocusItem(text);
 				}
 				break;

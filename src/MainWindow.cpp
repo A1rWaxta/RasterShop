@@ -4,6 +4,7 @@
 #include "LayerPreview.h"
 #include "ChangeCanvasSizeDialog.h"
 #include "NewLayerDialog.h"
+#include <QtSvg/QGraphicsSvgItem>
 
 MainWindow::MainWindow(QWidget* parent) :
 		QMainWindow(parent),
@@ -20,6 +21,7 @@ MainWindow::MainWindow(QWidget* parent) :
 
 	ui->toolLayout->setAlignment(Qt::AlignTop);
 	ui->colorPicker->hide();
+	ui->textEditOptions->hide();
 
 	ui->tabWidget->setDisabled(true);
 	ui->menuEdit->setDisabled(true);
@@ -147,9 +149,9 @@ void MainWindow::SaveAsActionClicked()
 		if( saveFileDialog.exec() == QFileDialog::Accepted )
 		{
 			QStringList file = saveFileDialog.selectedFiles();
-			QPixmap image(graphicsScene->sceneRect().width(), graphicsScene->sceneRect().height());
+			QPixmap image(graphicsScene->canvas->rect().width(), graphicsScene->canvas->rect().height());
 			painter.begin(&image);
-			graphicsScene->render(&painter);
+			graphicsScene->render(&painter, graphicsScene->canvas->rect(), graphicsScene->canvas->rect());
 			painter.end();
 			image.save(file[0]);
 		}
@@ -165,21 +167,42 @@ void MainWindow::SaveActionClicked()
 void MainWindow::OpenActionClicked()
 {
 	QFileDialog fileDialog(this);
+	QMessageBox::StandardButton svgFileOpenedReply;
 
 	fileDialog.resize(320, 100);
-	fileDialog.setNameFilter(tr("Images (*.png *.bmp *.jpg *.jpeg)"));
+	fileDialog.setNameFilter(tr("Images (*.png *.bmp *.jpg *.jpeg *.svg)"));
 	fileDialog.setFileMode(QFileDialog::ExistingFile);
 
 	QStringList fileNames;
 	if( fileDialog.exec() == QFileDialog::Accepted )
 	{
 		fileNames = fileDialog.selectedFiles();
+
 		QImage image(fileNames[0]);
 
 		InitializeNewProject(image.width(), image.height());
 
-		auto graphicsImage = new QGraphicsPixmapItem(QPixmap::fromImage(image));
-		graphicsScene->AddItemOnActiveLayer(graphicsImage);
+		QFileInfo fileInfo(fileNames[0]);
+		if( fileInfo.suffix() == "svg" )
+		{
+			svgFileOpenedReply = QMessageBox::question(this, tr("Format svg"),
+			                                           tr("Wybrano plik w formacie svg. Czy chcesz rasteryzować?"));
+			if(svgFileOpenedReply == QMessageBox::No)
+			{
+				auto vectorGraphicsImage = new QGraphicsSvgItem(fileNames[0]);
+				graphicsScene->AddItemOnActiveLayer(vectorGraphicsImage);
+			}
+			else
+			{
+				auto graphicsImage = new QGraphicsPixmapItem(QPixmap::fromImage(image));
+				graphicsScene->AddItemOnActiveLayer(graphicsImage);
+			}
+		}
+		else
+		{
+			auto graphicsImage = new QGraphicsPixmapItem(QPixmap::fromImage(image));
+			graphicsScene->AddItemOnActiveLayer(graphicsImage);
+		}
 	}
 }
 
@@ -189,7 +212,7 @@ void MainWindow::InitializeNewProject(int width, int height)
 
 	CreateScene(width, height);
 
-	CreateLayer(width, height, "background");
+	CreateLayer(width, height, tr("tło"));
 
 	ConnectLayerOperationButtonsToSlots();
 
@@ -369,7 +392,9 @@ void MainWindow::ClearScene()
 
 void MainWindow::CreateScene(int width, int height)
 {
-	graphicsScene = new GraphicsScene(width, height, ui->colorPicker->GetColor(), this);
+	graphicsScene = new GraphicsScene(width, height, ui->colorPicker->GetColor(), ui->textEditOptions->GetFont(),
+	                                  ui->textEditOptions->GetSize(),
+	                                  this);
 	connect(ui->toolBar, &ToolBar::ToolSelected, this, &MainWindow::ToolSelected);
 	connect(ctrlV, &QShortcut::activated, graphicsScene, &GraphicsScene::Paste);
 	connect(esc, &QShortcut::activated, graphicsScene, &GraphicsScene::CancelSelection);
@@ -428,36 +453,45 @@ void MainWindow::CreateShortcuts()
 
 void MainWindow::ToolSelected(ActiveTool tool)
 {
-	if( tool == ActiveTool::Paint or tool == ActiveTool::Pen )
+	if( tool == ActiveTool::Paint or tool == ActiveTool::Pen or tool == ActiveTool::Text )
 	{
 		ui->colorPicker->show();
+
 	}
 	else
 	{
 		ui->colorPicker->hide();
 	}
+	if( tool == ActiveTool::Text )
+	{
+		ui->textEditOptions->show();
+	}
+	else
+	{
+		ui->textEditOptions->hide();
+	}
 	switch( tool )
 	{
 		case ActiveTool::Selection:
-			ui->activeToolLabel->setText("Narzędzie zaznaczanie");
+			ui->activeToolLabel->setText(tr("Narzędzie zaznaczanie"));
 			break;
 		case ActiveTool::Pen:
-			ui->activeToolLabel->setText("Pędzel");
+			ui->activeToolLabel->setText(tr("Pędzel"));
 			break;
 		case ActiveTool::Paint:
-			ui->activeToolLabel->setText("Narzędzie wiadro z farbą");
+			ui->activeToolLabel->setText(tr("Narzędzie wiadro z farbą"));
 			break;
 		case ActiveTool::Move:
-			ui->activeToolLabel->setText("Narzędzie przemieszczanie");
+			ui->activeToolLabel->setText(tr("Narzędzie przemieszczanie"));
 			break;
 		case ActiveTool::Scale:
-			ui->activeToolLabel->setText("Skalowanie");
+			ui->activeToolLabel->setText(tr("Skalowanie"));
 			break;
 		case ActiveTool::Rotation:
-			ui->activeToolLabel->setText("Obracanie");
+			ui->activeToolLabel->setText(tr("Obracanie"));
 			break;
 		case ActiveTool::Text:
-			ui->activeToolLabel->setText("Narzędzie tekst");
+			ui->activeToolLabel->setText(tr("Narzędzie tekst"));
 			break;
 	}
 	graphicsScene->ChangeActiveTool(tool);

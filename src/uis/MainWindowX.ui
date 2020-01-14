@@ -82,7 +82,7 @@
        </size>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab_3">
        <attribute name="title">
@@ -326,6 +326,9 @@
     <property name="title">
      <string>Edytuj</string>
     </property>
+    <addaction name="actionPaste"/>
+    <addaction name="actionSelect_all"/>
+    <addaction name="actionUnselect"/>
    </widget>
    <widget class="QMenu" name="menuFile">
     <property name="title">
@@ -354,7 +357,6 @@
     <addaction name="actionRotate90DegreesRight"/>
     <addaction name="actionRotate90DegreesLeft"/>
     <addaction name="actionRotate180Degrees"/>
-    <addaction name="actionLustrzane_odbicie"/>
     <addaction name="separator"/>
     <addaction name="actionChangeSize"/>
    </widget>
@@ -434,6 +436,21 @@
   <action name="actionChangeSize">
    <property name="text">
     <string>Zmień rozmiar...</string>
+   </property>
+  </action>
+  <action name="actionPaste">
+   <property name="text">
+    <string>Paste</string>
+   </property>
+  </action>
+  <action name="actionSelect_all">
+   <property name="text">
+    <string>Select all</string>
+   </property>
+  </action>
+  <action name="actionUnselect">
+   <property name="text">
+    <string>Unselect</string>
    </property>
   </action>
  </widget>

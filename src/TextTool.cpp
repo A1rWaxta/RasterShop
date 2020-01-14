@@ -7,20 +7,18 @@
 #include <QInputMethodEvent>
 #include <QDebug>
 #include <QTextCursor>
+#include <QGraphicsSceneMouseEvent>
 
-TextTool::TextTool(ImageLayer* parent) : QGraphicsTextItem(parent), layer(nullptr)
+TextTool::TextTool() : layer(nullptr)
 {
-	layer = parent;
-	QFont font("Times", 10, QFont::Bold);
-	setFont(font);
 	setFlag(QGraphicsItem::ItemIsFocusable);
 	setTextInteractionFlags(Qt::TextEditorInteraction);
 }
 
 void TextTool::Start(QPointF point)
 {
-	setTextWidth(layer->mappedToSceneBoundingRect().left() - point.x());
-	setPos(75, 75);
+//	setTextWidth(layer->mappedToSceneBoundingRect().left() - point.x());
+	setPos(point);
 }
 
 void TextTool::keyPressEvent(QKeyEvent* event)
@@ -44,7 +42,7 @@ void TextTool::keyPressEvent(QKeyEvent* event)
 		currentText.remove(cursor.position(), 1);
 	}
 
-	if(keyCode == Qt::Key_Return)
+	if( keyCode == Qt::Key_Return )
 	{
 		currentText.insert(cursorPos, '\n');
 		cursorPos++;
@@ -80,4 +78,11 @@ void TextTool::keyPressEvent(QKeyEvent* event)
 
 void TextTool::focusInEvent(QFocusEvent* event)
 {
+}
+
+void TextTool::SetLayer(ImageLayer* layer)
+{
+	this->layer = layer;
+	setRotation(-layer->rotation());
+	setScale(1.0);
 }
