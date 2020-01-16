@@ -75,6 +75,10 @@ void LayerPreview::ToggleVisibility()
 void LayerPreview::SetOpacity(int value)
 {
 	double i = static_cast<double>(value) / 100;
-	qDebug() << i;
 	layer->setOpacity(i);
+}
+
+void LayerPreview::SetLayer(ImageLayer *layer)
+{
+	this->layer = layer;
 }

@@ -5,6 +5,7 @@
 #include "ChangeCanvasSizeDialog.h"
 #include "NewLayerDialog.h"
 #include <QtSvg/QGraphicsSvgItem>
+#include <opencv2/core/mat.hpp>
 
 MainWindow::MainWindow(QWidget* parent) :
 		QMainWindow(parent),
@@ -75,6 +76,9 @@ void MainWindow::ConnectMenuBarActionsToSlots()
 	connect(ui->actionRotate90DegreesRight, &QAction::triggered, this, &MainWindow::Rotate90DegreesRight);
 	connect(ui->actionRotate90DegreesLeft, &QAction::triggered, this, &MainWindow::Rotate90DegreesLeft);
 	connect(ui->actionRotate180Degrees, &QAction::triggered, this, &MainWindow::Rotate180Degrees);
+
+	connect(ui->grayScaleAction, &QAction::triggered, this, &MainWindow::GrayScaleLayer);
+
 }
 
 void MainWindow::ConnectLayerOperationButtonsToSlots()
@@ -145,7 +149,7 @@ void MainWindow::SaveAsActionClicked()
 		saveFileDialog.setAcceptMode(QFileDialog::AcceptSave);
 		saveFileDialog.setNameFilter("*.png *.bmp *.jpg *.jpeg");
 
-		graphicsScene->layerSelection.hide();
+		graphicsScene->HideTools();
 		if( saveFileDialog.exec() == QFileDialog::Accepted )
 		{
 			QStringList file = saveFileDialog.selectedFiles();
@@ -155,7 +159,7 @@ void MainWindow::SaveAsActionClicked()
 			painter.end();
 			image.save(file[0]);
 		}
-		graphicsScene->layerSelection.show();
+		graphicsScene->ShowTools();
 	}
 }
 
@@ -187,7 +191,7 @@ void MainWindow::OpenActionClicked()
 		{
 			svgFileOpenedReply = QMessageBox::question(this, tr("Format svg"),
 			                                           tr("Wybrano plik w formacie svg. Czy chcesz rasteryzować?"));
-			if(svgFileOpenedReply == QMessageBox::No)
+			if( svgFileOpenedReply == QMessageBox::No )
 			{
 				auto vectorGraphicsImage = new QGraphicsSvgItem(fileNames[0]);
 				graphicsScene->AddItemOnActiveLayer(vectorGraphicsImage);
@@ -224,6 +228,7 @@ void MainWindow::InitializeNewProject(int width, int height)
 
 void MainWindow::CreateLayer(int width, int height, QString layerName)
 {
+	cv::_InputArray inp;
 	auto newLayer = new ImageLayer(width, height);
 	newLayer->setZValue(layers.size()); //places new layer on top of image
 	graphicsScene->AddLayer(newLayer);
@@ -392,6 +397,7 @@ void MainWindow::ClearScene()
 
 void MainWindow::CreateScene(int width, int height)
 {
+
 	graphicsScene = new GraphicsScene(width, height, ui->colorPicker->GetColor(), ui->textEditOptions->GetFont(),
 	                                  ui->textEditOptions->GetSize(),
 	                                  this);
@@ -553,5 +559,55 @@ void MainWindow::ShowLayerCreationDialog()
 		{
 			CreateLayer(newLayerSize.width(), newLayerSize.height(), newLayerName);
 		}
+	}
+}
+
+void MainWindow::GrayScaleLayer()
+{
+	if( graphicsScene != nullptr )
+	{
+		graphicsScene->HideTools();
+		for( auto layer : layers )
+		{
+			layer->GetLayer()->hide();
+		}
+		QImage image = graphicsScene->activeLayer->ToImage();
+		for( auto layer : layers )
+		{
+			layer->GetLayer()->show();
+		}
+
+		for( int ii = 0; ii < image.height(); ii++ )
+		{
+			uchar* scan = image.scanLine(ii);
+			int depth = 4;
+			for( int jj = 0; jj < image.width(); jj++ )
+			{
+
+				QRgb* rgbpixel = reinterpret_cast<QRgb*>(scan + jj * depth);
+				int gray = qGray(*rgbpixel);
+				*rgbpixel = QColor(gray, gray, gray).rgba();
+			}
+		}
+
+		auto newImageLayer = new ImageLayer(image.width(), image.height());
+		newImageLayer->setRect(activeLayer->GetLayer()->rect());
+		auto rasterizedOldLayer = new QGraphicsPixmapItem(QPixmap::fromImage(image));
+		graphicsScene->AddItemOnActiveLayer(rasterizedOldLayer);
+//		newImageLayer->setPos(graphicsScene->activeLayer->pos());
+//		newImageLayer->setRotation(graphicsScene->activeLayer->rotation());
+//		newImageLayer->setScale(graphicsScene->activeLayer->scale());
+//		rasterizedOldLayer->setParentItem(newImageLayer);
+//		delete activeLayer->GetLayer();
+//		activeLayer->SetLayer(newImageLayer);
+//		graphicsScene->activeLayer = newImageLayer;
+
+		graphicsScene->ShowTools();
+//		QDialog dialog;
+//		QLabel label;
+//		label.setPixmap(QPixmap::fromImage(image));
+//		label.setParent(&dialog);
+//		dialog.show();
+//		dialog.exec();
 	}
 }

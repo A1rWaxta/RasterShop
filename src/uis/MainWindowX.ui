@@ -346,9 +346,7 @@
     <property name="title">
      <string>Filtry</string>
     </property>
-    <addaction name="actionRozmycie_Gaussa"/>
-    <addaction name="actionThresholding"/>
-    <addaction name="actionDopasowanie_kontrastu"/>
+    <addaction name="grayScaleAction"/>
    </widget>
    <widget class="QMenu" name="menuObraz">
     <property name="title">
@@ -418,7 +416,7 @@
     <string>Lustrzane odbicie</string>
    </property>
   </action>
-  <action name="actionRozmycie_Gaussa">
+  <action name="grayScaleAction">
    <property name="text">
     <string>Rozmycie Gaussa</string>
    </property>

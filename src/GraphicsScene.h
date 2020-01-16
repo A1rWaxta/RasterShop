@@ -35,10 +35,12 @@ private:
 	void AddItemOnActiveLayer(QGraphicsItem* item);
 	void AddLayer(ImageLayer* layer);
 	void ChangeActiveLayer(ImageLayer* layer);
-	void mouseMoveEvent(QGraphicsSceneMouseEvent* mouseEvent) override;
 	void mousePressEvent(QGraphicsSceneMouseEvent* mouseEvent) override;
+	void mouseMoveEvent(QGraphicsSceneMouseEvent* mouseEvent) override;
 	void mouseReleaseEvent(QGraphicsSceneMouseEvent* mouseEvent) override;
 	void keyPressEvent(QKeyEvent* event) override;
+	void HideTools();
+	void ShowTools();
 	bool leftMousePressed;
 	ImageLayer* activeLayer;
 	Canvas* canvas;

@@ -29,12 +29,10 @@ int& TextEditOptions::GetSize()
 
 void TextEditOptions::UpdateCurrentFont(const QFont& font)
 {
-	qDebug() << "TextOptionsdebug font" << font.family();
 	currentFont = font;
 }
 
 void TextEditOptions::UpdateSize(int i)
 {
-	qDebug() << "TextOptionsdebug size" << i;
 	currentFontSize = i;
 }

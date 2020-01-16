@@ -67,4 +67,6 @@ private:
 	void Rotate90DegreesRight();
 	void Rotate180Degrees();
 	void ShowLayerCreationDialog();
+	void GrayScaleLayer();
+	QImage GaussianBlur(QImage image);
 };

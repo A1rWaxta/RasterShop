@@ -306,3 +306,37 @@ void GraphicsScene::ToggleLayerSelectionVisibility()
 		layerSelection.show();
 	}
 }
+
+void GraphicsScene::HideTools()
+{
+	if(activeTool == ActiveTool::Rotation)
+	{
+		rotationTool.hide();
+	}
+	else if(activeTool == ActiveTool::Scale)
+	{
+		scaleTool.hide();
+	}
+	else if(activeTool == ActiveTool::Selection)
+	{
+		selectionTool.hide();
+	}
+	layerSelection.hide();
+}
+
+void GraphicsScene::ShowTools()
+{
+	if( activeTool == ActiveTool::Rotation )
+	{
+		rotationTool.show();
+	}
+	else if( activeTool == ActiveTool::Scale )
+	{
+		scaleTool.show();
+	}
+	else if( activeTool == ActiveTool::Selection )
+	{
+		selectionTool.show();
+	}
+	layerSelection.show();
+}

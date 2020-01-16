@@ -16,6 +16,7 @@ public:
 	explicit LayerPreview(ImageLayer* layer, QString& layerIdentifier, QWidget* parent = nullptr);
 	~LayerPreview() override;
 	ImageLayer* GetLayer();
+	void SetLayer(ImageLayer* layer);
 	void Select();
 	void Unselect();
 	QString GetLayerName();

@@ -86,3 +86,8 @@ void TextTool::SetLayer(ImageLayer* layer)
 	setRotation(-layer->rotation());
 	setScale(1.0);
 }
+
+void TextTool::focusOutEvent(QFocusEvent* event)
+{
+	setFlag(QGraphicsItem::ItemIsFocusable, false);
+}

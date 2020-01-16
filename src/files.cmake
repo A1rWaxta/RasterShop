@@ -20,6 +20,7 @@ set(sources
 		TextAreaTool.cpp
 		ChangeCanvasSizeDialog.cpp
 		NewLayerDialog.cpp
+		GaussianBlur.cpp
 		)
 
 set(headers
@@ -44,4 +45,5 @@ set(headers
 		TextAreaTool.h
 		ChangeCanvasSizeDialog.h
 		NewLayerDialog.h
+		GaussianBlur.h
 		)

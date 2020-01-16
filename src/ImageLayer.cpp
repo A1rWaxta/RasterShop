@@ -6,17 +6,21 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QDebug>
 #include <QPen>
+#include <QPainter>
+#include <QGraphicsScene>
 
 ImageLayer::ImageLayer(qreal width, qreal height) : drawableList(0)
 {
 	setFlags(QGraphicsItem::ItemClipsChildrenToShape | QGraphicsItem::ItemSendsGeometryChanges);
 
 	setPen(Qt::NoPen);
+	setBrush(Qt::transparent);
 	setRect(QRectF(0, 0, width, height));
 }
 
 void ImageLayer::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
 {
+//	painter->drawRect(boundingRect());
 }
 
 QRectF ImageLayer::boundingRect() const
@@ -78,4 +82,27 @@ QRectF ImageLayer::mappedToSceneBoundingRect()
 	{
 		return mapRectToScene(boundingRect());
 	}
+}
+
+QImage ImageLayer::ToImage()
+{
+	show();
+
+	QPointF startpos = pos();
+	qreal startRotation = rotation();
+	setPos(0, 0);
+	setRotation(0);
+
+	QRectF r = rect();
+	QImage image(r.width(), r.height(), QImage::Format_RGB32);
+	image.fill(QColor(0, 0, 0));
+	QPainter painter(&image);
+	painter.drawRect(r);
+	scene()->render(&painter, QRect(), sceneBoundingRect());
+	painter.end();
+
+	setPos(startpos);
+	setRotation(startRotation);
+
+	return image;
 }
