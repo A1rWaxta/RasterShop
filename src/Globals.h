@@ -13,6 +13,7 @@ enum class ActiveTool
 	Move,
 	Scale,
 	Rotation,
-	Text
+	Text,
+	Polygon
 };
 

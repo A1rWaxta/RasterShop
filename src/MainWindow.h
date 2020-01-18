@@ -52,6 +52,14 @@ private:
 	void ShowLayerDeleteConfirmationDialog();
 	void CreateShortcuts();
 	void ToolSelected(ActiveTool activeTool);
+	void ChangeCanvasSize();
+	void Rotate90DegreesLeft();
+	void Rotate90DegreesRight();
+	void Rotate180Degrees();
+	void ShowLayerCreationDialog();
+	void GrayScaleLayer();
+	QImage GaussianBlur(QImage image);
+
 	GraphicsScene* graphicsScene;
 	std::vector<LayerPreview*> layers;
 	LayerPreview* activeLayer;
@@ -61,12 +69,12 @@ private:
 	QShortcut* ctrlH;
 	QShortcut* del;
 	QShortcut* esc;
+	QShortcut* shortcutS;
+	QShortcut* shortcutM;
+	QShortcut* shortcutP;
+	QShortcut* shortcutB;
+	QShortcut* shortcutR;
+	QShortcut* shiftS;
+	QShortcut* T;
 	Ui::MainWindow* ui;
-	void ChangeCanvasSize();
-	void Rotate90DegreesLeft();
-	void Rotate90DegreesRight();
-	void Rotate180Degrees();
-	void ShowLayerCreationDialog();
-	void GrayScaleLayer();
-	QImage GaussianBlur(QImage image);
 };

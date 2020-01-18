@@ -12,6 +12,7 @@
 #include "ScaleTool.h"
 #include "RotationTool.h"
 #include "TextTool.h"
+#include "PolygonTool.h"
 
 class GraphicsScene : public QGraphicsScene
 {
@@ -35,9 +36,9 @@ private:
 	void AddItemOnActiveLayer(QGraphicsItem* item);
 	void AddLayer(ImageLayer* layer);
 	void ChangeActiveLayer(ImageLayer* layer);
-	void mousePressEvent(QGraphicsSceneMouseEvent* mouseEvent) override;
-	void mouseMoveEvent(QGraphicsSceneMouseEvent* mouseEvent) override;
-	void mouseReleaseEvent(QGraphicsSceneMouseEvent* mouseEvent) override;
+	void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
+	void mouseMoveEvent(QGraphicsSceneMouseEvent* event) override;
+	void mouseReleaseEvent(QGraphicsSceneMouseEvent* event) override;
 	void keyPressEvent(QKeyEvent* event) override;
 	void HideTools();
 	void ShowTools();
@@ -51,7 +52,8 @@ private:
 	int& textSize;
 
 	QGraphicsRectItem layerSelection;
-	RectangleSelectionTool selectionTool;
+	RectangleSelectionTool rectangleSelectionTool;
 	ScaleTool scaleTool;
 	RotationTool rotationTool;
+	PolygonTool polygonTool;
 };

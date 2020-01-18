@@ -56,6 +56,12 @@ ToolBar::ToolBar(QWidget* parent) :
 	ui->textToolButton->setIcon(textToolIcon);
 	ui->textToolButton->setIconSize(QSize(45, 45));
 	connect(ui->textToolButton, &QPushButton::released, this, &ToolBar::TextToolSelected);
+
+	pixmap.load("res/polygon.svg");
+	QIcon polygonToolIcon(pixmap);
+	ui->polygonToolButton->setIcon(polygonToolIcon);
+	ui->polygonToolButton->setIconSize(QSize(45, 45));
+	connect(ui->polygonToolButton, &QPushButton::released, this, &ToolBar::PolygonToolSelected);
 }
 
 ToolBar::~ToolBar()
@@ -96,4 +102,9 @@ void ToolBar::RotationToolSelected()
 void ToolBar::TextToolSelected()
 {
 	emit ToolSelected(ActiveTool::Text);
+}
+
+void ToolBar::PolygonToolSelected()
+{
+	emit ToolSelected(ActiveTool::Polygon);
 }

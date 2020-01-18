@@ -36,4 +36,5 @@ private:
 	QBrush activeToolBrush;
 	ToolBarButton* active;
 	Ui::ToolBar* ui;
+	void PolygonToolSelected();
 };

@@ -195,6 +195,28 @@
      </property>
     </widget>
    </item>
+   <item>
+    <widget class="ToolBarButton" name="polygonToolButton">
+     <property name="minimumSize">
+      <size>
+       <width>60</width>
+       <height>60</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>60</width>
+       <height>60</height>
+      </size>
+     </property>
+     <property name="toolTip">
+      <string>Swobodny kształt</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+   </item>
   </layout>
  </widget>
  <customwidgets>

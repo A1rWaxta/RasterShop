@@ -329,6 +329,7 @@
     <addaction name="actionPaste"/>
     <addaction name="actionSelect_all"/>
     <addaction name="actionUnselect"/>
+    <addaction name="actionOtw_rz_obraz_na_nowej_warstwie"/>
    </widget>
    <widget class="QMenu" name="menuFile">
     <property name="title">
@@ -438,7 +439,7 @@
   </action>
   <action name="actionPaste">
    <property name="text">
-    <string>Paste</string>
+    <string>Wklej</string>
    </property>
   </action>
   <action name="actionSelect_all">
@@ -449,6 +450,11 @@
   <action name="actionUnselect">
    <property name="text">
     <string>Unselect</string>
+   </property>
+  </action>
+  <action name="actionOtw_rz_obraz_na_nowej_warstwie">
+   <property name="text">
+    <string>Otwórz obraz na nowej warstwie</string>
    </property>
   </action>
  </widget>

@@ -21,6 +21,7 @@ set(sources
 		ChangeCanvasSizeDialog.cpp
 		NewLayerDialog.cpp
 		GaussianBlur.cpp
+		PolygonTool.cpp
 		)
 
 set(headers
@@ -46,4 +47,5 @@ set(headers
 		ChangeCanvasSizeDialog.h
 		NewLayerDialog.h
 		GaussianBlur.h
+		PolygonTool.h
 		)

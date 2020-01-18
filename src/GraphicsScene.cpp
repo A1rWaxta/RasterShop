@@ -24,9 +24,10 @@ GraphicsScene::GraphicsScene(qreal width, qreal height, QColor& color, QFont& fo
 	layerSelection.setPen(QPen(Qt::black, 1, Qt::DashDotDotLine));
 
 	addItem(&layerSelection);
-	addItem(&selectionTool);
+	addItem(&rectangleSelectionTool);
 	addItem(&scaleTool);
 	addItem(&rotationTool);
+	addItem(&polygonTool);
 }
 
 void GraphicsScene::ChangeActiveLayer(ImageLayer* layer)
@@ -72,16 +73,16 @@ void GraphicsScene::AddItemOnActiveLayer(QGraphicsItem* item)
 	item->setParentItem(activeLayer);
 }
 
-void GraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent* mouseEvent)
+void GraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent* event)
 {
-	QGraphicsScene::mousePressEvent(mouseEvent);
-	if( mouseEvent->button() == Qt::LeftButton and activeLayer != nullptr )
+	QGraphicsScene::mousePressEvent(event);
+	if( event->button() == Qt::LeftButton and activeLayer != nullptr )
 	{
 		switch( activeTool )
 		{
 			case ActiveTool::Pen:
 			{
-				if( activeLayer->mappedToSceneBoundingRect().contains(mouseEvent->scenePos()) )
+				if( activeLayer->mappedToSceneBoundingRect().contains(event->scenePos()) )
 				{
 					leftMousePressed = true;
 				}
@@ -90,26 +91,34 @@ void GraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent* mouseEvent)
 			case ActiveTool::Selection:
 			{
 				leftMousePressed = true;
-				selectionTool.Start(mouseEvent->scenePos());
+				rectangleSelectionTool.Start(event->scenePos());
 				break;
 			}
 			case ActiveTool::Paint:
 			{
-				if( selectionTool.GetSelectedRegion().contains(mouseEvent->scenePos()) )
+				QPolygonF layerPolygon(activeLayer->mapToScene(activeLayer->rect()));
+				QPolygonF selectionPolygon;
+				QPolygonF paintPolygon;
+				if( rectangleSelectionTool.GetSelectedRegion().contains(event->scenePos()) )
 				{
-					QPolygonF selectionPolygon(selectionTool.boundingRect());
-					QPolygonF layerPolygon(activeLayer->mapToScene(activeLayer->rect()));
-					QPolygonF paintPolygon = selectionPolygon.intersected(layerPolygon);
-					auto selectionAreaRectangle = new QGraphicsPolygonItem(activeLayer->mapFromScene(paintPolygon));
-					selectionAreaRectangle->setPen(Qt::NoPen);
-					selectionAreaRectangle->setBrush(toolColor);
-					AddItemOnActiveLayer(selectionAreaRectangle);
+					selectionPolygon = QPolygonF(rectangleSelectionTool.boundingRect());
+					paintPolygon = selectionPolygon.intersected(layerPolygon);
+
 				}
+				if( polygonTool.GetPolygon().containsPoint(event->scenePos(), Qt::WindingFill) )
+				{
+					selectionPolygon = polygonTool.GetPolygon();
+					paintPolygon = selectionPolygon.intersected(layerPolygon);
+				}
+				auto graphicsPolygon = new QGraphicsPolygonItem(activeLayer->mapFromScene(paintPolygon));
+				graphicsPolygon->setPen(Qt::NoPen);
+				graphicsPolygon->setBrush(toolColor);
+				AddItemOnActiveLayer(graphicsPolygon);
 				break;
 			}
 			case ActiveTool::Move:
 			{
-				if( activeLayer->mappedToSceneBoundingRect().contains(mouseEvent->scenePos()) )
+				if( activeLayer->mappedToSceneBoundingRect().contains(event->scenePos()) )
 				{
 					leftMousePressed = true;
 				}
@@ -117,7 +126,7 @@ void GraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent* mouseEvent)
 			}
 			case ActiveTool::Scale:
 			{
-				if( scaleTool.IsPointRectangleSelected(mouseEvent->scenePos()) )
+				if( scaleTool.IsPointRectangleSelected(event->scenePos()) )
 				{
 					leftMousePressed = true;
 					scaleTool.Start();
@@ -126,49 +135,53 @@ void GraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent* mouseEvent)
 			}
 			case ActiveTool::Text:
 			{
-				if( activeLayer->mappedToSceneBoundingRect().contains(mouseEvent->scenePos()) )
+				if( activeLayer->mappedToSceneBoundingRect().contains(event->scenePos()) )
 				{
 					auto text = new TextTool();
 					text->setFont(QFont(font.family(), textSize));
 					text->setDefaultTextColor(toolColor);
 					text->SetLayer(activeLayer);
 					AddItemOnActiveLayer(text);
-					text->Start(mouseEvent->pos());
+					text->Start(event->pos());
 					setFocusItem(text);
 				}
 				break;
+			}
+			case ActiveTool::Polygon:
+			{
+				polygonTool.AddPoint(event->scenePos());
 			}
 		}
 	}
 }
 
-void GraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent* mouseEvent)
+void GraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
 {
-	QGraphicsScene::mouseMoveEvent(mouseEvent);
+	QGraphicsScene::mouseMoveEvent(event);
 
 	qreal xPos;
 	qreal yPos;
 
 	if( leftMousePressed )
 	{
-		mousePointerDistance += std::abs(( mouseEvent->pos().x() - mouseEvent->lastPos().x() ) +
-		                                 ( mouseEvent->pos().y() - mouseEvent->lastPos().y() ));
+		mousePointerDistance += std::abs(( event->pos().x() - event->lastPos().x() ) +
+		                                 ( event->pos().y() - event->lastPos().y() ));
 		switch( activeTool )
 		{
 			case ActiveTool::Move:
 			{
-				xPos = mouseEvent->scenePos().x() - mouseEvent->lastScenePos().x();
-				yPos = mouseEvent->scenePos().y() - mouseEvent->lastScenePos().y();
+				xPos = event->scenePos().x() - event->lastScenePos().x();
+				yPos = event->scenePos().y() - event->lastScenePos().y();
 				activeLayer->moveBy(xPos, yPos);
 				layerSelection.moveBy(xPos, yPos);
 				break;
 			}
 			case ActiveTool::Pen:
 			{
-				if( activeLayer->mappedToSceneBoundingRect().contains(mouseEvent->scenePos()) )
+				if( activeLayer->mappedToSceneBoundingRect().contains(event->scenePos()) )
 				{
-					auto line = new QGraphicsLineItem(QLineF(activeLayer->mapFromScene(mouseEvent->scenePos()),
-					                                         activeLayer->mapFromScene(mouseEvent->lastScenePos())));
+					auto line = new QGraphicsLineItem(QLineF(activeLayer->mapFromScene(event->scenePos()),
+					                                         activeLayer->mapFromScene(event->lastScenePos())));
 					line->setPen(QPen(toolColor, 10));
 					line->setParentItem(activeLayer);
 				}
@@ -176,12 +189,12 @@ void GraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent* mouseEvent)
 			}
 			case ActiveTool::Selection:
 			{
-				selectionTool.Update(mouseEvent->scenePos());
+				rectangleSelectionTool.Update(event->scenePos());
 				break;
 			}
 			case ActiveTool::Scale:
 			{
-				scaleTool.Update(mouseEvent->scenePos());
+				scaleTool.Update(event->scenePos());
 				layerSelection.setRect(layerSelection.mapRectFromScene(activeLayer->mappedToSceneBoundingRect()));
 				break;
 			}
@@ -195,13 +208,13 @@ void GraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent* mouseEvent)
 	layerSelection.setRect(layerSelection.mapRectFromScene(activeLayer->mappedToSceneBoundingRect()));
 }
 
-void GraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent* mouseEvent)
+void GraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
 {
-	QGraphicsScene::mouseReleaseEvent(mouseEvent);
+	QGraphicsScene::mouseReleaseEvent(event);
 
 	mousePointerDistance = 0;
 
-	if( mouseEvent->button() == Qt::LeftButton )
+	if( event->button() == Qt::LeftButton )
 	{
 		leftMousePressed = false;
 
@@ -255,6 +268,10 @@ void GraphicsScene::ChangeActiveTool(ActiveTool tool)
 		case ActiveTool::Text:
 		{
 		}
+		case ActiveTool::Polygon:
+		{
+			polygonTool.Clear();
+		}
 		default:
 			break;
 	}
@@ -263,6 +280,17 @@ void GraphicsScene::ChangeActiveTool(ActiveTool tool)
 void GraphicsScene::keyPressEvent(QKeyEvent* event)
 {
 	QGraphicsScene::keyPressEvent(event);
+
+	if( activeTool == ActiveTool::Polygon )
+	{
+		if( event->key() == Qt::Key_Return )
+		{
+			if( polygonTool.NumberOfPoints() > 2 )
+			{
+				polygonTool.Close();
+			}
+		}
+	}
 }
 
 void GraphicsScene::AddLayer(ImageLayer* layer)
@@ -292,7 +320,8 @@ void GraphicsScene::AdjustCanvasToSceneRect()
 
 void GraphicsScene::CancelSelection()
 {
-	selectionTool.setRect(QRectF(0, 0, 0, 0));
+	rectangleSelectionTool.setRect(QRectF(0, 0, 0, 0));
+	polygonTool.Clear();
 }
 
 void GraphicsScene::ToggleLayerSelectionVisibility()
@@ -309,17 +338,17 @@ void GraphicsScene::ToggleLayerSelectionVisibility()
 
 void GraphicsScene::HideTools()
 {
-	if(activeTool == ActiveTool::Rotation)
+	if( activeTool == ActiveTool::Rotation )
 	{
 		rotationTool.hide();
 	}
-	else if(activeTool == ActiveTool::Scale)
+	else if( activeTool == ActiveTool::Scale )
 	{
 		scaleTool.hide();
 	}
-	else if(activeTool == ActiveTool::Selection)
+	else if( activeTool == ActiveTool::Selection )
 	{
-		selectionTool.hide();
+		rectangleSelectionTool.hide();
 	}
 	layerSelection.hide();
 }
@@ -336,7 +365,7 @@ void GraphicsScene::ShowTools()
 	}
 	else if( activeTool == ActiveTool::Selection )
 	{
-		selectionTool.show();
+		rectangleSelectionTool.show();
 	}
 	layerSelection.show();
 }
