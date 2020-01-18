@@ -81,7 +81,7 @@ void MainWindow::ConnectMenuBarActionsToSlots()
 	connect(ui->grayScaleAction, &QAction::triggered, this, &MainWindow::GrayScaleLayer);
 
 	connect(ui->actionAddImage, &QAction::triggered, this, &MainWindow::AddImage);
-
+	connect(ui->actionUnselect, &QAction::triggered, this, &MainWindow::CancelSelection);
 }
 
 void MainWindow::ConnectLayerOperationButtonsToSlots()
@@ -657,4 +657,9 @@ void MainWindow::AddImage()
 			graphicsScene->AddItemOnActiveLayer(graphicsImage);
 		}
 	}
+}
+
+void MainWindow::CancelSelection()
+{
+	graphicsScene->CancelSelection();
 }

@@ -71,4 +71,5 @@ private:
 	QShortcut* esc;
 	Ui::MainWindow* ui;
 	void AddImage();
+	void CancelSelection();
 };
