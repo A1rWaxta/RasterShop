@@ -18,23 +18,22 @@ public:
 	explicit ToolBar(QWidget* parent = nullptr);
 	~ToolBar();
 
-private slots:
-	void SelectionToolSelected();
-	void MoveToolSelected();
-	void PenToolSelected();
-	void PaintToolSelected();
-	void ScaleToolSelected();
-	void RotationToolSelected();
-	void TextToolSelected();
-
 signals:
 	void ToolSelected(ActiveTool tool);
 
 private:
-	QPalette selectionPalette;
-	QPalette normalPalette;
+	QShortcut* shortcutS;
+	QShortcut* shortcutM;
+	QShortcut* shortcutP;
+	QShortcut* shortcutB;
+	QShortcut* shortcutR;
+	QShortcut* shortcutT;
+	QShortcut* shiftS;
+	QShortcut* shiftB;
+	ToolBarButton* checkedButton;
 	QBrush activeToolBrush;
 	ToolBarButton* active;
 	Ui::ToolBar* ui;
 	void PolygonToolSelected();
+	void CreateShortcuts();
 };

@@ -7,7 +7,6 @@
 
 ToolBarButton::ToolBarButton(QWidget *parent) : QPushButton(parent)
 {
-
 }
 
 void ToolBarButton::paintEvent(QPaintEvent *paintEvent)

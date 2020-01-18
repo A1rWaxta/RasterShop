@@ -69,12 +69,5 @@ private:
 	QShortcut* ctrlH;
 	QShortcut* del;
 	QShortcut* esc;
-	QShortcut* shortcutS;
-	QShortcut* shortcutM;
-	QShortcut* shortcutP;
-	QShortcut* shortcutB;
-	QShortcut* shortcutR;
-	QShortcut* shiftS;
-	QShortcut* T;
 	Ui::MainWindow* ui;
 };
