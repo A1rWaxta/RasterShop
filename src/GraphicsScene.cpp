@@ -142,7 +142,7 @@ void GraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent* event)
 					text->setDefaultTextColor(toolColor);
 					text->SetLayer(activeLayer);
 					AddItemOnActiveLayer(text);
-					text->Start(event->pos());
+					text->Start(event->scenePos());
 					setFocusItem(text);
 				}
 				break;
@@ -283,11 +283,20 @@ void GraphicsScene::keyPressEvent(QKeyEvent* event)
 
 	if( activeTool == ActiveTool::Polygon )
 	{
-		if( event->key() == Qt::Key_Return )
+		switch( event->key() )
 		{
-			if( polygonTool.NumberOfPoints() > 2 )
+			case Qt::Key_Return:
 			{
-				polygonTool.Close();
+				if( polygonTool.NumberOfPoints() > 2 )
+				{
+					polygonTool.Close();
+				}
+				break;
+			}
+			case Qt::Key_Backspace:
+			{
+				polygonTool.DeleteLastPoint();
+				break;
 			}
 		}
 	}

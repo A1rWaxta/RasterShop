@@ -18,6 +18,7 @@ public:
 	void Close();
 	void Clear();
 	int NumberOfPoints();
+	void DeleteLastPoint();
 	QPolygonF GetPolygon();
 
 private:

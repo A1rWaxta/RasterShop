@@ -64,12 +64,25 @@ QPolygonF PolygonTool::GetPolygon()
 {
 	QPolygonF polygon(QVector<QPointF>::fromStdVector(points));
 
-	if(polygon.isClosed())
+	if( polygon.isClosed() )
 	{
 		return polygon;
 	}
 	else
 	{
 		return QPolygonF();
+	}
+}
+
+void PolygonTool::DeleteLastPoint()
+{
+	if( points.size() > 0 )
+	{
+		points.pop_back();
+		if(lines.size() > 1)
+		{
+			delete lines.back();
+			lines.pop_back();
+		}
 	}
 }
