@@ -41,6 +41,7 @@ MainWindow::MainWindow(QWidget* parent) :
 
 	ConnectMenuBarActionsToSlots();
 	CreateShortcuts();
+	ConnectLayerOperationButtonsToSlots();
 
 	QPixmap pixmap;
 
@@ -217,8 +218,6 @@ void MainWindow::InitializeNewProject(int width, int height)
 
 	CreateLayer(width, height, tr("tło"));
 
-	ConnectLayerOperationButtonsToSlots();
-
 	ui->tabWidget->setEnabled(true);
 	ui->menuEdit->setEnabled(true);
 	ui->menuFiltry->setEnabled(true);
@@ -227,7 +226,6 @@ void MainWindow::InitializeNewProject(int width, int height)
 
 void MainWindow::CreateLayer(int width, int height, QString layerName)
 {
-	cv::_InputArray inp;
 	auto newLayer = new ImageLayer(width, height);
 	newLayer->setZValue(layers.size()); //places new layer on top of image
 	graphicsScene->AddLayer(newLayer);
@@ -387,7 +385,7 @@ void MainWindow::ClearScene()
 		}
 
 		layers.clear();
-		graphicsScene->clear();
+		delete graphicsScene;
 		graphicsScene = nullptr;
 		activeLayer = nullptr;
 	}
