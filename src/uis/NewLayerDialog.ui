@@ -75,17 +75,22 @@
        <widget class="QComboBox" name="sizeComboBox">
         <item>
          <property name="text">
-          <string>Wybrany przez użytkownika</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
           <string>Rozmiar płótna</string>
          </property>
         </item>
         <item>
          <property name="text">
+          <string>Obszar zaznaczenia</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
           <string>Schowek</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Wybrany przez użytkownika</string>
          </property>
         </item>
        </widget>

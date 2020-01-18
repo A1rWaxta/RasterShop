@@ -327,9 +327,10 @@
      <string>Edytuj</string>
     </property>
     <addaction name="actionPaste"/>
-    <addaction name="actionSelect_all"/>
+    <addaction name="actionAddImage"/>
+    <addaction name="separator"/>
+    <addaction name="actionSelectAll"/>
     <addaction name="actionUnselect"/>
-    <addaction name="actionOtw_rz_obraz_na_nowej_warstwie"/>
    </widget>
    <widget class="QMenu" name="menuFile">
     <property name="title">
@@ -419,7 +420,7 @@
   </action>
   <action name="grayScaleAction">
    <property name="text">
-    <string>Rozmycie Gaussa</string>
+    <string>Zamiana na odcień szarości</string>
    </property>
   </action>
   <action name="actionThresholding">
@@ -442,19 +443,19 @@
     <string>Wklej</string>
    </property>
   </action>
-  <action name="actionSelect_all">
+  <action name="actionSelectAll">
    <property name="text">
-    <string>Select all</string>
+    <string>Zaznacz cały obszar warstwy</string>
    </property>
   </action>
   <action name="actionUnselect">
    <property name="text">
-    <string>Unselect</string>
+    <string>Usuń zaznaczenie</string>
    </property>
   </action>
-  <action name="actionOtw_rz_obraz_na_nowej_warstwie">
+  <action name="actionAddImage">
    <property name="text">
-    <string>Otwórz obraz na nowej warstwie</string>
+    <string>Otwórz obraz na nowej warstwie...</string>
    </property>
   </action>
  </widget>

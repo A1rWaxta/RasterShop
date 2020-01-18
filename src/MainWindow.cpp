@@ -537,7 +537,11 @@ void MainWindow::Rotate180Degrees()
 
 void MainWindow::ShowLayerCreationDialog()
 {
-	NewLayerDialog newLayerDialog(graphicsScene->canvas->rect().size().toSize());
+	const auto canvasSize = graphicsScene->canvas->rect().size().toSize();
+	auto selectionSize = graphicsScene->rectangleSelectionTool.rect().size().toSize();
+	selectionSize.setHeight(-selectionSize.height());
+	NewLayerDialog newLayerDialog(canvasSize, selectionSize, nullptr);
+
 	bool isDuplicate = false;
 
 	if( newLayerDialog.exec() == QDialog::Accepted )
