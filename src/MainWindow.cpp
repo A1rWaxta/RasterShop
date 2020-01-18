@@ -70,7 +70,7 @@ void MainWindow::ConnectMenuBarActionsToSlots()
 {
 	connect(ui->actionNew, &QAction::triggered, this, &MainWindow::NewActionClicked);
 	connect(ui->actionSave, &QAction::triggered, this, &MainWindow::SaveActionClicked);
-	connect(ui->actionSaveAs, &QAction::triggered, this, &MainWindow::SaveAsActionClicked);
+	connect(ui->actionSaveAs, &QAction::triggered, this, &MainWindow::SaveAs);
 	connect(ui->actionOpen, &QAction::triggered, this, &MainWindow::OpenActionClicked);
 
 	connect(ui->actionChangeSize, &QAction::triggered, this, &MainWindow::ChangeCanvasSize);
@@ -79,6 +79,9 @@ void MainWindow::ConnectMenuBarActionsToSlots()
 	connect(ui->actionRotate180Degrees, &QAction::triggered, this, &MainWindow::Rotate180Degrees);
 
 	connect(ui->grayScaleAction, &QAction::triggered, this, &MainWindow::GrayScaleLayer);
+
+	connect(ui->actionAddImage, &QAction::triggered, this, &MainWindow::AddImage);
+
 }
 
 void MainWindow::ConnectLayerOperationButtonsToSlots()
@@ -139,7 +142,7 @@ void MainWindow::mouseReleaseEvent(QMouseEvent* event)
 {
 }
 
-void MainWindow::SaveAsActionClicked()
+void MainWindow::SaveAs()
 {
 	QPainter painter;
 	painter.setRenderHint(QPainter::Antialiasing);
@@ -403,6 +406,7 @@ void MainWindow::CreateScene(int width, int height)
 	connect(esc, &QShortcut::activated, graphicsScene, &GraphicsScene::CancelSelection);
 	connect(ctrlH, &QShortcut::activated, graphicsScene, &GraphicsScene::ToggleLayerSelectionVisibility);
 	connect(del, &QShortcut::activated, this, &MainWindow::ShowLayerDeleteConfirmationDialog);
+	connect(ctrlS, &QShortcut::activated, this, &MainWindow::SaveAs);
 	connect(ui->actionPaste, &QAction::triggered, graphicsScene, &GraphicsScene::Paste);
 
 	ui->workSpace->setScene(graphicsScene);
@@ -452,7 +456,10 @@ void MainWindow::CreateShortcuts()
 	esc->setKey(Qt::Key_Escape);
 
 	ctrlH = new QShortcut(this);
-	ctrlH->setKey(Qt::Key_H + Qt::CTRL);
+	ctrlH->setKey(Qt::CTRL + Qt::Key_H);
+
+	ctrlS = new QShortcut(this);
+	ctrlS->setKey(Qt::CTRL + Qt::Key_S);
 }
 
 void MainWindow::ToolSelected(ActiveTool tool)
@@ -558,7 +565,7 @@ void MainWindow::ShowLayerCreationDialog()
 		}
 		if( isDuplicate )
 		{
-			QMessageBox::critical(nullptr, "Błąd", tr("Warstwa o podanej nazwie już istnieje!"));
+			QMessageBox::critical(nullptr, tr("Błąd"), tr("Warstwa o podanej nazwie już istnieje!"));
 		}
 		else
 		{
@@ -599,13 +606,6 @@ void MainWindow::GrayScaleLayer()
 		newImageLayer->setRect(activeLayer->GetLayer()->rect());
 		auto rasterizedOldLayer = new QGraphicsPixmapItem(QPixmap::fromImage(image));
 		graphicsScene->AddItemOnActiveLayer(rasterizedOldLayer);
-//		newImageLayer->setPos(graphicsScene->activeLayer->pos());
-//		newImageLayer->setRotation(graphicsScene->activeLayer->rotation());
-//		newImageLayer->setScale(graphicsScene->activeLayer->scale());
-//		rasterizedOldLayer->setParentItem(newImageLayer);
-//		delete activeLayer->GetLayer();
-//		activeLayer->SetLayer(newImageLayer);
-//		graphicsScene->activeLayer = newImageLayer;
 
 		graphicsScene->ShowTools();
 //		QDialog dialog;
@@ -614,5 +614,47 @@ void MainWindow::GrayScaleLayer()
 //		label.setParent(&dialog);
 //		dialog.show();
 //		dialog.exec();
+	}
+}
+
+void MainWindow::AddImage()
+{
+	QFileDialog fileDialog(this);
+	QMessageBox::StandardButton svgFileOpenedReply;
+
+	fileDialog.resize(320, 100);
+	fileDialog.setNameFilter(tr("Images (*.png *.bmp *.jpg *.jpeg *.svg)"));
+	fileDialog.setFileMode(QFileDialog::ExistingFile);
+
+	QStringList fileNames;
+	if( fileDialog.exec() == QFileDialog::Accepted )
+	{
+		fileNames = fileDialog.selectedFiles();
+
+		QImage image(fileNames[0]);
+
+		CreateLayer(image.width(), image.height(), "warstwa_" + QString::number(layers.size()));
+
+		QFileInfo fileInfo(fileNames[0]);
+		if( fileInfo.suffix() == "svg" )
+		{
+			svgFileOpenedReply = QMessageBox::question(this, tr("Format svg"),
+			                                           tr("Wybrano plik w formacie svg. Czy chcesz rasteryzować?"));
+			if( svgFileOpenedReply == QMessageBox::No )
+			{
+				auto vectorGraphicsImage = new QGraphicsSvgItem(fileNames[0]);
+				graphicsScene->AddItemOnActiveLayer(vectorGraphicsImage);
+			}
+			else
+			{
+				auto graphicsImage = new QGraphicsPixmapItem(QPixmap::fromImage(image));
+				graphicsScene->AddItemOnActiveLayer(graphicsImage);
+			}
+		}
+		else
+		{
+			auto graphicsImage = new QGraphicsPixmapItem(QPixmap::fromImage(image));
+			graphicsScene->AddItemOnActiveLayer(graphicsImage);
+		}
 	}
 }

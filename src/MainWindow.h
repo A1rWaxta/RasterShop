@@ -24,7 +24,7 @@ private slots:
 	void NewCanvas();
 	void FirstButtonClicked();
 	void OpenActionClicked();
-	void SaveAsActionClicked();
+	void SaveAs();
 	void SaveActionClicked();
 	void InitializeNewProject(int width, int height);
 	void CreateLayer(int width, int height, QString layerName);
@@ -58,7 +58,6 @@ private:
 	void Rotate180Degrees();
 	void ShowLayerCreationDialog();
 	void GrayScaleLayer();
-	QImage GaussianBlur(QImage image);
 
 	GraphicsScene* graphicsScene;
 	std::vector<LayerPreview*> layers;
@@ -67,7 +66,9 @@ private:
 	QShortcut* ctrlC;
 	QShortcut* ctrlV;
 	QShortcut* ctrlH;
+	QShortcut* ctrlS;
 	QShortcut* del;
 	QShortcut* esc;
 	Ui::MainWindow* ui;
+	void AddImage();
 };
