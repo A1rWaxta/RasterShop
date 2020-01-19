@@ -18,12 +18,16 @@ NewLayerDialog::NewLayerDialog(QSize currentCanvasSize, QSize currentSelectionSi
 	clipboradImageSize = clipboard->pixmap().size();
 	if( clipboradImageSize == QSize(0, 0) )
 	{
-		ui->sizeComboBox->removeItem(2);
+		QModelIndex index = ui->sizeComboBox->model()->index(2, 0);
+		QVariant v(0);
+		ui->sizeComboBox->model()->setData(index, v, Qt::UserRole - 1);
 	}
 
 	if( currentSelectionSize == QSize(0, 0) )
 	{
-		ui->sizeComboBox->removeItem(1);
+		QModelIndex index = ui->sizeComboBox->model()->index(1, 0);
+		QVariant v(0);
+		ui->sizeComboBox->model()->setData(index, v, Qt::UserRole - 1);
 	}
 
 	connect(ui->acceptButton, &QPushButton::released, this, &NewLayerDialog::Accept);

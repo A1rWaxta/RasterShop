@@ -407,6 +407,7 @@ void MainWindow::CreateScene(int width, int height)
 	connect(ctrlH, &QShortcut::activated, graphicsScene, &GraphicsScene::ToggleLayerSelectionVisibility);
 	connect(del, &QShortcut::activated, this, &MainWindow::ShowLayerDeleteConfirmationDialog);
 	connect(ctrlS, &QShortcut::activated, this, &MainWindow::SaveAs);
+	connect(ctrlN, &QShortcut::activated, this, &MainWindow::ShowLayerCreationDialog);
 	connect(ui->actionPaste, &QAction::triggered, graphicsScene, &GraphicsScene::Paste);
 
 	ui->workSpace->setScene(graphicsScene);
@@ -460,6 +461,9 @@ void MainWindow::CreateShortcuts()
 
 	ctrlS = new QShortcut(this);
 	ctrlS->setKey(Qt::CTRL + Qt::Key_S);
+
+	ctrlN = new QShortcut(this);
+	ctrlN->setKey(Qt::CTRL + Qt::Key_N);
 }
 
 void MainWindow::ToolSelected(ActiveTool tool)

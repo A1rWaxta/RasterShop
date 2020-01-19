@@ -67,6 +67,7 @@ private:
 	QShortcut* ctrlV;
 	QShortcut* ctrlH;
 	QShortcut* ctrlS;
+	QShortcut* ctrlN;
 	QShortcut* del;
 	QShortcut* esc;
 	Ui::MainWindow* ui;
