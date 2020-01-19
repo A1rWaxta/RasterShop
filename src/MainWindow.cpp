@@ -110,6 +110,23 @@ void MainWindow::closeEvent(QCloseEvent* closeEvent)
 	settings.setValue("window/xpos", pos().x());
 	settings.setValue("window/ypos", pos().y());
 	settings.sync();
+
+	if( graphicsScene != nullptr )
+	{
+		QMessageBox::StandardButton confirmationDialogReply;
+		confirmationDialogReply = QMessageBox::warning(this, tr("Zapisać?"), tr("Czy chcesz zapisać obraz?"),
+		                                               QMessageBox::Cancel | QMessageBox::Discard | QMessageBox::Save
+		                                               );
+
+		if( confirmationDialogReply == QMessageBox::Save )
+		{
+			SaveAs();
+		}
+		else if( confirmationDialogReply == QMessageBox::Cancel )
+		{
+			closeEvent->ignore();
+		}
+	}
 }
 
 void MainWindow::resizeEvent(QResizeEvent* resizeEvent)
