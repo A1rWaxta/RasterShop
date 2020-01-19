@@ -14,6 +14,7 @@ public:
 	void Update(QPointF currentPoint);
 	void SetLayer(ImageLayer* layer);
 	void Start();
+	void Stop();
 	bool IsPointRectangleSelected(QPointF point);
 
 private:

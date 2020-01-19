@@ -22,5 +22,6 @@ private:
 	void mouseReleaseEvent(QGraphicsSceneMouseEvent* event) override;
 	ImageLayer* layer;
 	QPointF startPoint;
+	QGraphicsEllipseItem ellipseItem;
 	bool leftMousePressed;
 };

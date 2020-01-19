@@ -15,7 +15,9 @@ namespace
 RotationTool::RotationTool() : layer(nullptr), leftMousePressed(false)
 {
 	setPen(QPen(Qt::black, 2, Qt::SolidLine));
-//	ellipseItem.setParentItem(this);
+	ellipseItem.setParentItem(this);
+	ellipseItem.setPen(QPen(Qt::green, 2, Qt::SolidLine));
+	ellipseItem.setBrush(Qt::NoBrush);
 }
 
 void RotationTool::Start(QPointF startPoint)
@@ -28,7 +30,6 @@ void RotationTool::Update(QPointF currentPoint)
 	layer->setRotation(startPoint.y() - currentPoint.y());
 
 	setRotation(layer->rotation());
-//	setRect(layer->mappedToSceneBoundingRect());
 }
 
 void RotationTool::Stop()
@@ -38,11 +39,13 @@ void RotationTool::Stop()
 void RotationTool::SetLayer(ImageLayer* layer)
 {
 	this->layer = layer;
-	QPointF topLeft(( layer->mappedToSceneBoundingRect().bottomRight().x() / 2 ) - DISTANCE_FROM_MID_POINT,
-	                ( layer->mappedToSceneBoundingRect().bottomRight().y() / 2 ) + DISTANCE_FROM_MID_POINT);
-	QPointF bottomRight(( layer->mappedToSceneBoundingRect().bottomRight().x() / 2 ) + DISTANCE_FROM_MID_POINT,
-	                    ( layer->mappedToSceneBoundingRect().bottomRight().y() / 2 ) - DISTANCE_FROM_MID_POINT);
+	QPointF topLeft( layer->transformOriginPoint().x() - DISTANCE_FROM_MID_POINT,
+	                 layer->transformOriginPoint().y() + DISTANCE_FROM_MID_POINT);
+	QPointF bottomRight( layer->transformOriginPoint().x() + DISTANCE_FROM_MID_POINT,
+	                     layer->transformOriginPoint().y() - DISTANCE_FROM_MID_POINT);
 	QRectF rect(topLeft, bottomRight);
+
+	ellipseItem.setRect(rect);
 
 	setRect(layer->rect());
 	setTransformOriginPoint(layer->transformOriginPoint());

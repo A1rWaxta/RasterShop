@@ -142,7 +142,7 @@ void GraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent* event)
 					text->setDefaultTextColor(toolColor);
 					text->SetLayer(activeLayer);
 					AddItemOnActiveLayer(text);
-					text->Start(event->scenePos());
+					text->Start(event->pos());
 					setFocusItem(text);
 				}
 				break;
@@ -195,7 +195,7 @@ void GraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
 			case ActiveTool::Scale:
 			{
 				scaleTool.Update(event->scenePos());
-				layerSelection.setRect(layerSelection.mapRectFromScene(activeLayer->mappedToSceneBoundingRect()));
+				layerSelection.setRect(activeLayer->mappedToSceneBoundingRect());
 				break;
 			}
 			case ActiveTool::Rotation:
@@ -221,6 +221,11 @@ void GraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
 		if( activeTool == ActiveTool::Rotation )
 		{
 			rotationTool.Stop();
+		}
+
+		if(activeTool == ActiveTool::Scale)
+		{
+			scaleTool.Stop();
 		}
 	}
 }

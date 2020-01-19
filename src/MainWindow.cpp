@@ -372,6 +372,7 @@ void MainWindow::NewActionClicked()
 
 		auto backgroundRectangle = new QGraphicsRectItem(0, 0, canvasWidth, canvasHeight);
 		backgroundRectangle->setBrush(QBrush(backgroundColor));
+		backgroundRectangle->setPen(Qt::NoPen);
 		graphicsScene->AddItemOnActiveLayer(backgroundRectangle);
 	}
 }

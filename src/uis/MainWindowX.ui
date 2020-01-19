@@ -91,7 +91,14 @@
        <layout class="QGridLayout" name="gridLayout_5">
         <item row="0" column="1">
          <layout class="QGridLayout" name="toolLayout">
-          <item row="0" column="2">
+          <item row="1" column="1">
+           <widget class="QLabel" name="activeToolLabel">
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="2">
            <spacer name="horizontalSpacer_2">
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
@@ -104,14 +111,13 @@
             </property>
            </spacer>
           </item>
-          <item row="0" column="1">
-           <widget class="QLabel" name="activeToolLabel">
-            <property name="text">
-             <string/>
-            </property>
-           </widget>
+          <item row="2" column="0" colspan="3">
+           <widget class="ColorPicker" name="colorPicker" native="true"/>
           </item>
-          <item row="0" column="0">
+          <item row="3" column="0" colspan="3">
+           <widget class="TextEditOptions" name="textEditOptions" native="true"/>
+          </item>
+          <item row="1" column="0">
            <spacer name="horizontalSpacer">
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
@@ -123,12 +129,6 @@
              </size>
             </property>
            </spacer>
-          </item>
-          <item row="1" column="0" colspan="3">
-           <widget class="ColorPicker" name="colorPicker" native="true"/>
-          </item>
-          <item row="2" column="0" colspan="3">
-           <widget class="TextEditOptions" name="textEditOptions" native="true"/>
           </item>
          </layout>
         </item>

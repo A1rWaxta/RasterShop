@@ -11,7 +11,7 @@
 
 TextTool::TextTool() : layer(nullptr)
 {
-	setFlag(QGraphicsItem::ItemIsFocusable);
+	setFlags(QGraphicsItem::ItemIsFocusable);
 	setTextInteractionFlags(Qt::TextEditorInteraction);
 }
 

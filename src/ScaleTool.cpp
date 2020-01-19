@@ -38,8 +38,8 @@ void ScaleTool::SetLayer(ImageLayer* layer)
 
 void ScaleTool::Update(QPointF currentPoint)
 {
-	qreal currentDistance = std::sqrt(std::pow(rect().topLeft().x() - currentPoint.x(), 2) +
-	                                  std::pow(rect().topLeft().y() - currentPoint.y(), 2));
+	qreal currentDistance = std::sqrt(std::pow(layer->transformOriginPoint().x() - currentPoint.x(), 2) +
+	                                  std::pow(layer->transformOriginPoint().y() - currentPoint.y(), 2));
 	layer->setScale(currentDistance / startDistance);
 
 	QPointF topLeft(layer->mappedToSceneBoundingRect().bottomRight().x() - DISTANCE_FROM_BOTTOM_RIGHT_POINT,
@@ -54,11 +54,16 @@ void ScaleTool::Update(QPointF currentPoint)
 
 void ScaleTool::Start()
 {
-	startDistance = std::sqrt(std::pow(rect().bottomRight().x() - rect().topLeft().x(), 2) +
-	                          std::pow(rect().bottomRight().y() - rect().topLeft().y(), 2));
+	startDistance = std::sqrt(std::pow(rect().bottomRight().x() - layer->transformOriginPoint().x(), 2) +
+	                          std::pow(rect().bottomRight().y() - layer->transformOriginPoint().y(), 2));
 }
 
 bool ScaleTool::IsPointRectangleSelected(QPointF point)
 {
 	return pointRectangle.boundingRect().contains(point);
+}
+
+void ScaleTool::Stop()
+{
+
 }
